@@ -5,11 +5,11 @@ public class Line : MonoBehaviour
     [SerializeField] private byte _lineIndex;
     public byte LineIndex => _lineIndex;
 
-    private byte _highestBlockIndex = 0;
-    public byte HighestBlockIndex
+    private byte _groundYCoordinate = 6;
+    public byte GroundYCoordinate
     {
-        get { return _highestBlockIndex; }
-        set { _highestBlockIndex = value; }
+        get { return _groundYCoordinate; }
+        set { _groundYCoordinate = (byte)Mathf.Min(value, 6); }
     }
 
     public void OnMouseDown()
