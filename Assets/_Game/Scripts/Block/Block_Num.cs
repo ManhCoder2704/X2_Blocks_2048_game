@@ -16,7 +16,6 @@ public class Block_Num : MonoBehaviour
     }
     private void SetNumber(int number)
     {
-        Debug.Log(number);
         _numberDisplay.text = (1 << number).ToString();
     }
 }

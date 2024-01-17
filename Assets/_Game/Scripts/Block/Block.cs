@@ -2,20 +2,37 @@ using DG.Tweening;
 using System;
 using UnityEngine;
 
+[Serializable]
 public class Block : MonoBehaviour
 {
     [SerializeField] private Block_Num _blockNum;
     public Block_Num BlockNum => _blockNum;
 
-    private int _xCoor, _yCoor;
-    public Vector2Int Coordinate { get => new Vector2Int(_xCoor, _yCoor); set { _xCoor = value.x; _yCoor = value.y; } }
+    private Vector2Int _coordinate;
+    public Vector2Int Coordinate { get => _coordinate; set => _coordinate = value; }
 
-    public void MoveTo(float yCoordinate, Action onComplete, Action onCompleted)
+    private Line _currentLine;
+    public Line CurrentLine { get => _currentLine; set => _currentLine = value; }
+
+    public Tween MoveYTo(float yCoordinate)
     {
-        transform.DOMoveY(yCoordinate, yCoordinate * 0.1f).onComplete += () =>
+        return transform.DOMoveY(yCoordinate, yCoordinate * 0.1f).OnComplete(() =>
         {
-            onComplete?.Invoke();
-            onCompleted?.Invoke();
-        };
+            Debug.Log($"{this.name} MoveYTo " + yCoordinate + " complete");
+        });
+    }
+
+    public Tween CombineInto(Block block)
+    {
+        return transform.DOMove(block.transform.position, 0.1f);
+    }
+
+    public Tween MoveTo(Vector2Int coordinate)
+    {
+        return transform.DOMove(new Vector3Int(coordinate.x, coordinate.y), 0.1f).OnComplete(() =>
+        {
+            Debug.Log($"{this.name} MoveTo " + coordinate + " complete");
+            this.gameObject.SetActive(false);
+        });
     }
 }

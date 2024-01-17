@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
+using static DictionaryLib;
+using static Unity.Collections.AllocatorManager;
 
 public class GameplayManager : Singleton<GameplayManager>
 {
@@ -16,8 +19,10 @@ public class GameplayManager : Singleton<GameplayManager>
     public Action<Line> OnMouseDown;
     public Action<Line> OnMouseEnter;
 
-    private Queue<Block> additionAction = new Queue<Block>();
-    private Queue<Vector2Int> emptyBlockCoor = new Queue<Vector2Int>();
+    private int _touchCount = 0;
+
+    [SerializeField]
+    private List<Block> _actionBlocks = new List<Block>();
 
     private void Awake()
     {
@@ -29,6 +34,8 @@ public class GameplayManager : Singleton<GameplayManager>
     {
         if (_isBlockMoving) return;
         _currentPendingBlock = Instantiate(_blockPrefab, _blockContainer);
+        _currentPendingBlock.name = "Block " + _touchCount++;
+        _currentPendingBlock.BlockNum.Number = 1;
         PendingShoot(line);
         _reviewBlock.gameObject.SetActive(true);
     }
@@ -41,78 +48,172 @@ public class GameplayManager : Singleton<GameplayManager>
     private void PendingShoot(Line line)
     {
         _currentSelectLine = line;
-        _currentPendingBlock.transform.position = new Vector3Int(line.LineIndex, 0); // dich block xuong duoi
-        _reviewBlock.transform.position = new Vector3Int(line.LineIndex, 6 - line.HighestBlockIndex);
+        _currentPendingBlock.transform.position = new Vector3Int(line.LineIndex, 0);
+        _reviewBlock.transform.position = new Vector3Int(line.LineIndex, _currentSelectLine.GroundYCoordinate);
+        _currentPendingBlock.Coordinate = new Vector2Int(line.LineIndex, _currentSelectLine.GroundYCoordinate);
+        _currentPendingBlock.CurrentLine = line;
     }
     private void OnLineMouseUp()
     {
-        if (_currentSelectLine == null || _isBlockMoving || _currentSelectLine.HighestBlockIndex == 7) return;
+        if (_currentSelectLine == null || _isBlockMoving) return;
 
-        float posY = 6 - _currentSelectLine.HighestBlockIndex;
         _isBlockMoving = true;
         _reviewBlock.gameObject.SetActive(false);
-        Action onComplete = null;
 
-        if (_board.Block_Coor_Dic.ContainsKey(new Vector2Int(_currentSelectLine.LineIndex, Mathf.FloorToInt(posY + 1))))
+        Vector2Int newCoordinate = new Vector2Int(_currentPendingBlock.Coordinate.x, _currentPendingBlock.CurrentLine.GroundYCoordinate);
+        _board.Block_Coor_Dic.Add(newCoordinate, _currentPendingBlock);
+        _currentPendingBlock.Coordinate = new Vector2Int(_currentPendingBlock.Coordinate.x, 0);
+        _actionBlocks.Add(_currentPendingBlock);
+
+        _currentSelectLine = null;
+        _currentPendingBlock = null;
+
+        BlockDropState();
+    }
+
+    private void BlockDropState()
+    {
+        Sequence sequence = DOTween.Sequence();
+        for (int i = 0; i < _actionBlocks.Count; i++)
         {
-            Block aboveBlock = _board.Block_Coor_Dic[new Vector2Int(_currentSelectLine.LineIndex, Mathf.FloorToInt(posY + 1))];
-            if (aboveBlock.BlockNum.Number == _currentPendingBlock.BlockNum.Number)
+            Block block = _actionBlocks[i];
+
+            Vector2Int newCoordinate = new Vector2Int(block.Coordinate.x, block.CurrentLine.GroundYCoordinate);
+            Debug.Log(block.Coordinate + " " + newCoordinate);
+            if (block.Coordinate.y >= newCoordinate.y)
             {
-                onComplete = () =>
-                {
-                    Destroy(aboveBlock.gameObject);
-                    _board.Block_Coor_Dic[new Vector2Int(_currentSelectLine.LineIndex, Mathf.FloorToInt(posY + 1))] = _currentPendingBlock;
-                    ++_currentPendingBlock.BlockNum.Number;
-                    emptyBlockCoor.Enqueue(new Vector2Int(_currentSelectLine.LineIndex, Mathf.FloorToInt(posY + 1)));
-                };
+                continue;
+            }
+            block.Coordinate = newCoordinate;
+            block.CurrentLine.GroundYCoordinate--;
+
+            sequence.Join(block.MoveYTo(newCoordinate.y));
+        }
+        sequence.OnComplete(() =>
+        {
+            Debug.Log("Drop complete: " + _actionBlocks.Count);
+            BlockCombineState();
+        });
+    }
+
+    private void BlockCombineState()
+    {
+        Sequence sequence = DOTween.Sequence();
+        for (int i = 0; i < _actionBlocks.Count; i++)
+        {
+            List<Block> combineBlocks = FindSimilarBlockAround(_actionBlocks[i]);
+            Debug.Log("Combine block: " + combineBlocks.Count);
+
+            // No similar block around then remove this block and continue
+            if (combineBlocks.Count == 0)
+            {
+                _actionBlocks.RemoveAt(i);
+                i--;
+                continue;
+            }
+
+            // Add this block to combine list
+            if (combineBlocks[0].Coordinate.y == _actionBlocks[i].Coordinate.y)
+            {
+                combineBlocks.Insert(0, _actionBlocks[i]);
             }
             else
+                combineBlocks.Add(_actionBlocks[i]);
+
+            // Find the block that has the most similar blocks around
+            int maxValue = 0;
+            Block maxBlock = null;
+            List<Block> maxCombineBlockRelative = new List<Block>();
+
+            for (int j = 0; j < combineBlocks.Count; j++)
             {
-                _board.Block_Coor_Dic.Add(new Vector2Int(_currentSelectLine.LineIndex, Mathf.FloorToInt(posY)), _currentPendingBlock);
+                List<Block> temp = FindSimilarBlockAround(combineBlocks[j]);
+                if (temp.Count > maxValue)
+                {
+                    maxValue = temp.Count;
+                    maxBlock = combineBlocks[j];
+                    maxCombineBlockRelative = temp;
+                }
             }
-        }
-        else
-        {
-            _board.Block_Coor_Dic.Add(new Vector2Int(_currentSelectLine.LineIndex, Mathf.FloorToInt(posY)), _currentPendingBlock);
-        }
+            Debug.Log($"Max combine block is {maxBlock.name} with coor: {maxBlock.Coordinate}");
+            Debug.Log($"Current combine block is {_actionBlocks[i].name} with coor: {_actionBlocks[i].Coordinate}");
+
+            // Setup combine sequence
+            foreach (var item in maxCombineBlockRelative)
+            {
+                // Remove block from board info
+                item.CurrentLine.GroundYCoordinate++;
+                Debug.Log(_board.Block_Coor_Dic.ContainsKey(item.Coordinate));
+                Debug.Log("Remove block: " + item.Coordinate);
+                _board.Block_Coor_Dic.Remove(item.Coordinate);
+
+                // Remove block from action list
+                if (_actionBlocks.Contains(item) && item != _actionBlocks[i])
+                {
+                    _actionBlocks.Remove(item);
+                }
 
 
-        _currentPendingBlock.MoveTo(posY, onComplete, () =>
+                // Combine block
+                sequence.Join(item.MoveTo(maxBlock.Coordinate));
+            }
+
+            // if current action block is not the max block then replace it
+            if (maxBlock != _actionBlocks[i])
+            {
+                Debug.Log("Replace admin block to: " + maxBlock.Coordinate);
+                _actionBlocks[i] = maxBlock;
+            }
+
+            _actionBlocks[i].BlockNum.Number += maxValue;
+        }
+        sequence.OnComplete(() =>
         {
-            if (emptyBlockCoor.Count != 0)
-                AlignBlock();
+            Debug.Log("Combine complete: " + _actionBlocks.Count);
+            if (_actionBlocks.Count > 0)
+            {
+                BlockDropState();
+            }
             else
             {
                 _isBlockMoving = false;
-                _currentSelectLine.HighestBlockIndex++;
-                _currentPendingBlock = null;
-                _currentSelectLine = null;
             }
         });
     }
 
-    private void AlignBlock()
+    private List<Block> FindSimilarBlockAround(Block block)
     {
-        while (emptyBlockCoor.Count != 0)
+        List<Block> blocks = new List<Block>();
+        Block tempBlock = null;
+        if (_board.Block_Coor_Dic.TryGetValue(new Vector2Int(block.Coordinate.x, block.Coordinate.y + 1), out tempBlock)) // above
         {
-            Vector2Int coor = emptyBlockCoor.Dequeue();
-            for (int i = coor.y; i >= 0; i--)
+            if (tempBlock.BlockNum.Number == block.BlockNum.Number)
             {
-                if (_board.Block_Coor_Dic.ContainsKey(new Vector2Int(coor.x, i)))
-                {
-                    Block block = _board.Block_Coor_Dic[new Vector2Int(coor.x, i)];
-                    _board.Block_Coor_Dic.Remove(new Vector2Int(coor.x, i));
-                    _board.Block_Coor_Dic.Add(new Vector2Int(coor.x, i + 1), block);
-                    block.MoveTo(i, null, () => { });
-                    additionAction.Enqueue(block);
-                    _currentSelectLine.HighestBlockIndex--;
-                }
+                blocks.Add(tempBlock);
             }
         }
-        _isBlockMoving = false;
-        _currentSelectLine.HighestBlockIndex++;
-        _currentPendingBlock = null;
-        _currentSelectLine = null;
+        if (_board.Block_Coor_Dic.TryGetValue(new Vector2Int(block.Coordinate.x, block.Coordinate.y - 1), out tempBlock)) // above
+        {
+            if (tempBlock.BlockNum.Number == block.BlockNum.Number)
+            {
+                blocks.Add(tempBlock);
+            }
+        }
+        if (_board.Block_Coor_Dic.TryGetValue(new Vector2Int(block.Coordinate.x - 1, block.Coordinate.y), out tempBlock)) // left
+        {
+            if (tempBlock.BlockNum.Number == block.BlockNum.Number)
+            {
+                blocks.Add(tempBlock);
+            }
+        }
+        if (_board.Block_Coor_Dic.TryGetValue(new Vector2Int(block.Coordinate.x + 1, block.Coordinate.y), out tempBlock)) // right
+        {
+            if (tempBlock.BlockNum.Number == block.BlockNum.Number)
+            {
+                blocks.Add(tempBlock);
+            }
+        }
+        return blocks;
     }
 
     private void Update()
