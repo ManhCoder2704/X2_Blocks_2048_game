@@ -1,5 +1,5 @@
-using DG.Tweening;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameplayManager : Singleton<GameplayManager>
@@ -15,6 +15,9 @@ public class GameplayManager : Singleton<GameplayManager>
 
     public Action<Line> OnMouseDown;
     public Action<Line> OnMouseEnter;
+
+    private Queue<Block> additionAction = new Queue<Block>();
+    private Queue<Vector2Int> emptyBlockCoor = new Queue<Vector2Int>();
 
     private void Awake()
     {
@@ -53,15 +56,69 @@ public class GameplayManager : Singleton<GameplayManager>
         _isBlockMoving = true;
         _reviewBlock.gameObject.SetActive(false);
 
-        _board.Block_Coor_Dic.Add(new Vector2Int(_currentSelectLine.LineIndex, Mathf.FloorToInt(posY)), _currentPendingBlock);
+        Action onComplete = null;
 
-        _currentPendingBlock.transform.DOMoveY(posY, posY * 0.1f).onComplete += () =>
+        if (_board.Block_Coor_Dic.ContainsKey(new Vector2Int(_currentSelectLine.LineIndex, Mathf.FloorToInt(posY + 1))))
         {
-            _currentPendingBlock = null;
-            _currentSelectLine.HighestBlockIndex++;
-            _currentSelectLine = null;
-            _isBlockMoving = false;
-        };
+            Block aboveBlock = _board.Block_Coor_Dic[new Vector2Int(_currentSelectLine.LineIndex, Mathf.FloorToInt(posY + 1))];
+            if (aboveBlock.BlockNum.Number == _currentPendingBlock.BlockNum.Number)
+            {
+                Debug.Log("Join");
+                onComplete = () =>
+                {
+                    Destroy(aboveBlock.gameObject);
+                    _board.Block_Coor_Dic[new Vector2Int(_currentSelectLine.LineIndex, Mathf.FloorToInt(posY + 1))] = _currentPendingBlock;
+                    ++_currentPendingBlock.BlockNum.Number;
+                    emptyBlockCoor.Enqueue(new Vector2Int(_currentSelectLine.LineIndex, Mathf.FloorToInt(posY + 1)));
+                };
+            }
+            else
+            {
+                _board.Block_Coor_Dic.Add(new Vector2Int(_currentSelectLine.LineIndex, Mathf.FloorToInt(posY)), _currentPendingBlock);
+            }
+        }
+        else
+        {
+            _board.Block_Coor_Dic.Add(new Vector2Int(_currentSelectLine.LineIndex, Mathf.FloorToInt(posY)), _currentPendingBlock);
+        }
+
+
+        _currentPendingBlock.MoveTo(posY, onComplete, () =>
+        {
+            if (emptyBlockCoor.Count != 0)
+                AlignBlock();
+            else
+            {
+                _isBlockMoving = false;
+                _currentSelectLine.HighestBlockIndex++;
+                _currentPendingBlock = null;
+                _currentSelectLine = null;
+            }
+        });
+    }
+
+    private void AlignBlock()
+    {
+        while (emptyBlockCoor.Count != 0)
+        {
+            Vector2Int coor = emptyBlockCoor.Dequeue();
+            for (int i = coor.y; i >= 0; i--)
+            {
+                if (_board.Block_Coor_Dic.ContainsKey(new Vector2Int(coor.x, i)))
+                {
+                    Block block = _board.Block_Coor_Dic[new Vector2Int(coor.x, i)];
+                    _board.Block_Coor_Dic.Remove(new Vector2Int(coor.x, i));
+                    _board.Block_Coor_Dic.Add(new Vector2Int(coor.x, i + 1), block);
+                    block.MoveTo(i, null, () => { });
+                    additionAction.Enqueue(block);
+                    _currentSelectLine.HighestBlockIndex--;
+                }
+            }
+        }
+        _isBlockMoving = false;
+        _currentSelectLine.HighestBlockIndex++;
+        _currentPendingBlock = null;
+        _currentSelectLine = null;
     }
 
     private void Update()
