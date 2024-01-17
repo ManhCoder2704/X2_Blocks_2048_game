@@ -28,26 +28,22 @@ public class GameplayManager : Singleton<GameplayManager>
     private void OnLineMouseDown(Line line)
     {
         if (_isBlockMoving) return;
-
-        _currentSelectLine = line;
-
         _currentPendingBlock = Instantiate(_blockPrefab, _blockContainer);
-        _currentPendingBlock.transform.position = new Vector3Int(line.LineIndex, 0);
-
-        _reviewBlock.transform.position = new Vector3Int(line.LineIndex, 6 - line.HighestBlockIndex);
+        PendingShoot(line);
         _reviewBlock.gameObject.SetActive(true);
     }
 
     private void OnLineMouseEnter(Line line)
     {
         if (_currentSelectLine == null || _isBlockMoving) return;
-
+        PendingShoot(line);
+    }
+    private void PendingShoot(Line line)
+    {
         _currentSelectLine = line;
-        _currentPendingBlock.transform.position = new Vector3Int(line.LineIndex, 0);
-
+        _currentPendingBlock.transform.position = new Vector3Int(line.LineIndex, 0); // dich block xuong duoi
         _reviewBlock.transform.position = new Vector3Int(line.LineIndex, 6 - line.HighestBlockIndex);
     }
-
     private void OnLineMouseUp()
     {
         if (_currentSelectLine == null || _isBlockMoving || _currentSelectLine.HighestBlockIndex == 7) return;
@@ -55,7 +51,6 @@ public class GameplayManager : Singleton<GameplayManager>
         float posY = 6 - _currentSelectLine.HighestBlockIndex;
         _isBlockMoving = true;
         _reviewBlock.gameObject.SetActive(false);
-
         Action onComplete = null;
 
         if (_board.Block_Coor_Dic.ContainsKey(new Vector2Int(_currentSelectLine.LineIndex, Mathf.FloorToInt(posY + 1))))
@@ -63,7 +58,6 @@ public class GameplayManager : Singleton<GameplayManager>
             Block aboveBlock = _board.Block_Coor_Dic[new Vector2Int(_currentSelectLine.LineIndex, Mathf.FloorToInt(posY + 1))];
             if (aboveBlock.BlockNum.Number == _currentPendingBlock.BlockNum.Number)
             {
-                Debug.Log("Join");
                 onComplete = () =>
                 {
                     Destroy(aboveBlock.gameObject);
