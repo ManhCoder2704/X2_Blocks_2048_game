@@ -3,17 +3,20 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class Block : MonoBehaviour
+public class Block : MonoBehaviour, IPoolable<Block>
 {
     [SerializeField] private Block_Num _blockNum;
     [SerializeField] private SpriteRenderer _spriteRenderer;
     public Block_Num BlockNum => _blockNum;
+    public SpriteRenderer SpriteRenderer => _spriteRenderer;
 
     private Vector2Int _coordinate;
     public Vector2Int Coordinate { get => _coordinate; set => _coordinate = value; }
 
     private Line _currentLine;
     public Line CurrentLine { get => _currentLine; set => _currentLine = value; }
+
+    private Action<Block> _returnAction;
 
     public Tween MoveYTo(float yCoordinate)
     {
@@ -26,21 +29,32 @@ public class Block : MonoBehaviour
 
     public Tween MoveTo(Vector2Int coordinate)
     {
-        return transform.DOMove(new Vector3Int(coordinate.x, coordinate.y), 0.2f)
+        return transform.DOMove(new Vector3Int(coordinate.x, coordinate.y), 0.25f)
             .OnStart(() =>
             {
+                _spriteRenderer.sortingOrder = 1;
                 _blockNum.gameObject.SetActive(false);
             })
             .OnComplete(() =>
             {
                 Debug.Log($"{this.name} MoveTo " + coordinate + " complete");
-                this.gameObject.SetActive(false);
+                ReturnToPool();
             });
     }
 
     public Tween ChangeColorTo(Color color)
     {
-        return DOTween.To(() => _spriteRenderer.color, color => _spriteRenderer.color = color, color, 0.1f)
+        return DOTween.To(() => _spriteRenderer.color, color => _spriteRenderer.color = color, color, 0.25f)
             .OnComplete(() => Debug.Log($"{this.name} color lerping complete"));
+    }
+
+    public void Initialize(Action<Block> returnAction)
+    {
+        _returnAction = returnAction;
+    }
+
+    public void ReturnToPool()
+    {
+        _returnAction?.Invoke(this);
     }
 }

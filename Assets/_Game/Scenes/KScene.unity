@@ -359,6 +359,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84182d082b3b64f4e906238768c0bdb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _reviewBlock: {fileID: 1462784815}
+  _blockPrefab: {fileID: 7007031387235419567, guid: 2d15ee77dd9355947beeeb2de287b810, type: 3}
+  _blockContainer: {fileID: 393818807}
   _block_Coor_Dic:
     m_keys: []
     m_values: []
@@ -849,9 +852,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _board: {fileID: 499794443}
-  _blockPrefab: {fileID: 7007031387235419567, guid: 2d15ee77dd9355947beeeb2de287b810, type: 3}
-  _reviewBlock: {fileID: 1462784815}
-  _blockContainer: {fileID: 393818807}
   _actionBlocks: []
 --- !u!4 &1818840352
 Transform:
