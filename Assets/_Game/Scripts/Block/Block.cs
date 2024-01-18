@@ -26,7 +26,7 @@ public class Block : MonoBehaviour
 
     public Tween MoveTo(Vector2Int coordinate)
     {
-        return transform.DOMove(new Vector3Int(coordinate.x, coordinate.y), 0.1f)
+        return transform.DOMove(new Vector3Int(coordinate.x, coordinate.y), 0.2f)
             .OnStart(() =>
             {
                 _blockNum.gameObject.SetActive(false);
