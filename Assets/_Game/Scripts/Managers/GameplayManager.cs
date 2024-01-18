@@ -103,10 +103,11 @@ public class GameplayManager : Singleton<GameplayManager>
 
     private void BlockCombineState()
     {
+        HashSet<Block> pendingBlocks = new HashSet<Block>();
         Sequence sequence = DOTween.Sequence();
         for (int i = 0; i < _actionBlocks.Count; i++)
         {
-            bool hasTopBlock = false;
+            //bool hasTopBlock = false;
             List<Block> combineBlocks = FindSimilarBlockAround(_actionBlocks[i]);
             Debug.Log("Combine block: " + combineBlocks.Count);
 
@@ -125,7 +126,7 @@ public class GameplayManager : Singleton<GameplayManager>
             }
             else
             {
-                hasTopBlock = true;
+                //hasTopBlock = true;
                 combineBlocks.Add(_actionBlocks[i]);
             }
 
@@ -150,11 +151,29 @@ public class GameplayManager : Singleton<GameplayManager>
             // Setup combine sequence
             foreach (var item in maxCombineBlockRelative)
             {
+                // dont ask why this happen :)) i have no idea why it work perfectly
+                for (int k = item.Coordinate.y - 1; k > 0; k--)
+                {
+                    Block block = null;
+                    if (_board.Block_Coor_Dic.TryGetValue(new Vector2Int(item.Coordinate.x, k), out block))
+                    {
+                        if (block == maxBlock)
+                        {
+                            break;
+                        }
+                        pendingBlocks.Add(block);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+
                 // Remove block from board info
-                item.CurrentLine.GroundYCoordinate++;
+                item.CurrentLine.GroundYCoordinate = (byte)item.Coordinate.y;
                 item.CurrentLine = maxBlock.CurrentLine;
-                Debug.Log(_board.Block_Coor_Dic.ContainsKey(item.Coordinate));
-                Debug.Log("Remove block: " + item.Coordinate);
+
                 _board.Block_Coor_Dic.Remove(item.Coordinate);
 
                 // Remove block from action list
@@ -169,10 +188,10 @@ public class GameplayManager : Singleton<GameplayManager>
             }
 
             // Align block to top
-            if (maxValue > 1 && hasTopBlock)
+            /*if (maxValue > 1 && hasTopBlock)
             {
                 maxBlock.CurrentLine.GroundYCoordinate++;
-            }
+            }*/
 
             // if current action block is not the max block then replace it
             if (maxBlock != _actionBlocks[i])
@@ -186,6 +205,7 @@ public class GameplayManager : Singleton<GameplayManager>
         sequence.OnComplete(() =>
         {
             Debug.Log("Combine complete: " + _actionBlocks.Count);
+            _actionBlocks.AddRange(pendingBlocks);
             if (_actionBlocks.Count > 0)
             {
                 BlockDropState();

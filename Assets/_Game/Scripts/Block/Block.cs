@@ -6,6 +6,7 @@ using UnityEngine;
 public class Block : MonoBehaviour
 {
     [SerializeField] private Block_Num _blockNum;
+    [SerializeField] private SpriteRenderer _spriteRenderer;
     public Block_Num BlockNum => _blockNum;
 
     private Vector2Int _coordinate;
@@ -16,23 +17,26 @@ public class Block : MonoBehaviour
 
     public Tween MoveYTo(float yCoordinate)
     {
-        return transform.DOMoveY(yCoordinate, yCoordinate * 0.1f).OnComplete(() =>
-        {
-            Debug.Log($"{this.name} MoveYTo " + yCoordinate + " complete");
-        });
-    }
-
-    public Tween CombineInto(Block block)
-    {
-        return transform.DOMove(block.transform.position, 0.1f);
+        return transform.DOMoveY(yCoordinate, yCoordinate * 0.1f)
+            .OnComplete(() =>
+            {
+                Debug.Log($"{this.name} MoveYTo " + yCoordinate + " complete");
+            });
     }
 
     public Tween MoveTo(Vector2Int coordinate)
     {
-        return transform.DOMove(new Vector3Int(coordinate.x, coordinate.y), 0.1f).OnComplete(() =>
-        {
-            Debug.Log($"{this.name} MoveTo " + coordinate + " complete");
-            this.gameObject.SetActive(false);
-        });
+        return transform.DOMove(new Vector3Int(coordinate.x, coordinate.y), 0.1f)
+            .OnComplete(() =>
+            {
+                Debug.Log($"{this.name} MoveTo " + coordinate + " complete");
+                this.gameObject.SetActive(false);
+            });
+    }
+
+    public Tween ChangeColorTo(Color color)
+    {
+        return DOTween.To(() => _spriteRenderer.color, color => _spriteRenderer.color = color, color, 0.1f)
+            .OnComplete(() => Debug.Log($"{this.name} color lerping complete"));
     }
 }
