@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 427ac1f9e8f5d4fb6b2366559519f8fd
+guid: f7f40e7432e22ff4e90f9532ebc9b87c
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -49,7 +49,7 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
-  spriteBorder: {x: 106, y: 0, z: 105, w: 0}
+  spriteBorder: {x: 461, y: 0, z: 461, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -65,7 +65,7 @@ TextureImporter:
   ignorePngGamma: 0
   applyGammaDecoding: 0
   swizzle: 50462976
-  cookieLightType: 1
+  cookieLightType: 0
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform

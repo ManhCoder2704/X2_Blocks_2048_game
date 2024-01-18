@@ -77,7 +77,6 @@ public class GameplayManager : Singleton<GameplayManager>
         for (int i = 0; i < _actionBlocks.Count; i++)
         {
             Block block = _actionBlocks[i];
-
             Vector2Int newCoordinate = new Vector2Int(block.Coordinate.x, block.CurrentLine.GroundYCoordinate);
             Debug.Log(block.Coordinate + " " + newCoordinate);
             if (block.Coordinate.y >= newCoordinate.y)
@@ -91,7 +90,6 @@ public class GameplayManager : Singleton<GameplayManager>
         }
         sequence.OnComplete(() =>
         {
-            Debug.Log("Drop complete: " + _actionBlocks.Count);
             BlockCombineState();
         });
     }
@@ -102,7 +100,6 @@ public class GameplayManager : Singleton<GameplayManager>
         for (int i = 0; i < _actionBlocks.Count; i++)
         {
             List<Block> combineBlocks = FindSimilarBlockAround(_actionBlocks[i]);
-            Debug.Log("Combine block: " + combineBlocks.Count);
 
             // No similar block around then remove this block and continue
             if (combineBlocks.Count == 0)
@@ -135,16 +132,12 @@ public class GameplayManager : Singleton<GameplayManager>
                     maxCombineBlockRelative = temp;
                 }
             }
-            Debug.Log($"Max combine block is {maxBlock.name} with coor: {maxBlock.Coordinate}");
-            Debug.Log($"Current combine block is {_actionBlocks[i].name} with coor: {_actionBlocks[i].Coordinate}");
 
             // Setup combine sequence
             foreach (var item in maxCombineBlockRelative)
             {
                 // Remove block from board info
                 item.CurrentLine.GroundYCoordinate++;
-                Debug.Log(_board.Block_Coor_Dic.ContainsKey(item.Coordinate));
-                Debug.Log("Remove block: " + item.Coordinate);
                 _board.Block_Coor_Dic.Remove(item.Coordinate);
 
                 // Remove block from action list
@@ -153,7 +146,6 @@ public class GameplayManager : Singleton<GameplayManager>
                     _actionBlocks.Remove(item);
                 }
 
-
                 // Combine block
                 sequence.Join(item.MoveTo(maxBlock.Coordinate));
             }
@@ -161,7 +153,6 @@ public class GameplayManager : Singleton<GameplayManager>
             // if current action block is not the max block then replace it
             if (maxBlock != _actionBlocks[i])
             {
-                Debug.Log("Replace admin block to: " + maxBlock.Coordinate);
                 _actionBlocks[i] = maxBlock;
             }
 
@@ -169,7 +160,6 @@ public class GameplayManager : Singleton<GameplayManager>
         }
         sequence.OnComplete(() =>
         {
-            Debug.Log("Combine complete: " + _actionBlocks.Count);
             if (_actionBlocks.Count > 0)
             {
                 BlockDropState();
