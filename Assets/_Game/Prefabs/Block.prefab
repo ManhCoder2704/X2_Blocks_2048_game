@@ -99,6 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _blockNum: {fileID: 977550810595413289}
+  _spriteRenderer: {fileID: 5808796250873862112}
 --- !u!1 &5327433685706574972
 GameObject:
   m_ObjectHideFlags: 0
@@ -282,7 +283,7 @@ SortingGroup:
   m_Enabled: 1
   m_SortingLayerID: -1542067861
   m_SortingLayer: 2
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_SortAtRoot: 0
 --- !u!114 &977550810595413289
 MonoBehaviour:

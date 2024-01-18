@@ -3,24 +3,24 @@ using UnityEngine;
 using System;
 public class ObjectPool<T> : IPool<T> where T : MonoBehaviour, IPoolable<T>
 {
-    public ObjectPool(GameObject pooledObject, int numToSpawn = 0)
+    public ObjectPool(T pooledObject, Transform parent, int numToSpawn = 0)
     {
         this.prefab = pooledObject;
-        Spawn(numToSpawn);
+        Spawn(numToSpawn, parent);
     }
 
-    public ObjectPool(GameObject pooledObject, Action<T> pullObject, Action<T> pushObject, int numToSpawn = 0)
+    public ObjectPool(T pooledObject, Transform parent, Action<T> pullObject, Action<T> pushObject, int numToSpawn = 0)
     {
         this.prefab = pooledObject;
         this.pullObject = pullObject;
         this.pushObject = pushObject;
-        Spawn(numToSpawn);
+        Spawn(numToSpawn, parent);
     }
 
     private Action<T> pullObject;
     private Action<T> pushObject;
     private Stack<T> pooledObjects = new Stack<T>();
-    private GameObject prefab;
+    private T prefab;
     public int pooledCount
     {
         get
@@ -91,13 +91,13 @@ public class ObjectPool<T> : IPool<T> where T : MonoBehaviour, IPoolable<T>
         t.gameObject.SetActive(false);
     }
 
-    private void Spawn(int number)
+    private void Spawn(int number, Transform parent)
     {
         T t;
 
         for (int i = 0; i < number; i++)
         {
-            t = GameObject.Instantiate(prefab).GetComponent<T>();
+            t = GameObject.Instantiate(prefab, parent) as T;
             pooledObjects.Push(t);
             t.gameObject.SetActive(false);
         }
