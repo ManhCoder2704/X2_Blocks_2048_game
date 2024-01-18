@@ -35,8 +35,10 @@ public class GameplayManager : Singleton<GameplayManager>
         if (_isBlockMoving) return;
         _currentPendingBlock = Instantiate(_blockPrefab, _blockContainer);
         _currentPendingBlock.name = "Block " + _touchCount++;
-        _currentPendingBlock.BlockNum.Number = 1;
+        int randomNum = UnityEngine.Random.Range(1, 7);
+        _currentPendingBlock.BlockNum.Number = randomNum;
         PendingShoot(line);
+        _reviewBlock.BlockNum.Number = randomNum;
         _reviewBlock.gameObject.SetActive(true);
     }
 
@@ -61,7 +63,7 @@ public class GameplayManager : Singleton<GameplayManager>
         _reviewBlock.gameObject.SetActive(false);
 
         Vector2Int newCoordinate = new Vector2Int(_currentPendingBlock.Coordinate.x, _currentPendingBlock.CurrentLine.GroundYCoordinate);
-        _board.Block_Coor_Dic.Add(newCoordinate, _currentPendingBlock);
+        //_board.Block_Coor_Dic.Add(newCoordinate, _currentPendingBlock);
         _currentPendingBlock.Coordinate = new Vector2Int(_currentPendingBlock.Coordinate.x, 0);
         _actionBlocks.Add(_currentPendingBlock);
 
@@ -83,6 +85,9 @@ public class GameplayManager : Singleton<GameplayManager>
             {
                 continue;
             }
+            _board.Block_Coor_Dic.Remove(block.Coordinate);
+            _board.Block_Coor_Dic.Add(newCoordinate, block);
+
             block.Coordinate = newCoordinate;
             block.CurrentLine.GroundYCoordinate--;
 
@@ -96,9 +101,11 @@ public class GameplayManager : Singleton<GameplayManager>
 
     private void BlockCombineState()
     {
+        HashSet<Block> pendingBlocks = new HashSet<Block>();
         Sequence sequence = DOTween.Sequence();
         for (int i = 0; i < _actionBlocks.Count; i++)
         {
+            //bool hasTopBlock = false;
             List<Block> combineBlocks = FindSimilarBlockAround(_actionBlocks[i]);
 
             // No similar block around then remove this block and continue
@@ -115,7 +122,10 @@ public class GameplayManager : Singleton<GameplayManager>
                 combineBlocks.Insert(0, _actionBlocks[i]);
             }
             else
+            {
+                //hasTopBlock = true;
                 combineBlocks.Add(_actionBlocks[i]);
+            }
 
             // Find the block that has the most similar blocks around
             int maxValue = 0;
@@ -136,8 +146,29 @@ public class GameplayManager : Singleton<GameplayManager>
             // Setup combine sequence
             foreach (var item in maxCombineBlockRelative)
             {
+                // dont ask why this happen :)) i have no idea why it work perfectly
+                for (int k = item.Coordinate.y - 1; k > 0; k--)
+                {
+                    Block block = null;
+                    if (_board.Block_Coor_Dic.TryGetValue(new Vector2Int(item.Coordinate.x, k), out block))
+                    {
+                        if (block == maxBlock)
+                        {
+                            break;
+                        }
+                        pendingBlocks.Add(block);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+
                 // Remove block from board info
-                item.CurrentLine.GroundYCoordinate++;
+                item.CurrentLine.GroundYCoordinate = (byte)item.Coordinate.y;
+                item.CurrentLine = maxBlock.CurrentLine;
+
                 _board.Block_Coor_Dic.Remove(item.Coordinate);
 
                 // Remove block from action list
@@ -150,6 +181,12 @@ public class GameplayManager : Singleton<GameplayManager>
                 sequence.Join(item.MoveTo(maxBlock.Coordinate));
             }
 
+            // Align block to top
+            /*if (maxValue > 1 && hasTopBlock)
+            {
+                maxBlock.CurrentLine.GroundYCoordinate++;
+            }*/
+
             // if current action block is not the max block then replace it
             if (maxBlock != _actionBlocks[i])
             {
@@ -160,6 +197,8 @@ public class GameplayManager : Singleton<GameplayManager>
         }
         sequence.OnComplete(() =>
         {
+            Debug.Log("Combine complete: " + _actionBlocks.Count);
+            _actionBlocks.AddRange(pendingBlocks);
             if (_actionBlocks.Count > 0)
             {
                 BlockDropState();
