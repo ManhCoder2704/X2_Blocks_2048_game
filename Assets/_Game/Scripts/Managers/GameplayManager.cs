@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using static UnityEditor.Progress;
+using static DictionaryLib;
 
 public class GameplayManager : Singleton<GameplayManager>
 {
@@ -11,6 +11,7 @@ public class GameplayManager : Singleton<GameplayManager>
     private Line _currentSelectLine;
     private Block _currentPendingBlock;
     private bool _isBlockMoving = false;
+    private int _quantityBlock = 0;
 
     public Action<Line> OnMouseDown;
     public Action<Line> OnMouseEnter;
@@ -29,7 +30,7 @@ public class GameplayManager : Singleton<GameplayManager>
     private void OnLineMouseDown(Line line)
     {
         if (_isBlockMoving) return;
-        _currentPendingBlock = _board.GetBlock();
+        _currentPendingBlock = _board.GetNextBlock();
         _currentPendingBlock.name = "Block " + _touchCount++;
         PendingShoot(line);
     }
@@ -43,17 +44,42 @@ public class GameplayManager : Singleton<GameplayManager>
     {
         _currentSelectLine = line;
         _currentPendingBlock.transform.position = new Vector3Int(line.LineIndex, 0);
-        _board.SetReviewBlockCoor(new Vector3Int(line.LineIndex, _currentSelectLine.GroundYCoordinate));
+        _currentPendingBlock.gameObject.SetActive(line.GroundYCoordinate > 0);
+        _board.SetReviewBlockCoor(new Vector3Int(line.LineIndex, _currentSelectLine.GroundYCoordinate), line.GroundYCoordinate > -1);
         _currentPendingBlock.Coordinate = new Vector2Int(line.LineIndex, _currentSelectLine.GroundYCoordinate);
         _currentPendingBlock.CurrentLine = line;
+
     }
     private void OnLineMouseUp()
     {
         if (_currentSelectLine == null || _isBlockMoving) return;
-
-        _isBlockMoving = true;
+        if (_currentSelectLine.GroundYCoordinate == -1)
+        {
+            Block checkBlock = _board.Block_Coor_Dic[new Vector2Int(_currentSelectLine.LineIndex, 0)];
+            if (checkBlock.BlockNum.Number == _currentPendingBlock.BlockNum.Number)
+            {
+                int newNumber = ++checkBlock.BlockNum.Number;
+                checkBlock.ChangeColorTo(CacheColor.GetColor(newNumber));
+                _currentPendingBlock.ReturnToPool();
+                _currentPendingBlock = checkBlock;
+                _quantityBlock--;
+            }
+            else
+            {
+                _currentPendingBlock.ReturnToPool();
+                _currentSelectLine = null;
+                _currentPendingBlock = null;
+                _isBlockMoving = false;
+                _board.DisableReviewBlock();
+                return;
+            }
+        }
+        _quantityBlock++;
+        _board.OnBlockDrop();
         _board.DisableReviewBlock();
+        _isBlockMoving = true;
 
+        _currentPendingBlock.gameObject.SetActive(true);
         _currentPendingBlock.Coordinate = new Vector2Int(_currentPendingBlock.Coordinate.x, 0);
         _actionBlocks.Add(_currentPendingBlock);
 
@@ -141,7 +167,7 @@ public class GameplayManager : Singleton<GameplayManager>
             foreach (var item in maxCombineBlockRelative)
             {
                 // dont ask why this happen :)) i have no idea why it work perfectly
-                for (int k = item.Coordinate.y - 1; k > 0; k--)
+                for (int k = item.Coordinate.y - 1; k >= 0; k--)
                 {
                     Block block = null;
                     if (_board.Block_Coor_Dic.TryGetValue(new Vector2Int(item.Coordinate.x, k), out block))
@@ -159,10 +185,11 @@ public class GameplayManager : Singleton<GameplayManager>
                 }
 
                 // Remove block from board info
-                item.CurrentLine.GroundYCoordinate = (byte)item.Coordinate.y;
+                item.CurrentLine.GroundYCoordinate = item.Coordinate.y;
                 item.CurrentLine = maxBlock.CurrentLine;
 
                 _board.Block_Coor_Dic.Remove(item.Coordinate);
+                _quantityBlock--;
 
                 // Remove block from action list
                 if (_actionBlocks.Contains(item) && item != _actionBlocks[i])
@@ -181,7 +208,7 @@ public class GameplayManager : Singleton<GameplayManager>
             }
 
             // if current action block is not the max block then replace it
-            if (maxBlock != _actionBlocks[i]) ///////////// error here
+            if (maxBlock != _actionBlocks[i])
             {
                 _actionBlocks[i] = maxBlock;
             }
@@ -198,6 +225,10 @@ public class GameplayManager : Singleton<GameplayManager>
             else
             {
                 _isBlockMoving = false;
+                if (CheckLose())
+                {
+                    Debug.Log("Lose");
+                }
             }
         });
     }
@@ -213,7 +244,7 @@ public class GameplayManager : Singleton<GameplayManager>
                 blocks.Add(tempBlock);
             }
         }
-        if (_board.Block_Coor_Dic.TryGetValue(new Vector2Int(block.Coordinate.x, block.Coordinate.y - 1), out tempBlock)) // above
+        if (_board.Block_Coor_Dic.TryGetValue(new Vector2Int(block.Coordinate.x, block.Coordinate.y - 1), out tempBlock)) // down
         {
             if (tempBlock.BlockNum.Number == block.BlockNum.Number)
             {
@@ -235,6 +266,25 @@ public class GameplayManager : Singleton<GameplayManager>
             }
         }
         return blocks;
+    }
+
+    private bool CheckLose()
+    {
+        if (_quantityBlock == 35)
+        {
+            Block nextBlock = _board.NextBlock;
+            for (int x = 0; x < 5; x++)
+            {
+                Block temp = _board.Block_Coor_Dic[new Vector2Int(x, 0)];
+                if (temp.BlockNum.Number == nextBlock.BlockNum.Number)
+                {
+                    return false;
+                }
+
+            }
+            return true;
+        }
+        return false;
     }
 
     private void Update()
