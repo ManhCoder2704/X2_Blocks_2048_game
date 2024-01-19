@@ -37,7 +37,7 @@ public class ObjectPool<T> : IPool<T> where T : MonoBehaviour, IPoolable<T>
         else
             t = GameObject.Instantiate(prefab).GetComponent<T>();
 
-        t.gameObject.SetActive(true); //ensure the object is on
+        //t.gameObject.SetActive(true); //ensure the object is on
         t.Initialize(Push);
 
         //allow default behavior and turning object back on
