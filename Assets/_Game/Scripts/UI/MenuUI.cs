@@ -13,7 +13,7 @@ public class MenuUI : Singleton<MenuUI>
     [SerializeField] private Button _profileBtn;
     [SerializeField] private Button _settingBtn;
 
-    void Start()
+    void Awake()
     {
         _homeBtn.onClick.AddListener(OnHome);
         _shopBtn.onClick.AddListener(OnShop);

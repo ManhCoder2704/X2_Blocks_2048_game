@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SettingUI : MonoBehaviour
+public class SettingUI : Singleton<SettingUI>
 {
     [SerializeField] private Button _vibraBtn;
     [SerializeField] private Button _musicBtn;
@@ -14,7 +14,7 @@ public class SettingUI : MonoBehaviour
     [SerializeField] private Button _likeBtn;
     [SerializeField] private Button _policyBtn;
 
-    void Start()
+    void Awake()
     {
         _vibraBtn.onClick.AddListener(OnVibration);
         _musicBtn.onClick.AddListener(OnMusic);

@@ -31,10 +31,13 @@ public class Board : MonoBehaviour
     private void Start()
     {
         GameplayManager.Instance.OnCombineBlock += OnCombineBlock;
+        OnInit();
+    }
+    private void OnInit()
+    {
         GetBlockInfo(_nextBlock);
         GetBlockInfo(_secondNextBlock);
     }
-
     public void OnBlockDrop()
     {
         _nextBlock.CopyValueFrom(_secondNextBlock);
@@ -54,7 +57,8 @@ public class Board : MonoBehaviour
 
     private void GetBlockInfo(Block block)
     {
-        int randomNum = UnityEngine.Random.Range(_minRandomBlockNumber, _maxRandomBlockNumber);
+        //int randomNum = UnityEngine.Random.Range(_minRandomBlockNumber, _maxRandomBlockNumber);
+        int randomNum = UnityEngine.Random.Range(1, 7);
         block.SpriteRenderer.color = CacheColor.GetColor(randomNum);
         block.BlockNum.Number = randomNum;
     }
@@ -87,5 +91,15 @@ public class Board : MonoBehaviour
             }
         }
 
+    }
+    public void ResetBoard()
+    {
+        foreach (Block item in _block_Coor_Dic.Values)
+        {
+            item.CurrentLine.GroundYCoordinate = 6;
+            item.ReturnToPool();
+        }
+        _block_Coor_Dic.Clear();
+        OnInit();
     }
 }

@@ -6,38 +6,37 @@ using DG.Tweening;
 public class GameplayManager : Singleton<GameplayManager>
 {
     [SerializeField] private Board _board;
+    [SerializeField]
+    private List<Block> _actionBlocks = new List<Block>();
 
     private Line _currentSelectLine;
     private Block _currentPendingBlock;
     private bool _isBlockMoving = false;
     private int _quantityBlock = 0;
+    private int _touchCount = 0;
 
+    public Action OnReset;
+    public Action<int> OnGetPoint;
     public Action<Line> OnMouseDown;
     public Action<Line> OnMouseEnter;
     public Action<int> OnCombineBlock;
-
-    private int _touchCount = 0;
-
-    [SerializeField]
-    private List<Block> _actionBlocks = new List<Block>();
+    public GameStateEnum CurrentState;
 
     private void Awake()
     {
         OnMouseDown += OnLineMouseDown;
         OnMouseEnter += OnLineMouseEnter;
     }
-
     private void OnLineMouseDown(Line line)
     {
-        if (_isBlockMoving) return;
+        if (_isBlockMoving || CurrentState != GameStateEnum.Playing) return;
         _currentPendingBlock = _board.GetNextBlock();
         _currentPendingBlock.name = "Block " + _touchCount++;
         PendingShoot(line);
     }
-
     private void OnLineMouseEnter(Line line)
     {
-        if (_currentSelectLine == null || _isBlockMoving) return;
+        if (_currentSelectLine == null || _isBlockMoving || CurrentState != GameStateEnum.Playing) return;
         PendingShoot(line);
     }
     private void PendingShoot(Line line)
@@ -59,10 +58,12 @@ public class GameplayManager : Singleton<GameplayManager>
             if (checkBlock.BlockNum.Number == _currentPendingBlock.BlockNum.Number)
             {
                 int newNumber = checkBlock.BlockNum.Number + 1;
-                checkBlock.ChangeColorTo(newNumber);
+                checkBlock.BlockNum.Number = newNumber;
+                checkBlock.SpriteRenderer.color = CacheColor.GetColor(newNumber);
                 _currentPendingBlock.ReturnToPool();
                 _currentPendingBlock = checkBlock;
                 _quantityBlock--;
+                _currentPendingBlock.CurrentLine.GroundYCoordinate = 0;
             }
             else
             {
@@ -88,7 +89,6 @@ public class GameplayManager : Singleton<GameplayManager>
 
         BlockDropState();
     }
-
     private void BlockDropState()
     {
         Sequence sequence = DOTween.Sequence();
@@ -100,6 +100,7 @@ public class GameplayManager : Singleton<GameplayManager>
             if (block.Coordinate.y > newCoordinate.y)
             {
                 continue;
+
             }
             _board.Block_Coor_Dic.Remove(block.Coordinate);
             _board.Block_Coor_Dic.Add(newCoordinate, block);
@@ -114,7 +115,6 @@ public class GameplayManager : Singleton<GameplayManager>
             BlockCombineState();
         });
     }
-
     private void BlockCombineState()
     {
         HashSet<Block> pendingBlocks = new HashSet<Block>();
@@ -161,6 +161,7 @@ public class GameplayManager : Singleton<GameplayManager>
             Debug.Log($"Max combine block is {1 << maxBlock.BlockNum.Number} with coor: {maxBlock.Coordinate}");
             Debug.Log($"Current combine block is {1 << _actionBlocks[i].BlockNum.Number} with coor: {_actionBlocks[i].Coordinate}");
             int newNumber = maxBlock.BlockNum.Number + maxValue;
+            OnGetPoint.Invoke(newNumber);
             //maxBlock.BlockNum.Number += maxValue;
             sequence.Join(maxBlock.ChangeColorTo(newNumber));
 
@@ -235,7 +236,6 @@ public class GameplayManager : Singleton<GameplayManager>
             }
         });
     }
-
     private List<Block> FindSimilarBlockAround(Block block)
     {
         List<Block> blocks = new List<Block>();
@@ -270,7 +270,6 @@ public class GameplayManager : Singleton<GameplayManager>
         }
         return blocks;
     }
-
     private bool CheckLose()
     {
         if (_quantityBlock == 35)
@@ -285,11 +284,21 @@ public class GameplayManager : Singleton<GameplayManager>
                 }
 
             }
+            ChangeGameState(GameStateEnum.Loose);
+            UIManager.Instance.OnLooseState();
             return true;
         }
         return false;
     }
-
+    public void ChangeGameState(GameStateEnum state)
+    {
+        CurrentState = state;
+    }
+    public void ResetBoard()
+    {
+        _board.ResetBoard();
+        OnReset.Invoke();
+    }
     private void Update()
     {
         if (Input.GetMouseButtonUp(0))
