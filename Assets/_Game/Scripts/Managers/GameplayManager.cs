@@ -14,6 +14,7 @@ public class GameplayManager : Singleton<GameplayManager>
 
     public Action<Line> OnMouseDown;
     public Action<Line> OnMouseEnter;
+    public Action<int> OnCombineBlock;
 
     private int _touchCount = 0;
 
@@ -166,7 +167,7 @@ public class GameplayManager : Singleton<GameplayManager>
             // Setup combine sequence
             foreach (var item in maxCombineBlockRelative)
             {
-                // dont ask why this happen :)) i have no idea why it work perfectly
+                // Add drop block to pending list
                 for (int k = item.Coordinate.y - 1; k >= 0; k--)
                 {
                     Block block = null;
