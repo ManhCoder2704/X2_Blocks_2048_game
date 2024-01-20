@@ -13,7 +13,7 @@ public class HomeUI : Singleton<HomeUI>
     [SerializeField] private Button _diamonBtn;
     [SerializeField] private Button _highScoreBtn;
 
-    void Start()
+    void Awake()
     {
         _playBtn.onClick.AddListener(StartGame);
         _questBtn.onClick.AddListener(JoinQuest);
@@ -38,6 +38,7 @@ public class HomeUI : Singleton<HomeUI>
 
     private void StartGame()
     {
+        Debug.Log("StartGame");
         UIManager.Instance.OnPlayState();
     }
 }

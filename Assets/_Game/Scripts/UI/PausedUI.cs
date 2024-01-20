@@ -4,14 +4,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PausedUI : MonoBehaviour
+public class PausedUI : Singleton<PausedUI>
 {
     [SerializeField] private Button _homeBtn;
     [SerializeField] private Button _continueBtn;
     [SerializeField] private Button _restartBtn;
     [SerializeField] private Button _vibraBtn;
     [SerializeField] private Button _musicBtn;
-    void Start()
+    void Awake()
     {
         _homeBtn.onClick.AddListener(OnHome);
         _continueBtn.onClick.AddListener(Continue);
@@ -29,15 +29,15 @@ public class PausedUI : MonoBehaviour
     {
         throw new NotImplementedException();
     }
-
-    private void Restart()
+    public void Restart()
     {
-        throw new NotImplementedException();
+        GameplayManager.Instance.ResetBoard();
+        UIManager.Instance.OnPlayState();
     }
 
     private void Continue()
     {
-        throw new NotImplementedException();
+        UIManager.Instance.OnPlayState();
     }
 
     private void OnHome()

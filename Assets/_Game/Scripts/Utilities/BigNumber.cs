@@ -17,7 +17,7 @@ public static class BigNumber
         }
         else if (bigInteger < milion)
         {
-            displayText.text = (bigInteger / thousand).ToString() + "k";
+            displayText.text = (bigInteger / thousand).ToString() + "K";
         }
         else if (bigInteger < billion)
         {
@@ -35,6 +35,34 @@ public static class BigNumber
             }
 
             displayText.text = bigInteger.ToString() + suffixes[suffixIndex];
+        }
+    }
+    public static void FormatBack(this TMP_Text displayText, BigInteger number)
+    {
+        if (number < tenThousand)
+        {
+            displayText.text = number.ToString();
+        }
+        else if (number < milion)
+        {
+            displayText.text = (number / thousand).ToString() + "K";
+        }
+        else if (number < billion)
+        {
+            displayText.text = (number / thousand).ToString() + "M";
+        }
+        else
+        {
+            char[] suffixes = { 'B', 'T', 'Q', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 'u', 'v', 'w', 'x', 'y', 'z' };
+            int suffixIndex = 0;
+
+            while (number >= 1000L && suffixIndex < suffixes.Length - 1)
+            {
+                number /= 1000L;
+                suffixIndex++;
+            }
+
+            displayText.text = number.ToString() + suffixes[suffixIndex];
         }
     }
 }

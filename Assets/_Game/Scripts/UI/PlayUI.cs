@@ -1,27 +1,41 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayUI : MonoBehaviour
+public class PlayUI : Singleton<PlayUI>
 {
     [SerializeField] private Button _pauseBtn;
     [SerializeField] private Button _adsBtn;
+    [SerializeField] private Button _diamondBtn;
+    [SerializeField] private Button _highscoreBtn;
+    [SerializeField] private TMP_Text _scoreTxt;
+    [SerializeField] private TMP_Text _diamondTxt;
+    [SerializeField] private TMP_Text _highScoreTxt;
 
-    void Start()
+    private BigInteger point = 0;
+
+    void Awake()
     {
-        _pauseBtn.onClick.AddListener(PauseGame);
-        _adsBtn.onClick.AddListener(OnShopState);
+        GameplayManager.Instance.OnGetPoint += this.OnGetPoint;
+        GameplayManager.Instance.OnReset += this.OnInit;
+        _pauseBtn.onClick.AddListener(() => UIManager.Instance.OnPausedState());
+        _adsBtn.onClick.AddListener(() => UIManager.Instance.OnShopState());
+        _diamondBtn.onClick.AddListener(() => UIManager.Instance.OnShopState());
+        _highscoreBtn.onClick.AddListener(() => UIManager.Instance.OnProfileState());
+        OnInit();
     }
-
-    private void OnShopState()
+    public void OnInit()
     {
-        UIManager.Instance.OnShopState();
+        this.point = 0;
+        _scoreTxt.text = "0";
     }
-
-    private void PauseGame()
+    private void OnGetPoint(int point)
     {
-        UIManager.Instance.OnPausedState();
+        this.point += BigInteger.Pow(2, point);
+        _scoreTxt.FormatBack(this.point);
     }
 }
