@@ -19,23 +19,16 @@ public class UIManager : Singleton<UIManager>
     void Start()
     {
         _currentUI = _homeUI;
-        OnHomeState();
+        _homeUI.interactable = true;
+        _homeUI.alpha = 1.0f;
+        _homeUI.gameObject.SetActive(true);
     }
 
     public void OnHomeState()
     {
-        _homeUI.gameObject.SetActive(true);
-        _homeUI.alpha = 1.0f;
-        _homeUI.interactable = true;
+        ChangeUI(_homeUI, false);
         _menuUI.gameObject.SetActive(true);
-        _playUI.gameObject.SetActive(false);
-        _pauseUI.gameObject.SetActive(false);
-        _shopUI.gameObject.SetActive(false);
-        _rankUI.gameObject.SetActive(false);
-        _profileUI.gameObject.SetActive(false);
-        _settingUI.gameObject.SetActive(false);
     }
-
     public void OnPlayState()
     {
         ChangeUI(_playUI, true);
@@ -64,10 +57,11 @@ public class UIManager : Singleton<UIManager>
 
     private void ChangeUI(CanvasGroup on, bool deactive)
     {
-        CanvasGroup temp = _currentUI;
+        if (_currentUI == on) return;
         on.interactable = true;
         on.alpha = 1.0f;
         on.gameObject.SetActive(true);
+        CanvasGroup temp = _currentUI;
         _currentUI = on;
         temp.interactable = false;
         temp.alpha = 0f;

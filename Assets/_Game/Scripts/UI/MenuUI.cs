@@ -13,10 +13,8 @@ public class MenuUI : Singleton<MenuUI>
     [SerializeField] private Button _profileBtn;
     [SerializeField] private Button _settingBtn;
 
-    public Button currentBtn;
     void Start()
     {
-        currentBtn = _homeBtn;
         _homeBtn.onClick.AddListener(OnHome);
         _shopBtn.onClick.AddListener(OnShop);
         _rankBtn.onClick.AddListener(OnRank);
@@ -26,37 +24,27 @@ public class MenuUI : Singleton<MenuUI>
 
     private void OnSetting()
     {
-        SwapButton(_settingBtn);
         UIManager.Instance.OnSettingState();
     }
 
     private void OnProfile()
     {
-        SwapButton(_profileBtn);
         UIManager.Instance.OnProfileState();
     }
 
     private void OnRank()
     {
-        SwapButton(_rankBtn);
         UIManager.Instance.OnRankState();
     }
 
     private void OnShop()
     {
-        SwapButton(_shopBtn);
         UIManager.Instance.OnShopState();
     }
 
     private void OnHome()
     {
-        SwapButton(_homeBtn);
         UIManager.Instance.OnHomeState();
     }
-    public void SwapButton(Button btn)
-    {
-        currentBtn.interactable = true;
-        btn.interactable = false;
-        currentBtn = btn;
-    }
+
 }
