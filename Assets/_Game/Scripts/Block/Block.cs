@@ -49,6 +49,7 @@ public class Block : MonoBehaviour, IPoolable<Block>
             .OnComplete(() =>
             {
                 this.BlockNum.Number = colorNumber;
+                GameplayManager.Instance.OnCombineBlock?.Invoke(this.BlockNum.Number);
             });
     }
 
@@ -60,5 +61,22 @@ public class Block : MonoBehaviour, IPoolable<Block>
     public void ReturnToPool()
     {
         _returnAction?.Invoke(this);
+    }
+
+    public void CopyValueFrom(Block other)
+    {
+        _blockNum.Number = other.BlockNum.Number;
+        _spriteRenderer.color = other.SpriteRenderer.color;
+    }
+
+    public void SwapValueWith(Block other)
+    {
+        int tempNumber = _blockNum.Number;
+        Color tempColor = _spriteRenderer.color;
+
+        CopyValueFrom(other);
+
+        other.BlockNum.Number = tempNumber;
+        other.SpriteRenderer.color = tempColor;
     }
 }
