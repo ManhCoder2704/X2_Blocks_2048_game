@@ -7,11 +7,13 @@ public class Board : MonoBehaviour
     [SerializeField] private Block _blockPrefab;
     [SerializeField] private Transform _blockContainer;
     [SerializeField] private DictionaryLib.Block_Coor_Dic _block_Coor_Dic;
-    [SerializeField]
-    private Block _nextBlock;
+    [SerializeField] private Block _nextBlock;
+    [SerializeField] private Block _secondNextBlock;
+
+    private int _minRandomBlockNumber = 1;
+    private int _maxRandomBlockNumber = 3;
+
     public Block NextBlock => _nextBlock;
-    [SerializeField]
-    private Block _secondNextBlock;
 
     public IDictionary<Vector2Int, Block> Block_Coor_Dic
     {
@@ -28,14 +30,14 @@ public class Board : MonoBehaviour
 
     private void Start()
     {
+        GameplayManager.Instance.OnCombineBlock += OnCombineBlock;
         GetBlockInfo(_nextBlock);
         GetBlockInfo(_secondNextBlock);
     }
 
     public void OnBlockDrop()
     {
-        _nextBlock.SpriteRenderer.color = _secondNextBlock.SpriteRenderer.color;
-        _nextBlock.BlockNum.Number = _secondNextBlock.BlockNum.Number;
+        _nextBlock.CopyValueFrom(_secondNextBlock);
         GetBlockInfo(_secondNextBlock);
     }
 
@@ -44,17 +46,15 @@ public class Board : MonoBehaviour
         Block block = _blockPool.Pull();
         block.transform.SetParent(_blockContainer);
         block.SpriteRenderer.sortingOrder = 0;
-        block.SpriteRenderer.color = _nextBlock.SpriteRenderer.color;
-        block.BlockNum.Number = _nextBlock.BlockNum.Number;
+        block.CopyValueFrom(_nextBlock);
         block.BlockNum.gameObject.SetActive(true);
-        _reviewBlock.BlockNum.Number = _nextBlock.BlockNum.Number;
-        _reviewBlock.SpriteRenderer.color = _nextBlock.SpriteRenderer.color;
+        _reviewBlock.CopyValueFrom(_nextBlock);
         return block;
     }
 
     private void GetBlockInfo(Block block)
     {
-        int randomNum = UnityEngine.Random.Range(1, 7);
+        int randomNum = UnityEngine.Random.Range(_minRandomBlockNumber, _maxRandomBlockNumber);
         block.SpriteRenderer.color = CacheColor.GetColor(randomNum);
         block.BlockNum.Number = randomNum;
     }
@@ -68,5 +68,24 @@ public class Board : MonoBehaviour
     public void DisableReviewBlock()
     {
         _reviewBlock.gameObject.SetActive(false);
+    }
+
+    public void SwapNextBlock()
+    {
+        _nextBlock.CopyValueFrom(_secondNextBlock);
+    }
+
+    public void OnCombineBlock(int number)
+    {
+        if (number > _maxRandomBlockNumber)
+        {
+            _maxRandomBlockNumber = number;
+            if (_maxRandomBlockNumber - _minRandomBlockNumber > 6)
+            {
+                _minRandomBlockNumber = _maxRandomBlockNumber - 6;
+                // TODO: Increase difficulty
+            }
+        }
+
     }
 }

@@ -16,6 +16,6 @@ public class Block_Num : MonoBehaviour
     }
     private void SetNumber(int number)
     {
-        _numberDisplay.text = (1 << number).ToString();
+        _numberDisplay.FormatLargeNumberPowerOfTwo(number);
     }
 }
