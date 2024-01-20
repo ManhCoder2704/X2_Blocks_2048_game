@@ -58,8 +58,8 @@ public class GameplayManager : Singleton<GameplayManager>
             Block checkBlock = _board.Block_Coor_Dic[new Vector2Int(_currentSelectLine.LineIndex, 0)];
             if (checkBlock.BlockNum.Number == _currentPendingBlock.BlockNum.Number)
             {
-                int newNumber = ++checkBlock.BlockNum.Number;
-                checkBlock.ChangeColorTo(CacheColor.GetColor(newNumber));
+                int newNumber = checkBlock.BlockNum.Number + 1;
+                checkBlock.ChangeColorTo(newNumber);
                 _currentPendingBlock.ReturnToPool();
                 _currentPendingBlock = checkBlock;
                 _quantityBlock--;
@@ -158,10 +158,11 @@ public class GameplayManager : Singleton<GameplayManager>
                     maxCombineBlockRelative = temp;
                 }
             }
-            Debug.Log($"Max combine block is {maxBlock.name} with coor: {maxBlock.Coordinate}");
-            Debug.Log($"Current combine block is {_actionBlocks[i].name} with coor: {_actionBlocks[i].Coordinate}");
-            maxBlock.BlockNum.Number += maxValue;
-            sequence.Join(maxBlock.ChangeColorTo(CacheColor.GetColor(maxBlock.BlockNum.Number)));
+            Debug.Log($"Max combine block is {1 << maxBlock.BlockNum.Number} with coor: {maxBlock.Coordinate}");
+            Debug.Log($"Current combine block is {1 << _actionBlocks[i].BlockNum.Number} with coor: {_actionBlocks[i].Coordinate}");
+            int newNumber = maxBlock.BlockNum.Number + maxValue;
+            //maxBlock.BlockNum.Number += maxValue;
+            sequence.Join(maxBlock.ChangeColorTo(newNumber));
 
             // Setup combine sequence
             foreach (var item in maxCombineBlockRelative)
@@ -172,9 +173,11 @@ public class GameplayManager : Singleton<GameplayManager>
                     Block block = null;
                     if (_board.Block_Coor_Dic.TryGetValue(new Vector2Int(item.Coordinate.x, k), out block))
                     {
+                        Debug.Log($"Add drop block {1 << block.BlockNum.Number} with coor: {block.Coordinate}");
                         if (block == maxBlock)
                         {
-                            break;
+                            //break;
+                            continue;
                         }
                         pendingBlocks.Add(block);
                     }
@@ -203,7 +206,7 @@ public class GameplayManager : Singleton<GameplayManager>
                 }
 
                 // Combine block
-                sequence.Join(item.ChangeColorTo(CacheColor.GetColor(maxBlock.BlockNum.Number)));
+                sequence.Join(item.ChangeColorTo(newNumber));
                 sequence.Join(item.MoveTo(maxBlock.Coordinate));
             }
 
