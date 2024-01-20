@@ -23,7 +23,7 @@ public class Block : MonoBehaviour, IPoolable<Block>
         return transform.DOMoveY(yCoordinate, yCoordinate * 0.1f)
             .OnComplete(() =>
             {
-                Debug.Log($"{this.name} MoveYTo " + yCoordinate + " complete");
+                Debug.Log($"{1 << this.BlockNum.Number} MoveYTo " + yCoordinate + " complete");
             });
     }
 
@@ -37,15 +37,19 @@ public class Block : MonoBehaviour, IPoolable<Block>
             })
             .OnComplete(() =>
             {
-                Debug.Log($"{this.name} MoveTo " + coordinate + " complete");
+                Debug.Log($"{1 << this.BlockNum.Number} MoveTo " + coordinate + " complete");
                 ReturnToPool();
             });
     }
 
-    public Tween ChangeColorTo(Color color)
+    public Tween ChangeColorTo(int colorNumber)
     {
+        Color color = CacheColor.GetColor(colorNumber);
         return DOTween.To(() => _spriteRenderer.color, color => _spriteRenderer.color = color, color, 0.25f)
-            .OnComplete(() => Debug.Log($"{this.name} color lerping complete"));
+            .OnComplete(() =>
+            {
+                this.BlockNum.Number = colorNumber;
+            });
     }
 
     public void Initialize(Action<Block> returnAction)
