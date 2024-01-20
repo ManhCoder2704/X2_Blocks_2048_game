@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using static DictionaryLib;
 
 public class GameplayManager : Singleton<GameplayManager>
 {

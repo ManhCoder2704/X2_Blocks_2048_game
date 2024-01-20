@@ -13,6 +13,7 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private CanvasGroup _rankUI;
     [SerializeField] private CanvasGroup _profileUI;
     [SerializeField] private CanvasGroup _settingUI;
+    [SerializeField] private Image _background;
 
     private CanvasGroup _currentUI;
 
@@ -28,11 +29,14 @@ public class UIManager : Singleton<UIManager>
     {
         ChangeUI(_homeUI, false);
         _menuUI.gameObject.SetActive(true);
+        _background.gameObject.SetActive(true);
     }
     public void OnPlayState()
     {
         ChangeUI(_playUI, true);
         _menuUI.gameObject.SetActive(false);
+        _background.gameObject.SetActive(false);
+
     }
     public void OnPausedState()
     {
