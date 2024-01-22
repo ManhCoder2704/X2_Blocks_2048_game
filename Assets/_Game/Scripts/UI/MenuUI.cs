@@ -15,6 +15,7 @@ public class MenuUI : Singleton<MenuUI>
 
     void Awake()
     {
+        _homeBtn.Select();
         _homeBtn.onClick.AddListener(OnHome);
         _shopBtn.onClick.AddListener(OnShop);
         _rankBtn.onClick.AddListener(OnRank);
