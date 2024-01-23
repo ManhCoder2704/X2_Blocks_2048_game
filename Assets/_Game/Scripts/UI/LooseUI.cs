@@ -6,12 +6,12 @@ using UnityEngine.UI;
 
 public class LooseUI : Singleton<LooseUI>
 {
-    [SerializeField] private Button _homeBtn;
+    [SerializeField] private Button _continueBtn;
     [SerializeField] private Button _restartBtn;
 
     void Start()
     {
-        _homeBtn.onClick.AddListener(() => UIManager.Instance.OnHomeState());
+        _continueBtn.onClick.AddListener(() => UIManager.Instance.OnPlayState());
         _restartBtn.onClick.AddListener(() => PausedUI.Instance.Restart());
     }
 }
