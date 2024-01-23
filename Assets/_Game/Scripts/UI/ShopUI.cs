@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,13 +6,24 @@ public class ShopUI : Singleton<ShopUI>
 {
     [SerializeField] private Button _buyBtn;
     [SerializeField] private Button _purchaseBtn;
+    [SerializeField] private Button _escapeButton;
     void Awake()
     {
         _buyBtn.onClick.AddListener(BuyDiamond);
         _purchaseBtn.onClick.AddListener(BuyDiamond);
+        _escapeButton.onClick.AddListener(CloseShop);
+    }
+    void OnEnable()
+    {
+        _escapeButton.gameObject.SetActive(GameplayManager.Instance.CurrentState == GameStateEnum.Playing);
     }
 
     private void BuyDiamond()
+    {
+        throw new NotImplementedException();
+    }
+
+    private void CloseShop()
     {
         throw new NotImplementedException();
     }

@@ -1,6 +1,4 @@
 using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,11 +6,17 @@ public class ThemeUI : MonoBehaviour
 {
     [SerializeField] private Button _switchBtn;
     [SerializeField] private Transform _toggleBtn;
+    [SerializeField] private Button _escapeButton;
 
     private float _duration = 0.5f;
+    void OnEnable()
+    {
+        _escapeButton.gameObject.SetActive(GameplayManager.Instance.CurrentState == GameStateEnum.Playing);
+    }
     void Start()
     {
         _switchBtn.onClick.AddListener(Switch);
+        _escapeButton.onClick.AddListener(CloseTheme);
     }
     private void Switch()
     {
@@ -22,5 +26,10 @@ public class ThemeUI : MonoBehaviour
             {
                 _switchBtn.interactable = true;
             });
+    }
+
+    private void CloseTheme()
+    {
+        throw new System.NotImplementedException();
     }
 }

@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aac28501550376f4fabb12af28fcac87, type: 3}
+  m_Name: TutorialData
+  m_EditorClassIdentifier: 
+  tutorialData:
+  - tutorialImage: {fileID: 21300000, guid: 25c9ee8574563423d9f9e0594a89f6de, type: 3}
+    tutorialDescription: Count
+  - tutorialImage: {fileID: 21300000, guid: 0bf8a7d95bc2545e49fa3b8658db1261, type: 3}
+    tutorialDescription: Health
+  - tutorialImage: {fileID: 21300000, guid: 9ae86ed394c9c42859006d2a7f51cad3, type: 3}
+    tutorialDescription: Buff
+  - tutorialImage: {fileID: 21300000, guid: 557fc9c53925b4714aa2e0762ec37010, type: 3}
+    tutorialDescription: Crit Change
+  - tutorialImage: {fileID: 21300000, guid: c33cb7bd1019746d7817be5f78f5ec76, type: 3}
+    tutorialDescription: Crit Damage
+  - tutorialImage: {fileID: 21300000, guid: 82896b74a3eb44d8298e8e9db41d0ebb, type: 3}
+    tutorialDescription: Damage
+  - tutorialImage: {fileID: 21300000, guid: da0b39f0d1eae4e83be3e79b17fa82b9, type: 3}
+    tutorialDescription: Debuff
+  - tutorialImage: {fileID: 21300000, guid: 470dad5fa1b4d4603918571ab20b8142, type: 3}
+    tutorialDescription: Passive
+  - tutorialImage: {fileID: 21300000, guid: bbd7b7f6dead14321839feeaba447958, type: 3}
+    tutorialDescription: Coin
+  - tutorialImage: {fileID: 21300000, guid: 9aa4650441a4943f19ff24e405b4ae59, type: 3}
+    tutorialDescription: Score
