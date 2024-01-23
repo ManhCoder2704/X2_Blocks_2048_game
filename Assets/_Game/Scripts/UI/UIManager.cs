@@ -11,9 +11,9 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private CanvasGroup _pauseUI;
     [SerializeField] private CanvasGroup _shopUI;
     [SerializeField] private CanvasGroup _rankUI;
-    [SerializeField] private CanvasGroup _profileUI;
     [SerializeField] private CanvasGroup _settingUI;
     [SerializeField] private CanvasGroup _looseUI;
+    [SerializeField] private CanvasGroup _themeUI;
     [SerializeField] private Image _background;
 
     private CanvasGroup _currentUI;
@@ -28,9 +28,9 @@ public class UIManager : Singleton<UIManager>
         _pauseUI.gameObject.SetActive(false);
         _shopUI.gameObject.SetActive(false);
         _rankUI.gameObject.SetActive(false);
-        _profileUI.gameObject.SetActive(false);
         _settingUI.gameObject.SetActive(false);
         _looseUI.gameObject.SetActive(false);
+        _themeUI.gameObject.SetActive(false);
     }
     public void OnHomeState()
     {
@@ -59,13 +59,13 @@ public class UIManager : Singleton<UIManager>
     {
         ChangeUI(_rankUI);
     }
-    public void OnProfileState()
-    {
-        ChangeUI(_profileUI);
-    }
     public void OnSettingState()
     {
         ChangeUI(_settingUI);
+    }
+    public void OnThemeState()
+    {
+        ChangeUI(_themeUI);
     }
     public void OnLooseState()
     {

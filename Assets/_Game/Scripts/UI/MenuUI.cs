@@ -10,7 +10,7 @@ public class MenuUI : Singleton<MenuUI>
     [SerializeField] private Button _homeBtn;
     [SerializeField] private Button _shopBtn;
     [SerializeField] private Button _rankBtn;
-    [SerializeField] private Button _profileBtn;
+    [SerializeField] private Button _themeBtn;
     [SerializeField] private Button _settingBtn;
 
     void Awake()
@@ -19,7 +19,7 @@ public class MenuUI : Singleton<MenuUI>
         _homeBtn.onClick.AddListener(OnHome);
         _shopBtn.onClick.AddListener(OnShop);
         _rankBtn.onClick.AddListener(OnRank);
-        _profileBtn.onClick.AddListener(OnProfile);
+        _themeBtn.onClick.AddListener(OnTheme);
         _settingBtn.onClick.AddListener(OnSetting);
     }
 
@@ -28,9 +28,9 @@ public class MenuUI : Singleton<MenuUI>
         UIManager.Instance.OnSettingState();
     }
 
-    private void OnProfile()
+    private void OnTheme()
     {
-        UIManager.Instance.OnProfileState();
+        UIManager.Instance.OnThemeState();
     }
 
     private void OnRank()

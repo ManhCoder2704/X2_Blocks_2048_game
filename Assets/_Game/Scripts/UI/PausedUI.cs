@@ -11,6 +11,7 @@ public class PausedUI : Singleton<PausedUI>
     [SerializeField] private Button _restartBtn;
     [SerializeField] private Button _vibraBtn;
     [SerializeField] private Button _musicBtn;
+    [SerializeField] private Button _themeBtn;
     void Awake()
     {
         _homeBtn.onClick.AddListener(OnHome);
@@ -18,6 +19,12 @@ public class PausedUI : Singleton<PausedUI>
         _restartBtn.onClick.AddListener(Restart);
         _vibraBtn.onClick.AddListener(OnVibration);
         _musicBtn.onClick.AddListener(OnMusic);
+        _themeBtn.onClick.AddListener(OnTheme);
+    }
+
+    private void OnTheme()
+    {
+        UIManager.Instance.OnThemeState();
     }
 
     private void OnMusic()

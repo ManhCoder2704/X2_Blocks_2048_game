@@ -18,12 +18,12 @@ public class HomeUI : Singleton<HomeUI>
         _playBtn.onClick.AddListener(StartGame);
         _questBtn.onClick.AddListener(JoinQuest);
         _diamonBtn.onClick.AddListener(OnShop);
-        _highScoreBtn.onClick.AddListener(OnProfile);
+        _highScoreBtn.onClick.AddListener(OnRank);
     }
 
-    private void OnProfile()
+    private void OnRank()
     {
-        UIManager.Instance.OnProfileState();
+        UIManager.Instance.OnRankState();
     }
 
     private void OnShop()

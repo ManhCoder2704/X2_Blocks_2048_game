@@ -25,7 +25,7 @@ public class PlayUI : Singleton<PlayUI>
         _pauseBtn.onClick.AddListener(() => UIManager.Instance.OnPausedState());
         _adsBtn.onClick.AddListener(() => UIManager.Instance.OnShopState());
         _diamondBtn.onClick.AddListener(() => UIManager.Instance.OnShopState());
-        _highscoreBtn.onClick.AddListener(() => UIManager.Instance.OnProfileState());
+        _highscoreBtn.onClick.AddListener(() => UIManager.Instance.OnRankState());
         OnInit();
     }
     public void OnInit()
