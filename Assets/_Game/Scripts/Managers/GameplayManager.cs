@@ -190,8 +190,14 @@ public class GameplayManager : Singleton<GameplayManager>
                 }
 
                 // Remove block from board info
-                item.CurrentLine.GroundYCoordinate = item.Coordinate.y;
+                if (pendingBlocks.Contains(item))
+                {
+                    pendingBlocks.Remove(item);
+                }
+                else
+                    item.CurrentLine.GroundYCoordinate = item.Coordinate.y;
                 item.CurrentLine = maxBlock.CurrentLine;
+
 
                 _board.Block_Coor_Dic.Remove(item.Coordinate);
                 _quantityBlock--;
