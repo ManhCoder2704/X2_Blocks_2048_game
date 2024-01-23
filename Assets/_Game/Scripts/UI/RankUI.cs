@@ -32,6 +32,6 @@ public class RankUI : Singleton<RankUI>
 
     private void CloseRank()
     {
-        throw new System.NotImplementedException();
+        UIManager.Instance.OnPlayState();
     }
 }

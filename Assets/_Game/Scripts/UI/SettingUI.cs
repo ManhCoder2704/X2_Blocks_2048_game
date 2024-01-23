@@ -47,7 +47,7 @@ public class SettingUI : Singleton<SettingUI>
 
     private void OnInfo()
     {
-        throw new NotImplementedException();
+        UIManager.Instance.OnTutorialState();
     }
 
     private void OnMusic()

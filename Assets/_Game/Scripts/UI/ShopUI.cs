@@ -25,6 +25,6 @@ public class ShopUI : Singleton<ShopUI>
 
     private void CloseShop()
     {
-        throw new NotImplementedException();
+        UIManager.Instance.OnPlayState();
     }
 }

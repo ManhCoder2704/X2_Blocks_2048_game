@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -76,7 +77,10 @@ public class UIManager : Singleton<UIManager>
         GameplayManager.Instance.ChangeGameState(GameStateEnum.Loose);
         ChangeUI(_looseUI);
     }
-
+    public void OnTutorialState()
+    {
+        ChangeUI(_tutorialUI);
+    }
     private void ChangeUI(CanvasGroup on)
     {
         if (_currentUI == on) return;
@@ -89,4 +93,6 @@ public class UIManager : Singleton<UIManager>
         temp.alpha = 0f;
         temp.gameObject.SetActive(false);
     }
+
+
 }

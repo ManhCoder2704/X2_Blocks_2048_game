@@ -11,7 +11,7 @@ public class ThemeUI : MonoBehaviour
     private float _duration = 0.5f;
     void OnEnable()
     {
-        _escapeButton.gameObject.SetActive(GameplayManager.Instance.CurrentState == GameStateEnum.Playing);
+        _escapeButton.gameObject.SetActive(GameplayManager.Instance.CurrentState == GameStateEnum.Pause);
     }
     void Start()
     {
@@ -30,6 +30,6 @@ public class ThemeUI : MonoBehaviour
 
     private void CloseTheme()
     {
-        throw new System.NotImplementedException();
+        UIManager.Instance.OnPausedState();
     }
 }

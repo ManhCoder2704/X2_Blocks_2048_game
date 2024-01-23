@@ -1354,8 +1354,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 269915fd60679d745bef406c87ed2650, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _switchBtn: {fileID: 0}
-  _toggleBtn: {fileID: 0}
+  _switchBtn: {fileID: 957452121}
+  _toggleBtn: {fileID: 488523125}
   _escapeButton: {fileID: 64484217}
 --- !u!1 &84167114
 GameObject:
@@ -2380,10 +2380,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1037537924}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 692.72003, y: -50}
-  m_SizeDelta: {x: 107.6631, y: 100}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 107.6631, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &156860344
 MonoBehaviour:
@@ -5473,7 +5473,7 @@ MonoBehaviour:
   _restartBtn: {fileID: 87262050}
   _vibraBtn: {fileID: 606718706}
   _musicBtn: {fileID: 980655848}
-  _themeBtn: {fileID: 0}
+  _themeBtn: {fileID: 318403362}
 --- !u!1 &316318403
 GameObject:
   m_ObjectHideFlags: 0
@@ -9531,7 +9531,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8849ed94af8d39f449113c8237617456, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _homeBtn: {fileID: 0}
+  _continueBtn: {fileID: 0}
   _restartBtn: {fileID: 1280005081}
 --- !u!1 &639450091
 GameObject:
@@ -13503,6 +13503,8 @@ MonoBehaviour:
   _settingUI: {fileID: 376183383}
   _looseUI: {fileID: 626308887}
   _themeUI: {fileID: 82583086}
+  _confirmRestartUI: {fileID: 297058399}
+  _tutorialUI: {fileID: 1669003432}
   _background: {fileID: 1978894417}
 --- !u!1 &954499035
 GameObject:
@@ -15289,10 +15291,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1037537924}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 164.24002, y: -50}
-  m_SizeDelta: {x: 107.6631, y: 100}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 107.6631, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1084098511
 MonoBehaviour:
@@ -19948,8 +19950,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 135}
-  m_SizeDelta: {x: 700, y: 700}
+  m_AnchoredPosition: {x: 0, y: 83.8085}
+  m_SizeDelta: {x: 597.6169, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1378416670
 MonoBehaviour:
@@ -21973,7 +21975,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.105000004, y: 0.47200003}
   m_AnchorMax: {x: 0.919485, y: 0.86381936}
-  m_AnchoredPosition: {x: -10.4999695, y: -1}
+  m_AnchoredPosition: {x: -10.499939, y: -1}
   m_SizeDelta: {x: 159, y: 2.380005}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1580063477
@@ -23196,7 +23198,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1669003430
 RectTransform:
   m_ObjectHideFlags: 0
