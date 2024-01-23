@@ -14,6 +14,8 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private CanvasGroup _settingUI;
     [SerializeField] private CanvasGroup _looseUI;
     [SerializeField] private CanvasGroup _themeUI;
+    [SerializeField] private CanvasGroup _confirmRestartUI;
+    [SerializeField] private CanvasGroup _tutorialUI;
     [SerializeField] private Image _background;
 
     private CanvasGroup _currentUI;
@@ -31,6 +33,8 @@ public class UIManager : Singleton<UIManager>
         _settingUI.gameObject.SetActive(false);
         _looseUI.gameObject.SetActive(false);
         _themeUI.gameObject.SetActive(false);
+        _confirmRestartUI.gameObject.SetActive(false);
+        _tutorialUI.gameObject.SetActive(false);
     }
     public void OnHomeState()
     {
