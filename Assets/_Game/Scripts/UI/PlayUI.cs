@@ -31,7 +31,6 @@ public class PlayUI : Singleton<PlayUI>
 
     private void OnEnable()
     {
-        PlayerPrefs.DeleteAll();
         if (!PlayerPrefs.HasKey("Tutorial"))
         {
             Invoke(nameof(TurnOnTutorial), 0.01f);
