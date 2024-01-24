@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Numerics;
 using TMPro;
 using UnityEngine;
@@ -15,6 +12,9 @@ public class PlayUI : Singleton<PlayUI>
     [SerializeField] private TMP_Text _scoreTxt;
     [SerializeField] private TMP_Text _diamondTxt;
     [SerializeField] private TMP_Text _highScoreTxt;
+    [SerializeField] private TMP_Text _comboText;
+
+    public TMP_Text ComboText => _comboText;
 
     private BigInteger point = 0;
 
@@ -28,6 +28,15 @@ public class PlayUI : Singleton<PlayUI>
         _highscoreBtn.onClick.AddListener(() => UIManager.Instance.OnRankState());
         OnInit();
     }
+
+    private void OnEnable()
+    {
+        if (!PlayerPrefs.HasKey("Tutorial"))
+        {
+            PlayerPrefs.SetInt("Tutorial", 1);
+        }
+    }
+
     public void OnInit()
     {
         this.point = 0;
