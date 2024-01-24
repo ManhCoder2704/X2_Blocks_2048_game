@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MenuUI : Singleton<MenuUI>
+public class MenuUI : MonoBehaviour
 {
     [SerializeField] private Button _homeBtn;
     [SerializeField] private Button _shopBtn;

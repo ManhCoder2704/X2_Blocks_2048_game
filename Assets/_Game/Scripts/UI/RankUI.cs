@@ -2,7 +2,7 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RankUI : Singleton<RankUI>
+public class RankUI : MonoBehaviour
 {
     [SerializeField] private Button _switchBtn;
     [SerializeField] private Transform _toggleBtn;

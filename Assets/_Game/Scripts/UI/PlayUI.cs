@@ -31,8 +31,10 @@ public class PlayUI : Singleton<PlayUI>
 
     private void OnEnable()
     {
+        PlayerPrefs.DeleteAll();
         if (!PlayerPrefs.HasKey("Tutorial"))
         {
+            Invoke(nameof(TurnOnTutorial), 0.01f);
             PlayerPrefs.SetInt("Tutorial", 1);
         }
     }
@@ -46,5 +48,9 @@ public class PlayUI : Singleton<PlayUI>
     {
         this.point += BigInteger.Pow(2, point);
         _scoreTxt.FormatBack(this.point);
+    }
+    private void TurnOnTutorial()
+    {
+        UIManager.Instance.OnTutorialState();
     }
 }

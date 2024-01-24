@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HomeUI : Singleton<HomeUI>
+public class HomeUI : MonoBehaviour
 {
     [SerializeField] private Button _playBtn;
     [SerializeField] private Button _questBtn;
