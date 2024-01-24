@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ShopUI : Singleton<ShopUI>
+public class ShopUI : MonoBehaviour
 {
     [SerializeField] private Button _buyBtn;
     [SerializeField] private Button _purchaseBtn;

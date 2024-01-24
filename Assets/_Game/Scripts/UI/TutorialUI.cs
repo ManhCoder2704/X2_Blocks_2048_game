@@ -68,6 +68,6 @@ public class TutorialUI : MonoBehaviour
 
     private void CloseTutorial()
     {
-        this.gameObject.SetActive(false);
+        UIManager.Instance.OnPlayState();
     }
 }

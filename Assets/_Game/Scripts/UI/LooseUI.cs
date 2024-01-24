@@ -1,10 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LooseUI : Singleton<LooseUI>
+public class LooseUI : MonoBehaviour
 {
     [SerializeField] private Button _continueBtn;
     [SerializeField] private Button _restartBtn;
@@ -12,6 +9,6 @@ public class LooseUI : Singleton<LooseUI>
     void Start()
     {
         _continueBtn.onClick.AddListener(() => UIManager.Instance.OnPlayState());
-        _restartBtn.onClick.AddListener(() => PausedUI.Instance.Restart());
+        _restartBtn.onClick.AddListener(() => UIManager.Instance.Restart());
     }
 }

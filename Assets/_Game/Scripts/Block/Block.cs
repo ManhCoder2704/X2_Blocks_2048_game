@@ -20,7 +20,8 @@ public class Block : MonoBehaviour, IPoolable<Block>
 
     public Tween MoveYTo(float yCoordinate)
     {
-        return transform.DOMoveY(yCoordinate, yCoordinate * 0.1f)
+        return transform.DOMoveY(yCoordinate, yCoordinate * 0.05f)
+            .SetEase(Ease.Linear)
             .OnComplete(() =>
             {
                 Debug.Log($"{1 << this.BlockNum.Number} MoveYTo " + yCoordinate + " complete");
@@ -30,6 +31,7 @@ public class Block : MonoBehaviour, IPoolable<Block>
     public Tween MoveTo(Vector2Int coordinate)
     {
         return transform.DOMove(new Vector3Int(coordinate.x, coordinate.y), 0.25f)
+            .SetEase(Ease.Linear)
             .OnStart(() =>
             {
                 _spriteRenderer.sortingOrder = 1;
@@ -42,10 +44,18 @@ public class Block : MonoBehaviour, IPoolable<Block>
             });
     }
 
-    public Tween ChangeColorTo(int colorNumber)
+    public Tween ChangeColorTo(int colorNumber, bool isAdmin)
     {
         Color color = CacheColor.GetColor(colorNumber);
         return DOTween.To(() => _spriteRenderer.color, color => _spriteRenderer.color = color, color, 0.25f)
+            .OnPlay(() =>
+            {
+                if (isAdmin)
+                {
+                    transform.DOScale(1, 0.125f).SetLoops(2, LoopType.Yoyo);
+                }
+            })
+            .SetEase(Ease.Linear)
             .OnComplete(() =>
             {
                 this.BlockNum.Number = colorNumber;

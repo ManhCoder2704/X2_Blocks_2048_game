@@ -79,7 +79,13 @@ public class UIManager : Singleton<UIManager>
     }
     public void OnTutorialState()
     {
+        GameplayManager.Instance.ChangeGameState(GameStateEnum.Turtorial);
         ChangeUI(_tutorialUI);
+    }
+    public void Restart()
+    {
+        GameplayManager.Instance.ResetBoard();
+        OnPlayState();
     }
     private void ChangeUI(CanvasGroup on)
     {
