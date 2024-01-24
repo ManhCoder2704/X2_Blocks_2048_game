@@ -20,7 +20,7 @@ public class Block : MonoBehaviour, IPoolable<Block>
 
     public Tween MoveYTo(float yCoordinate)
     {
-        return transform.DOMoveY(yCoordinate, yCoordinate * 0.1f)
+        return transform.DOMoveY(yCoordinate, yCoordinate * 0.05f).SetEase(Ease.Linear)
             .OnComplete(() =>
             {
                 Debug.Log($"{1 << this.BlockNum.Number} MoveYTo " + yCoordinate + " complete");
