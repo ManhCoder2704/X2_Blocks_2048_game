@@ -13,7 +13,6 @@ public class GameplayManager : Singleton<GameplayManager>
     private Block _currentPendingBlock;
     private bool _isBlockMoving = false;
     private int _quantityBlock = 0;
-    private int _touchCount = 0;
 
     public Action OnReset;
     public Action<int> OnGetPoint;
@@ -26,12 +25,14 @@ public class GameplayManager : Singleton<GameplayManager>
     {
         OnMouseDown += OnLineMouseDown;
         OnMouseEnter += OnLineMouseEnter;
+        Input.multiTouchEnabled = false;
+        Application.targetFrameRate = 60;
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
     }
     private void OnLineMouseDown(Line line)
     {
         if (_isBlockMoving || CurrentState != GameStateEnum.Playing) return;
         _currentPendingBlock = _board.GetNextBlock();
-        _currentPendingBlock.name = "Block " + _touchCount++;
         PendingShoot(line);
     }
     private void OnLineMouseEnter(Line line)
@@ -189,8 +190,14 @@ public class GameplayManager : Singleton<GameplayManager>
                 }
 
                 // Remove block from board info
-                item.CurrentLine.GroundYCoordinate = item.Coordinate.y;
+                if (pendingBlocks.Contains(item))
+                {
+                    pendingBlocks.Remove(item);
+                }
+                else
+                    item.CurrentLine.GroundYCoordinate = item.Coordinate.y;
                 item.CurrentLine = maxBlock.CurrentLine;
+
 
                 _board.Block_Coor_Dic.Remove(item.Coordinate);
                 _quantityBlock--;
@@ -296,6 +303,7 @@ public class GameplayManager : Singleton<GameplayManager>
     }
     public void ResetBoard()
     {
+        _quantityBlock = 0;
         _board.ResetBoard();
         OnReset.Invoke();
     }
