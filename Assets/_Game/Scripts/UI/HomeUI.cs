@@ -1,11 +1,8 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HomeUI : Singleton<HomeUI>
+public class HomeUI : MonoBehaviour
 {
     [SerializeField] private Button _playBtn;
     [SerializeField] private Button _questBtn;
@@ -18,12 +15,12 @@ public class HomeUI : Singleton<HomeUI>
         _playBtn.onClick.AddListener(StartGame);
         _questBtn.onClick.AddListener(JoinQuest);
         _diamonBtn.onClick.AddListener(OnShop);
-        _highScoreBtn.onClick.AddListener(OnProfile);
+        _highScoreBtn.onClick.AddListener(OnRank);
     }
 
-    private void OnProfile()
+    private void OnRank()
     {
-        UIManager.Instance.OnProfileState();
+        UIManager.Instance.OnRankState();
     }
 
     private void OnShop()

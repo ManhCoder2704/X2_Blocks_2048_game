@@ -13,7 +13,7 @@ public class GameplayManager : Singleton<GameplayManager>
     private Block _currentPendingBlock;
     private bool _isBlockMoving = false;
     private int _quantityBlock = 0;
-    private int _touchCount = 0;
+    private int _comboCount = 0;
 
     public Action OnReset;
     public Action<int> OnGetPoint;
@@ -26,12 +26,14 @@ public class GameplayManager : Singleton<GameplayManager>
     {
         OnMouseDown += OnLineMouseDown;
         OnMouseEnter += OnLineMouseEnter;
+        Input.multiTouchEnabled = false;
+        Application.targetFrameRate = 60;
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
     }
     private void OnLineMouseDown(Line line)
     {
         if (_isBlockMoving || CurrentState != GameStateEnum.Playing) return;
         _currentPendingBlock = _board.GetNextBlock();
-        _currentPendingBlock.name = "Block " + _touchCount++;
         PendingShoot(line);
     }
     private void OnLineMouseEnter(Line line)
@@ -132,6 +134,8 @@ public class GameplayManager : Singleton<GameplayManager>
                 continue;
             }
 
+            _comboCount++;
+
             // Add this block to combine list
             if (combineBlocks[0].Coordinate.y == _actionBlocks[i].Coordinate.y)
             {
@@ -160,10 +164,11 @@ public class GameplayManager : Singleton<GameplayManager>
             }
             Debug.Log($"Max combine block is {1 << maxBlock.BlockNum.Number} with coor: {maxBlock.Coordinate}");
             Debug.Log($"Current combine block is {1 << _actionBlocks[i].BlockNum.Number} with coor: {_actionBlocks[i].Coordinate}");
+
             int newNumber = maxBlock.BlockNum.Number + maxValue;
             OnGetPoint.Invoke(newNumber);
             //maxBlock.BlockNum.Number += maxValue;
-            sequence.Join(maxBlock.ChangeColorTo(newNumber));
+            sequence.Join(maxBlock.ChangeColorTo(newNumber, true));
 
             // Setup combine sequence
             foreach (var item in maxCombineBlockRelative)
@@ -189,8 +194,14 @@ public class GameplayManager : Singleton<GameplayManager>
                 }
 
                 // Remove block from board info
-                item.CurrentLine.GroundYCoordinate = item.Coordinate.y;
+                if (pendingBlocks.Contains(item))
+                {
+                    pendingBlocks.Remove(item);
+                }
+                else
+                    item.CurrentLine.GroundYCoordinate = item.Coordinate.y;
                 item.CurrentLine = maxBlock.CurrentLine;
+
 
                 _board.Block_Coor_Dic.Remove(item.Coordinate);
                 _quantityBlock--;
@@ -207,7 +218,7 @@ public class GameplayManager : Singleton<GameplayManager>
                 }
 
                 // Combine block
-                sequence.Join(item.ChangeColorTo(newNumber));
+                sequence.Join(item.ChangeColorTo(newNumber, false));
                 sequence.Join(item.MoveTo(maxBlock.Coordinate));
             }
 
@@ -228,11 +239,24 @@ public class GameplayManager : Singleton<GameplayManager>
             }
             else
             {
-                _isBlockMoving = false;
+                Debug.Log(_comboCount);
+                if (_comboCount > 2)
+                {
+                    PlayUI.Instance.ComboText.text = $"Combo +{_comboCount}";
+                    PlayUI.Instance.ComboText.enabled = true;
+                    Invoke(nameof(AllowPlayerInteract), 1.5f);
+                }
+                else
+                    Invoke(nameof(AllowPlayerInteract), .25f);
+
+
+                _comboCount = 0;
+
                 if (CheckLose())
                 {
                     Debug.Log("Lose");
                 }
+
             }
         });
     }
@@ -296,6 +320,7 @@ public class GameplayManager : Singleton<GameplayManager>
     }
     public void ResetBoard()
     {
+        _quantityBlock = 0;
         _board.ResetBoard();
         OnReset.Invoke();
     }
@@ -305,5 +330,11 @@ public class GameplayManager : Singleton<GameplayManager>
         {
             OnLineMouseUp();
         }
+    }
+
+    private void AllowPlayerInteract()
+    {
+        PlayUI.Instance.ComboText.enabled = false;
+        _isBlockMoving = false;
     }
 }

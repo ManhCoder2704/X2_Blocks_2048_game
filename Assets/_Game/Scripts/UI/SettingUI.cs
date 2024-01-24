@@ -1,10 +1,8 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SettingUI : Singleton<SettingUI>
+public class SettingUI : MonoBehaviour
 {
     [SerializeField] private Button _vibraBtn;
     [SerializeField] private Button _musicBtn;
@@ -47,7 +45,7 @@ public class SettingUI : Singleton<SettingUI>
 
     private void OnInfo()
     {
-        throw new NotImplementedException();
+        UIManager.Instance.OnTutorialState();
     }
 
     private void OnMusic()

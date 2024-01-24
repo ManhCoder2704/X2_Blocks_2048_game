@@ -2,24 +2,22 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RankUI : MonoBehaviour
+public class ThemeUI : MonoBehaviour
 {
     [SerializeField] private Button _switchBtn;
     [SerializeField] private Transform _toggleBtn;
     [SerializeField] private Button _escapeButton;
 
     private float _duration = 0.5f;
-
     void OnEnable()
     {
-        _escapeButton.gameObject.SetActive(GameplayManager.Instance.CurrentState == GameStateEnum.Playing);
+        _escapeButton.gameObject.SetActive(GameplayManager.Instance.CurrentState == GameStateEnum.Pause);
     }
     void Start()
     {
         _switchBtn.onClick.AddListener(Switch);
-        _escapeButton.onClick.AddListener(CloseRank);
+        _escapeButton.onClick.AddListener(CloseTheme);
     }
-
     private void Switch()
     {
         _switchBtn.interactable = false;
@@ -30,8 +28,8 @@ public class RankUI : MonoBehaviour
             });
     }
 
-    private void CloseRank()
+    private void CloseTheme()
     {
-        UIManager.Instance.OnPlayState();
+        UIManager.Instance.OnPausedState();
     }
 }

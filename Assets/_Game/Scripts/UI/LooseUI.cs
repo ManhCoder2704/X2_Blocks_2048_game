@@ -1,17 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LooseUI : Singleton<LooseUI>
+public class LooseUI : MonoBehaviour
 {
-    [SerializeField] private Button _homeBtn;
+    [SerializeField] private Button _continueBtn;
     [SerializeField] private Button _restartBtn;
 
     void Start()
     {
-        _homeBtn.onClick.AddListener(() => UIManager.Instance.OnHomeState());
-        _restartBtn.onClick.AddListener(() => PausedUI.Instance.Restart());
+        _continueBtn.onClick.AddListener(() => UIManager.Instance.OnPlayState());
+        _restartBtn.onClick.AddListener(() => UIManager.Instance.Restart());
     }
 }

@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Numerics;
 using TMPro;
 using UnityEngine;
@@ -15,6 +12,9 @@ public class PlayUI : Singleton<PlayUI>
     [SerializeField] private TMP_Text _scoreTxt;
     [SerializeField] private TMP_Text _diamondTxt;
     [SerializeField] private TMP_Text _highScoreTxt;
+    [SerializeField] private TMP_Text _comboText;
+
+    public TMP_Text ComboText => _comboText;
 
     private BigInteger point = 0;
 
@@ -25,9 +25,19 @@ public class PlayUI : Singleton<PlayUI>
         _pauseBtn.onClick.AddListener(() => UIManager.Instance.OnPausedState());
         _adsBtn.onClick.AddListener(() => UIManager.Instance.OnShopState());
         _diamondBtn.onClick.AddListener(() => UIManager.Instance.OnShopState());
-        _highscoreBtn.onClick.AddListener(() => UIManager.Instance.OnProfileState());
+        _highscoreBtn.onClick.AddListener(() => UIManager.Instance.OnRankState());
         OnInit();
     }
+
+    private void OnEnable()
+    {
+        if (!PlayerPrefs.HasKey("Tutorial"))
+        {
+            Invoke(nameof(TurnOnTutorial), 0.01f);
+            PlayerPrefs.SetInt("Tutorial", 1);
+        }
+    }
+
     public void OnInit()
     {
         this.point = 0;
@@ -37,5 +47,9 @@ public class PlayUI : Singleton<PlayUI>
     {
         this.point += BigInteger.Pow(2, point);
         _scoreTxt.FormatBack(this.point);
+    }
+    private void TurnOnTutorial()
+    {
+        UIManager.Instance.OnTutorialState();
     }
 }

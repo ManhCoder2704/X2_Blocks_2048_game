@@ -2,22 +2,17 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RankUI : MonoBehaviour
+public class SwitchController : MonoBehaviour
 {
     [SerializeField] private Button _switchBtn;
     [SerializeField] private Transform _toggleBtn;
-    [SerializeField] private Button _escapeButton;
 
+    private bool _isSelected;
     private float _duration = 0.5f;
 
-    void OnEnable()
-    {
-        _escapeButton.gameObject.SetActive(GameplayManager.Instance.CurrentState == GameStateEnum.Playing);
-    }
     void Start()
     {
         _switchBtn.onClick.AddListener(Switch);
-        _escapeButton.onClick.AddListener(CloseRank);
     }
 
     private void Switch()
@@ -26,12 +21,20 @@ public class RankUI : MonoBehaviour
         _toggleBtn.DOLocalMoveX(-_toggleBtn.localPosition.x, _duration)
             .OnComplete(() =>
             {
+                SetColor();
                 _switchBtn.interactable = true;
             });
     }
-
-    private void CloseRank()
+    private void SetColor()
     {
-        UIManager.Instance.OnPlayState();
+        if (_isSelected)
+        {
+            _switchBtn.image.color = Color.black;
+        }
+        else
+        {
+            _switchBtn.image.color = Color.green;
+        }
+        _isSelected = !_isSelected;
     }
 }
