@@ -6471,6 +6471,8 @@ MonoBehaviour:
     m_values: []
   _nextBlock: {fileID: 1753108223}
   _secondNextBlock: {fileID: 1916525778}
+  _pointCounterPrefab: {fileID: 1918176710874763268, guid: e1169bb553ac07148ab5a80a6e935399, type: 3}
+  _pointCounterContainer: {fileID: 0}
 --- !u!4 &499794444
 Transform:
   m_ObjectHideFlags: 0
@@ -9363,7 +9365,7 @@ MonoBehaviour:
   m_StartCorner: 0
   m_StartAxis: 0
   m_CellSize: {x: 303, y: 480}
-  m_Spacing: {x: 27.89, y: 15.24}
+  m_Spacing: {x: 27.89, y: 24.36}
   m_Constraint: 1
   m_ConstraintCount: 3
 --- !u!1 &769806563
@@ -16594,7 +16596,7 @@ MonoBehaviour:
   _questBtn: {fileID: 400654143}
   _highScore: {fileID: 2075667332}
   _diamonBtn: {fileID: 923879517}
-  _highScoreBtn: {fileID: 0}
+  _highScoreBtn: {fileID: 913358105}
 --- !u!225 &1292932917
 CanvasGroup:
   m_ObjectHideFlags: 0
