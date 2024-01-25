@@ -48,8 +48,30 @@ public class PlayUI : Singleton<PlayUI>
         this.point += BigInteger.Pow(2, point);
         _scoreTxt.FormatBack(this.point);
     }
+
     private void TurnOnTutorial()
     {
         UIManager.Instance.OnTutorialState();
+    }
+
+    [ContextMenu("SwapNextBlock")]
+    private void SwapNextBlockOnClick()
+    {
+        //TODO: Check user currency first
+        GameplayManager.Instance.ChangeSkillState(new SwapNextBlock());
+    }
+
+    [ContextMenu("ClearOneRow")]
+    private void ClearOneRowOnclick()
+    {
+        //TODO: Check user currency first
+        GameplayManager.Instance.ChangeSkillState(new ClearOneRow());
+    }
+
+    [ContextMenu("RemoveOneBlock")]
+    private void RemoveOneBlockOnClick()
+    {
+        //TODO: Check user currency first
+        GameplayManager.Instance.ChangeSkillState(new RemoveOneBlock());
     }
 }

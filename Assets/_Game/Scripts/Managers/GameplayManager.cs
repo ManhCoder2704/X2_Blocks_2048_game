@@ -14,6 +14,7 @@ public class GameplayManager : Singleton<GameplayManager>
     private bool _isBlockMoving = false;
     private int _quantityBlock = 0;
     private int _comboCount = 0;
+    private ISkillState _currentSkillState;
 
     public Action OnReset;
     public Action<int> OnGetPoint;
@@ -21,6 +22,9 @@ public class GameplayManager : Singleton<GameplayManager>
     public Action<Line> OnMouseEnter;
     public Action<int> OnCombineBlock;
     public GameStateEnum CurrentState;
+
+    public int QuantityBlock { get => _quantityBlock; set => _quantityBlock = value; }
+    public bool IsBlockMoving { get => _isBlockMoving; set => _isBlockMoving = value; }
 
     private void Awake()
     {
@@ -30,12 +34,26 @@ public class GameplayManager : Singleton<GameplayManager>
         Application.targetFrameRate = 60;
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
     }
+
     private void OnLineMouseDown(Line line)
     {
         if (_isBlockMoving || CurrentState != GameStateEnum.Playing) return;
+        if (_currentSkillState != null)
+        {
+            Vector3 vector3 = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+            int x = Mathf.RoundToInt(vector3.x);
+            int y = Mathf.RoundToInt(vector3.y);
+
+            _currentSkillState.Execute(new Vector2Int(x, y));
+
+            _isBlockMoving = true;
+            return;
+        }
         _currentPendingBlock = _board.GetNextBlock();
         PendingShoot(line);
     }
+
     private void OnLineMouseEnter(Line line)
     {
         if (_currentSelectLine == null || _isBlockMoving || CurrentState != GameStateEnum.Playing) return;
@@ -169,6 +187,8 @@ public class GameplayManager : Singleton<GameplayManager>
             OnGetPoint.Invoke(newNumber);
             //maxBlock.BlockNum.Number += maxValue;
             sequence.Join(maxBlock.ChangeColorTo(newNumber, true));
+
+            _board.GetPointCounter().ShowPoint(newNumber, maxBlock.transform.position);
 
             // Setup combine sequence
             foreach (var item in maxCombineBlockRelative)
@@ -336,5 +356,20 @@ public class GameplayManager : Singleton<GameplayManager>
     {
         PlayUI.Instance.ComboText.enabled = false;
         _isBlockMoving = false;
+    }
+
+    public void ChangeSkillState(ISkillState state)
+    {
+        if (_currentSkillState != null)
+        {
+            _currentSkillState.Exit();
+        }
+
+        _currentSkillState = state;
+
+        if (_currentSkillState != null)
+        {
+            _currentSkillState.Enter(_board, _actionBlocks, BlockDropState);
+        }
     }
 }
