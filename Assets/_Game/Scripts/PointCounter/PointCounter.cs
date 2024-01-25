@@ -20,10 +20,10 @@ public class PointCounter : MonoBehaviour, IPoolable<PointCounter>
     public Tween ShowPoint(int point, Vector3 position)
     {
         transform.position = position;
-        BigNumber.FormatLargeNumberPowerOfTwo(_pointTxt, point);
+        BigNumber.FormatLargeNumberPowerOfTwo(_pointTxt, point, "+");
         _pointTxt.alpha = 1;
 
-        return transform.DOMoveY(position.y - 1, 1f)
+        return transform.DOMoveY(position.y - 0.75f, 1f)
             .SetEase(Ease.InOutSine)
             .OnStart(() =>
             {

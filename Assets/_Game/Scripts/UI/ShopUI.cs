@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ShopUI : MonoBehaviour
+public class ShopUI : UIBase
 {
     [SerializeField] private Button _buyBtn;
     [SerializeField] private Button _purchaseBtn;
@@ -15,7 +15,16 @@ public class ShopUI : MonoBehaviour
     }
     void OnEnable()
     {
-        _escapeButton.gameObject.SetActive(GameplayManager.Instance.CurrentState == GameStateEnum.Playing);
+        if (GameplayManager.Instance.CurrentState == GameStateEnum.Pause)
+        {
+            _isPopup = true;
+            _escapeButton.gameObject.SetActive(true);
+        }
+        else
+        {
+            _isPopup = false;
+            _escapeButton.gameObject.SetActive(false);
+        }
     }
 
     private void BuyDiamond()
@@ -25,6 +34,6 @@ public class ShopUI : MonoBehaviour
 
     private void CloseShop()
     {
-        UIManager.Instance.OnPlayState();
+        UIManager.Instance.ClosePopup(this);
     }
 }

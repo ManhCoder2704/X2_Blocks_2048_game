@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -100,13 +101,14 @@ public class Board : MonoBehaviour
     /// </summary>
     public void ClearOneRow(Vector2Int? inputCoor, List<Block> actionBlocks, Action callback)
     {
+        Sequence sequence = DOTween.Sequence();
         for (int i = 0; i < 5; i++)
         {
             if (_block_Coor_Dic.TryGetValue(new Vector2Int(i, inputCoor.Value.y), out Block block))
             {
                 block.CurrentLine.GroundYCoordinate = block.Coordinate.y;
                 _block_Coor_Dic.Remove(block.Coordinate);
-                block.ReturnToPool();
+                sequence.Join(block.RemoveFromBoard());
 
                 GameplayManager.Instance.QuantityBlock--;
 
@@ -124,8 +126,11 @@ public class Board : MonoBehaviour
                 }
             }
         }
-        callback?.Invoke();
-        GameplayManager.Instance.ChangeSkillState(null);
+        sequence.OnComplete(() =>
+        {
+            callback?.Invoke();
+            GameplayManager.Instance.ChangeSkillState(null);
+        });
     }
 
     /// <summary>
@@ -137,7 +142,11 @@ public class Board : MonoBehaviour
         {
             block.CurrentLine.GroundYCoordinate = block.Coordinate.y;
             _block_Coor_Dic.Remove(block.Coordinate);
-            block.ReturnToPool();
+            block.RemoveFromBoard().OnComplete(() =>
+            {
+                callback?.Invoke();
+                GameplayManager.Instance.ChangeSkillState(null);
+            });
 
             GameplayManager.Instance.QuantityBlock--;
 
@@ -154,9 +163,6 @@ public class Board : MonoBehaviour
                 }
             }
         }
-
-        callback?.Invoke();
-        GameplayManager.Instance.ChangeSkillState(null);
     }
 
     public void OnCombineBlock(int number)

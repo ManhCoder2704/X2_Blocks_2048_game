@@ -8,20 +8,20 @@ public static class BigNumber
     private const int milion = 1000000;
     private const int billion = 1000000000;
 
-    public static void FormatLargeNumberPowerOfTwo(this TMP_Text displayText, int number)
+    public static void FormatLargeNumberPowerOfTwo(this TMP_Text displayText, int number, string prefix = "")
     {
         BigInteger bigInteger = BigInteger.Pow(2, number);
         if (bigInteger < tenThousand)
         {
-            displayText.text = bigInteger.ToString();
+            displayText.text = prefix + bigInteger.ToString();
         }
         else if (bigInteger < milion)
         {
-            displayText.text = (bigInteger / thousand).ToString() + "K";
+            displayText.text = prefix + (bigInteger / thousand).ToString() + "K";
         }
         else if (bigInteger < billion)
         {
-            displayText.text = (bigInteger / thousand).ToString() + "M";
+            displayText.text = prefix + (bigInteger / thousand).ToString() + "M";
         }
         else
         {
@@ -34,7 +34,7 @@ public static class BigNumber
                 suffixIndex++;
             }
 
-            displayText.text = bigInteger.ToString() + suffixes[suffixIndex];
+            displayText.text = prefix + bigInteger.ToString() + suffixes[suffixIndex];
         }
     }
     public static void FormatBack(this TMP_Text displayText, BigInteger number)

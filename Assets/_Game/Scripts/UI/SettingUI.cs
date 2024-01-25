@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SettingUI : MonoBehaviour
+public class SettingUI : UIBase
 {
     [SerializeField] private Button _vibraBtn;
     [SerializeField] private Button _musicBtn;
@@ -45,7 +45,7 @@ public class SettingUI : MonoBehaviour
 
     private void OnInfo()
     {
-        UIManager.Instance.OnTutorialState();
+        UIManager.Instance.OpenUIOrPopup(UIType.TutorialUI);
     }
 
     private void OnMusic()
