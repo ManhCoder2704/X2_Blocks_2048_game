@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,6 +10,8 @@ public class Board : MonoBehaviour
     [SerializeField] private DictionaryLib.Block_Coor_Dic _block_Coor_Dic;
     [SerializeField] private Block _nextBlock;
     [SerializeField] private Block _secondNextBlock;
+    [SerializeField] private PointCounter _pointCounterPrefab;
+    [SerializeField] private Transform _pointCounterContainer;
 
     private int _minRandomBlockNumber = 1;
     private int _maxRandomBlockNumber = 3;
@@ -22,10 +25,12 @@ public class Board : MonoBehaviour
     }
 
     private ObjectPool<Block> _blockPool;
+    private ObjectPool<PointCounter> _pointCounterPool;
 
     private void Awake()
     {
         _blockPool = new ObjectPool<Block>(_blockPrefab, _blockContainer, 10);
+        _pointCounterPool = new ObjectPool<PointCounter>(_pointCounterPrefab, _pointCounterContainer, 5);
     }
 
     private void Start()
@@ -42,6 +47,13 @@ public class Board : MonoBehaviour
     {
         _nextBlock.CopyValueFrom(_secondNextBlock);
         GetBlockInfo(_secondNextBlock);
+    }
+
+    public PointCounter GetPointCounter()
+    {
+        PointCounter pointCounter = _pointCounterPool.Pull();
+        pointCounter.transform.SetParent(_pointCounterContainer);
+        return pointCounter;
     }
 
     public Block GetNextBlock()
@@ -74,9 +86,77 @@ public class Board : MonoBehaviour
         _reviewBlock.gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// Skill: Swap next block with second next block
+    /// </summary>
     public void SwapNextBlock()
     {
-        _nextBlock.CopyValueFrom(_secondNextBlock);
+        _nextBlock.SwapValueWith(_secondNextBlock);
+        GameplayManager.Instance.IsBlockMoving = false;
+    }
+
+    /// <summary>
+    /// Skill: Clear one row
+    /// </summary>
+    public void ClearOneRow(Vector2Int? inputCoor, List<Block> actionBlocks, Action callback)
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            if (_block_Coor_Dic.TryGetValue(new Vector2Int(i, inputCoor.Value.y), out Block block))
+            {
+                block.CurrentLine.GroundYCoordinate = block.Coordinate.y;
+                _block_Coor_Dic.Remove(block.Coordinate);
+                block.ReturnToPool();
+
+                GameplayManager.Instance.QuantityBlock--;
+
+                for (int j = inputCoor.Value.y - 1; j >= 0; j--)
+                {
+                    if (_block_Coor_Dic.TryGetValue(new Vector2Int(i, j), out Block dropBlock))
+                    {
+                        Debug.Log($"Add drop block {1 << dropBlock.BlockNum.Number} with coor: {dropBlock.Coordinate}");
+                        actionBlocks.Add(dropBlock);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+        callback?.Invoke();
+        GameplayManager.Instance.ChangeSkillState(null);
+    }
+
+    /// <summary>
+    /// Remove one block
+    /// </summary>
+    public void RemoveOneBlock(Vector2Int? inputCoor, List<Block> actionBlocks, Action callback)
+    {
+        if (_block_Coor_Dic.TryGetValue(new Vector2Int(inputCoor.Value.x, inputCoor.Value.y), out Block block))
+        {
+            block.CurrentLine.GroundYCoordinate = block.Coordinate.y;
+            _block_Coor_Dic.Remove(block.Coordinate);
+            block.ReturnToPool();
+
+            GameplayManager.Instance.QuantityBlock--;
+
+            for (int j = inputCoor.Value.y - 1; j >= 0; j--)
+            {
+                if (_block_Coor_Dic.TryGetValue(new Vector2Int(inputCoor.Value.x, j), out Block dropBlock))
+                {
+                    Debug.Log($"Add drop block {1 << dropBlock.BlockNum.Number} with coor: {dropBlock.Coordinate}");
+                    actionBlocks.Add(dropBlock);
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+
+        callback?.Invoke();
+        GameplayManager.Instance.ChangeSkillState(null);
     }
 
     public void OnCombineBlock(int number)
@@ -92,6 +172,7 @@ public class Board : MonoBehaviour
         }
 
     }
+
     public void ResetBoard()
     {
         foreach (Block item in _block_Coor_Dic.Values)
