@@ -63,6 +63,18 @@ public class Block : MonoBehaviour, IPoolable<Block>
             });
     }
 
+    public Tween RemoveFromBoard()
+    {
+        return transform.DOScale(0, 0.25f)
+            .SetEase(Ease.Linear)
+            .OnComplete(() =>
+            {
+                Debug.Log($"{1 << this.BlockNum.Number} RemoveFromBoard complete");
+                ReturnToPool();
+                transform.localScale = Vector3.one * 0.95f;
+            });
+    }
+
     public void Initialize(Action<Block> returnAction)
     {
         _returnAction = returnAction;

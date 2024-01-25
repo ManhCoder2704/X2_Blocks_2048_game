@@ -21,6 +21,7 @@ public class GameplayManager : Singleton<GameplayManager>
     public Action<Line> OnMouseDown;
     public Action<Line> OnMouseEnter;
     public Action<int> OnCombineBlock;
+    public Action<int> OnGetCombo;
     public GameStateEnum CurrentState;
 
     public int QuantityBlock { get => _quantityBlock; set => _quantityBlock = value; }
@@ -262,8 +263,9 @@ public class GameplayManager : Singleton<GameplayManager>
                 Debug.Log(_comboCount);
                 if (_comboCount > 2)
                 {
-                    PlayUI.Instance.ComboText.text = $"Combo +{_comboCount}";
-                    PlayUI.Instance.ComboText.enabled = true;
+                    //PlayUI.Instance.ComboText.text = $"Combo +{_comboCount}"; /////////////////////////////////////////////////////////////////////////////
+                    //PlayUI.Instance.ComboText.enabled = true;
+                    OnGetCombo.Invoke(_comboCount);
                     Invoke(nameof(AllowPlayerInteract), 1.5f);
                 }
                 else
@@ -329,7 +331,7 @@ public class GameplayManager : Singleton<GameplayManager>
 
             }
             ChangeGameState(GameStateEnum.Loose);
-            UIManager.Instance.OnLooseState();
+            //UIManager.Instance.OnLooseState(); //////////////////////////////////////////////////////////////////////////////////////
             return true;
         }
         return false;
@@ -354,7 +356,7 @@ public class GameplayManager : Singleton<GameplayManager>
 
     private void AllowPlayerInteract()
     {
-        PlayUI.Instance.ComboText.enabled = false;
+        //PlayUI.Instance.ComboText.enabled = false;/////////////////////////////////////////////////////////////////////
         _isBlockMoving = false;
     }
 

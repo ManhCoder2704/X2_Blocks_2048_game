@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TutorialUI : MonoBehaviour
+public class TutorialUI : UIBase
 {
     [SerializeField]
     private TutorialSO tutorialSO;
@@ -68,6 +68,6 @@ public class TutorialUI : MonoBehaviour
 
     private void CloseTutorial()
     {
-        UIManager.Instance.OnPlayState();
+        UIManager.Instance.ClosePopup(this);
     }
 }

@@ -2,7 +2,7 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ThemeUI : MonoBehaviour
+public class ThemeUI : UIBase
 {
     [SerializeField] private Button _switchBtn;
     [SerializeField] private Transform _toggleBtn;
@@ -11,7 +11,16 @@ public class ThemeUI : MonoBehaviour
     private float _duration = 0.5f;
     void OnEnable()
     {
-        _escapeButton.gameObject.SetActive(GameplayManager.Instance.CurrentState == GameStateEnum.Pause);
+        if (GameplayManager.Instance.CurrentState == GameStateEnum.Pause)
+        {
+            _isPopup = true;
+            _escapeButton.gameObject.SetActive(true);
+        }
+        else
+        {
+            _isPopup = false;
+            _escapeButton.gameObject.SetActive(false);
+        }
     }
     void Start()
     {
@@ -30,6 +39,6 @@ public class ThemeUI : MonoBehaviour
 
     private void CloseTheme()
     {
-        UIManager.Instance.OnPausedState();
+        UIManager.Instance.ClosePopup(this);
     }
 }

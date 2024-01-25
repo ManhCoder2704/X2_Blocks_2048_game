@@ -2,8 +2,9 @@ using System.Numerics;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
-public class PlayUI : Singleton<PlayUI>
+public class PlayUI : UIBase
 {
     [SerializeField] private Button _pauseBtn;
     [SerializeField] private Button _adsBtn;
@@ -14,18 +15,16 @@ public class PlayUI : Singleton<PlayUI>
     [SerializeField] private TMP_Text _highScoreTxt;
     [SerializeField] private TMP_Text _comboText;
 
-    public TMP_Text ComboText => _comboText;
-
     private BigInteger point = 0;
 
     void Awake()
     {
         GameplayManager.Instance.OnGetPoint += this.OnGetPoint;
         GameplayManager.Instance.OnReset += this.OnInit;
-        _pauseBtn.onClick.AddListener(() => UIManager.Instance.OnPausedState());
-        _adsBtn.onClick.AddListener(() => UIManager.Instance.OnShopState());
-        _diamondBtn.onClick.AddListener(() => UIManager.Instance.OnShopState());
-        _highscoreBtn.onClick.AddListener(() => UIManager.Instance.OnRankState());
+        _pauseBtn.onClick.AddListener(() => UIManager.Instance.OpenUIOrPopup(UIType.PauseUI));
+        _adsBtn.onClick.AddListener(() => UIManager.Instance.OpenUIOrPopup(UIType.ShopUI));
+        _diamondBtn.onClick.AddListener(() => UIManager.Instance.OpenUIOrPopup(UIType.ShopUI));
+        _highscoreBtn.onClick.AddListener(() => UIManager.Instance.OpenUIOrPopup(UIType.RankUI));
         OnInit();
     }
 
@@ -36,6 +35,15 @@ public class PlayUI : Singleton<PlayUI>
             Invoke(nameof(TurnOnTutorial), 0.01f);
             PlayerPrefs.SetInt("Tutorial", 1);
         }
+    }
+
+    private void OnGetCombo(int comboCount)
+    {
+        _comboText.DOFade(1, 0.25f).OnComplete(() =>
+        {
+            _comboText.text = $"Combo +{comboCount}";
+            _comboText.DOFade(0, 0.5f);
+        });
     }
 
     public void OnInit()
@@ -51,7 +59,7 @@ public class PlayUI : Singleton<PlayUI>
 
     private void TurnOnTutorial()
     {
-        UIManager.Instance.OnTutorialState();
+        UIManager.Instance.OpenUIOrPopup(UIType.TutorialUI);
     }
 
     [ContextMenu("SwapNextBlock")]

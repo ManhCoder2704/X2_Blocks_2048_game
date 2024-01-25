@@ -1,8 +1,7 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class UIManager : Singleton<UIManager>
 {
@@ -19,11 +18,19 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private CanvasGroup _tutorialUI;
     [SerializeField] private Image _background;
 
-    private CanvasGroup _currentUI;
+    [Header("UI Components")]
+    [SerializeField] private List<UIBase> _uiComponents;
+    [SerializeField] private float _fadeDuration = 0.5f;
+    [SerializeField] private Transform _uiContainer;
+
+    private Dictionary<UIType, UIBase> _uiDict = new Dictionary<UIType, UIBase>();
+    private UIType _currentUIType;
+    private UIBase _currentActiveUI;
+    private Stack<UIBase> _popupStack = new Stack<UIBase>();
 
     void Awake()
     {
-        _currentUI = _homeUI;
+        //_currentActiveUI = _homeUI;
         _homeUI.interactable = true;
         _homeUI.alpha = 1.0f;
         _homeUI.gameObject.SetActive(true);
@@ -37,7 +44,7 @@ public class UIManager : Singleton<UIManager>
         _confirmRestartUI.gameObject.SetActive(false);
         _tutorialUI.gameObject.SetActive(false);
     }
-    public void OnHomeState()
+    /*public void OnHomeState()
     {
         GameplayManager.Instance.ChangeGameState(GameStateEnum.Prepare);
         ChangeUI(_homeUI);
@@ -89,16 +96,70 @@ public class UIManager : Singleton<UIManager>
     }
     private void ChangeUI(CanvasGroup on)
     {
-        if (_currentUI == on) return;
+        if (_currentActiveUI == on) return;
         on.interactable = true;
         on.alpha = 1.0f;
         on.gameObject.SetActive(true);
-        CanvasGroup temp = _currentUI;
-        _currentUI = on;
+        CanvasGroup temp = _currentActiveUI.CanvasGroup;
+        _currentActiveUI.CanvasGroup = on;
         temp.interactable = false;
         temp.alpha = 0f;
         temp.gameObject.SetActive(false);
+    }*/
+
+    public void OpenUIOrPopup(UIType uiType)
+    {
+        UIBase ui;
+        if (!_uiDict.TryGetValue(uiType, out ui))
+        {
+            ui = Instantiate(_uiComponents[(int)uiType], _uiContainer);
+        }
+
+        if (ui.IsPopup)
+        {
+            _popupStack.Push(ui);
+            _currentActiveUI.CanvasGroup.interactable = false;
+            ui.CanvasGroup.interactable = true;
+            ui.CanvasGroup.DOFade(1f, _fadeDuration);
+        }
+        else
+        {
+            ChangeUI(_currentActiveUI, ui).OnComplete(() =>
+            {
+                _currentActiveUI = ui;
+            });
+        }
+        _currentUIType = uiType;
     }
 
+    public void ClosePopup(UIBase currentPopup)
+    {
+        if (_popupStack.Count == 0)
+        {
+            ChangeUI(currentPopup, _currentActiveUI);
+        }
+        else
+        {
+            UIBase lastPopup = _popupStack.Pop();
+            ChangeUI(currentPopup, lastPopup);
+        }
+    }
 
+    private Sequence ChangeUI(UIBase closeUI, UIBase openUI)
+    {
+        Sequence sequence = DOTween.Sequence();
+        closeUI.CanvasGroup.interactable = false;
+        sequence.Join(closeUI.CanvasGroup.DOFade(0f, _fadeDuration).OnComplete(() =>
+        {
+            closeUI.gameObject.SetActive(false);
+        }));
+
+        openUI.gameObject.SetActive(true);
+
+        sequence.Join(openUI.CanvasGroup.DOFade(1f, _fadeDuration).OnComplete(() =>
+        {
+            openUI.CanvasGroup.interactable = true;
+        }));
+        return sequence;
+    }
 }

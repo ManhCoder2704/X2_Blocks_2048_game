@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HomeUI : MonoBehaviour
+public class HomeUI : UIBase
 {
     [SerializeField] private Button _playBtn;
     [SerializeField] private Button _questBtn;
@@ -20,12 +20,12 @@ public class HomeUI : MonoBehaviour
 
     private void OnRank()
     {
-        UIManager.Instance.OnRankState();
+        UIManager.Instance.OpenUIOrPopup(UIType.RankUI);
     }
 
     private void OnShop()
     {
-        UIManager.Instance.OnShopState();
+        UIManager.Instance.OpenUIOrPopup(UIType.ShopUI);
     }
 
     private void JoinQuest()
@@ -36,6 +36,6 @@ public class HomeUI : MonoBehaviour
     private void StartGame()
     {
         Debug.Log("StartGame");
-        UIManager.Instance.OnPlayState();
+        UIManager.Instance.OpenUIOrPopup(UIType.PlayUI);
     }
 }
