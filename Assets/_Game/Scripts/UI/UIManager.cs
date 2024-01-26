@@ -8,6 +8,7 @@ using System.Collections.Generic;
 public class UIManager : Singleton<UIManager>
 {
     [SerializeField] private Image _background;
+    [SerializeField] private CanvasGroup _menu;
 
     [Header("UI Components")]
     [SerializeField] private List<UIBase> _uiComponents;
@@ -16,7 +17,8 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private GameObject _loadingImage;
 
     private Dictionary<UIType, UIBase> _uiDict = new Dictionary<UIType, UIBase>();
-    private UIType _currentUIType;
+    private UIBase _currentActivePage;
+    private UIBase _currentActivePopup;
     private UIBase _currentActiveUI;
     private Stack<UIBase> _popupStack = new Stack<UIBase>();
     private Tween _loadingTween;
@@ -71,6 +73,24 @@ public class UIManager : Singleton<UIManager>
         UIBase ui = GetUIReference(uiType);
 
         if (_currentActiveUI == ui) return;
+        if (uiType == UIType.PlayUI)
+        {
+            _menu.gameObject.SetActive(false);
+            _background.gameObject.SetActive(false);
+            GameplayManager.Instance.ChangeGameState(GameStateEnum.Playing);
+
+        }
+        else if (uiType == UIType.HomeUI)
+        {
+            _menu.gameObject.SetActive(true);
+            _background.gameObject.SetActive(true);
+            GameplayManager.Instance.ChangeGameState(GameStateEnum.Prepare);
+
+        }
+        else
+        {
+            GameplayManager.Instance.ChangeGameState(GameStateEnum.Pause);
+        }
         if (ui.IsPopup)
         {
             Debug.Log("Open popup");
@@ -82,6 +102,7 @@ public class UIManager : Singleton<UIManager>
             .SetEase(Ease.Linear)
             .OnComplete(() =>
             {
+                _currentActivePopup = ui;
                 ui.CanvasGroup.interactable = true;
             });
         }
@@ -90,6 +111,7 @@ public class UIManager : Singleton<UIManager>
             ChangeUI(_currentActiveUI, ui).OnComplete(() =>
             {
                 _currentActiveUI = ui;
+                _currentActivePage = ui;
             });
         }
     }
@@ -106,14 +128,19 @@ public class UIManager : Singleton<UIManager>
         }
         if (_popupStack.Count == 0)
         {
+            //if (_currentActivePage == )
+            //{
+
+            //}
             Debug.Log("Open last page");
-            ChangeUI(currentPopup, _currentActiveUI);
+            ChangeUI(currentPopup, _currentActivePage);
         }
         else
         {
             Debug.Log("Open last popup");
             UIBase lastPopup = _popupStack.Pop();
             ChangeUI(currentPopup, lastPopup);
+            _currentActivePopup = lastPopup;
             _popupStack.Push(lastPopup);
         }
     }
@@ -133,7 +160,14 @@ public class UIManager : Singleton<UIManager>
         }
 
         openUI.gameObject.SetActive(true);
-        _popupStack.Clear();
+        if (!openUI.IsPopup && _currentActivePopup != null)
+        {
+            _popupStack.Clear();
+            _currentActivePopup.gameObject.SetActive(false);
+            _currentActivePopup.CanvasGroup.interactable = false;
+            _currentActivePopup.CanvasGroup.alpha = 0f;
+            _currentActivePopup = null;
+        }
 
         sequence.Join(openUI.CanvasGroup.DOFade(1f, _fadeDuration)
             .SetEase(Ease.Linear)

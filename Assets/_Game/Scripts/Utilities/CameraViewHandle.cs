@@ -5,7 +5,7 @@ using UnityEngine;
 public class CameraViewHandle : Singleton<CameraViewHandle>
 {
     private Camera _camera;
-    private const float _defaultSize = 5f;
+    private const float _defaultSize = 5.6f;
     private const float _defaultAspect = 0.5625f; // 1080 : 1920
     private void Awake()
     {
