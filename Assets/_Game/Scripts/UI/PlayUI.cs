@@ -23,8 +23,8 @@ public class PlayUI : UIBase
         GameplayManager.Instance.OnReset += this.OnInit;
         _pauseBtn.onClick.AddListener(() => UIManager.Instance.OpenUIOrPopup(UIType.PauseUI));
         _adsBtn.onClick.AddListener(() => UIManager.Instance.OpenUIOrPopup(UIType.ShopUI));
-        _diamondBtn.onClick.AddListener(() => UIManager.Instance.OpenUIOrPopup(UIType.ShopUI));
-        _highscoreBtn.onClick.AddListener(() => UIManager.Instance.OpenUIOrPopup(UIType.RankUI));
+        _diamondBtn.onClick.AddListener(() => UIManager.Instance.OpenUIOrPopup(UIType.ShopPopupUI));
+        _highscoreBtn.onClick.AddListener(() => UIManager.Instance.OpenUIOrPopup(UIType.RankPopupUI));
         OnInit();
     }
 

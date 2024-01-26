@@ -6337,7 +6337,7 @@ GameObject:
   - component: {fileID: 2720954544849670079}
   - component: {fileID: 5703409571797878799}
   m_Layer: 5
-  m_Name: ThemeUI
+  m_Name: ThemePopupUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6428,7 +6428,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _canvasGroup: {fileID: 2720954544849670079}
-  _isPopup: 0
+  _isPopup: 1
   _switchBtn: {fileID: 6289604076339651342}
   _toggleBtn: {fileID: 0}
   _escapeButton: {fileID: 3024160025900517139}

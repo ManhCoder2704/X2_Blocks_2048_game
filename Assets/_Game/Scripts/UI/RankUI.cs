@@ -12,16 +12,7 @@ public class RankUI : UIBase
 
     void OnEnable()
     {
-        if (GameplayManager.Instance.CurrentState == GameStateEnum.Pause)
-        {
-            _isPopup = true;
-            _escapeButton.gameObject.SetActive(true);
-        }
-        else
-        {
-            _isPopup = false;
-            _escapeButton.gameObject.SetActive(false);
-        }
+        _escapeButton.gameObject.SetActive(_isPopup);
     }
     void Start()
     {
