@@ -624,7 +624,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 5.6
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1273,6 +1273,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _background: {fileID: 1978894417}
+  _menu: {fileID: 1095833041}
   _uiComponents:
   - {fileID: 1423318653224008047, guid: 8aec6a94022b8614c9c706ca2657baf1, type: 3}
   - {fileID: 6732497615389158872, guid: 289971e8096e2b24788d6ed7a9c5b472, type: 3}
@@ -2525,7 +2526,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1978894416
 RectTransform:
   m_ObjectHideFlags: 0

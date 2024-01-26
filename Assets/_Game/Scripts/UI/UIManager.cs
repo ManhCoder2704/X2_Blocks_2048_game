@@ -41,7 +41,7 @@ public class UIManager : Singleton<UIManager>
     {
         yield return new WaitForSeconds(2f);
         StopLoading();
-        OpenUIOrPopup(UIType.HomeUI);
+        OpenUI(UIType.HomeUI);
     }
 
     private void StartLoading()
@@ -67,7 +67,7 @@ public class UIManager : Singleton<UIManager>
         return ui;
     }
 
-    public void OpenUIOrPopup(UIType uiType)
+    public void OpenUI(UIType uiType)
     {
 
         UIBase ui = GetUIReference(uiType);
@@ -91,58 +91,21 @@ public class UIManager : Singleton<UIManager>
         {
             GameplayManager.Instance.ChangeGameState(GameStateEnum.Pause);
         }
-        if (ui.IsPopup)
-        {
-            Debug.Log("Open popup");
-            _popupStack.Push(ui);
-            _currentActiveUI.CanvasGroup.interactable = false;
-            ui.CanvasGroup.interactable = true;
-            ui.gameObject.SetActive(true);
-            ui.CanvasGroup.DOFade(1f, _fadeDuration)
-            .SetEase(Ease.Linear)
-            .OnComplete(() =>
-            {
-                _currentActivePopup = ui;
-                ui.CanvasGroup.interactable = true;
-            });
-        }
-        else
-        {
-            ChangeUI(_currentActiveUI, ui).OnComplete(() =>
-            {
-                _currentActiveUI = ui;
-                _currentActivePage = ui;
-            });
-        }
+
+        ChangeUI(_currentActiveUI, ui);
     }
 
     public void ClosePopup(UIBase currentPopup)
     {
         if (_popupStack.Count == 0) return;
-        UIBase checkLastPopup = _popupStack.Pop();
-        if (checkLastPopup != currentPopup)
-        {
-            Debug.LogError("Not this popup");
-            _popupStack.Push(checkLastPopup);
-            return;
-        }
-        if (_popupStack.Count == 0)
-        {
-            //if (_currentActivePage == )
-            //{
-
-            //}
-            Debug.Log("Open last page");
-            ChangeUI(currentPopup, _currentActivePage);
-        }
-        else
-        {
-            Debug.Log("Open last popup");
-            UIBase lastPopup = _popupStack.Pop();
-            ChangeUI(currentPopup, lastPopup);
-            _currentActivePopup = lastPopup;
-            _popupStack.Push(lastPopup);
-        }
+        _currentActiveUI = null;
+        currentPopup.CanvasGroup.DOFade(0f, _fadeDuration)
+            .SetEase(Ease.Linear)
+            .OnComplete(() =>
+            {
+                currentPopup.gameObject.SetActive(false);
+            });
+        ChangeUI(null, _popupStack.Pop());
     }
 
     private Sequence ChangeUI(UIBase closeUI, UIBase openUI)
@@ -150,24 +113,25 @@ public class UIManager : Singleton<UIManager>
         Sequence sequence = DOTween.Sequence();
         if (closeUI != null)
         {
-            closeUI.CanvasGroup.interactable = false;
-            sequence.Join(closeUI.CanvasGroup.DOFade(0f, _fadeDuration)
-                .SetEase(Ease.Linear)
-                .OnComplete(() =>
-                {
-                    closeUI.gameObject.SetActive(false);
-                }));
+            if (openUI.IsPopup)
+            {
+                closeUI.CanvasGroup.interactable = false;
+                _popupStack.Push(closeUI);
+            }
+            else
+            {
+                closeUI.CanvasGroup.interactable = false;
+                sequence.Join(closeUI.CanvasGroup.DOFade(0f, _fadeDuration)
+                    .SetEase(Ease.Linear)
+                    .OnComplete(() =>
+                    {
+                        closeUI.gameObject.SetActive(false);
+                    }));
+                ClearStackUI();
+            }
         }
 
         openUI.gameObject.SetActive(true);
-        if (!openUI.IsPopup && _currentActivePopup != null)
-        {
-            _popupStack.Clear();
-            _currentActivePopup.gameObject.SetActive(false);
-            _currentActivePopup.CanvasGroup.interactable = false;
-            _currentActivePopup.CanvasGroup.alpha = 0f;
-            _currentActivePopup = null;
-        }
 
         sequence.Join(openUI.CanvasGroup.DOFade(1f, _fadeDuration)
             .SetEase(Ease.Linear)
@@ -177,5 +141,16 @@ public class UIManager : Singleton<UIManager>
             }));
         _currentActiveUI = openUI;
         return sequence;
+    }
+
+    private void ClearStackUI()
+    {
+        while (_popupStack.Count > 0)
+        {
+            UIBase temp = _popupStack.Pop();
+            temp.gameObject.SetActive(false);
+            temp.CanvasGroup.interactable = false;
+            temp.CanvasGroup.alpha = 0f;
+        }
     }
 }
