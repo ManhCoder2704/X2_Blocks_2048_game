@@ -18,8 +18,6 @@ public class UIManager : Singleton<UIManager>
 
 
     private Dictionary<UIType, UIBase> _uiDict = new Dictionary<UIType, UIBase>();
-    private UIBase _currentActivePage;
-    private UIBase _currentActivePopup;
     private UIBase _currentActiveUI;
     private Stack<UIBase> _popupStack = new Stack<UIBase>();
     private Tween _loadingTween;
@@ -101,28 +99,49 @@ public class UIManager : Singleton<UIManager>
     {
         if (_popupStack.Count == 0) return;
         _currentActiveUI = null;
+        currentPopup.CanvasGroup.interactable = false;
         currentPopup.CanvasGroup.DOFade(0f, _fadeDuration)
             .SetEase(Ease.Linear)
             .OnComplete(() =>
             {
                 currentPopup.gameObject.SetActive(false);
             });
-        ChangeUI(null, _popupStack.Pop());
+        UIBase openUI = _popupStack.Pop();
+        UIBase checkUI = GetUIReference(UIType.PlayUI);
+        ChangeUI(null, openUI);
+
+        if (GetUIReference(UIType.PlayUI) == _currentActiveUI)
+        {
+            _menu.gameObject.SetActive(false);
+            _background.gameObject.SetActive(false);
+            GameplayManager.Instance.ChangeGameState(GameStateEnum.Playing);
+
+        }
+        else if (GetUIReference(UIType.HomeUI) == _currentActiveUI)
+        {
+            _menu.gameObject.SetActive(true);
+            _background.gameObject.SetActive(true);
+            GameplayManager.Instance.ChangeGameState(GameStateEnum.Prepare);
+        }
+        else
+        {
+            GameplayManager.Instance.ChangeGameState(GameStateEnum.Pause);
+        }
     }
 
     private Sequence ChangeUI(UIBase closeUI, UIBase openUI)
     {
+        _currentActiveUI = openUI;
         Sequence sequence = DOTween.Sequence();
         if (closeUI != null)
         {
+            closeUI.CanvasGroup.interactable = false;
             if (openUI.IsPopup)
             {
-                closeUI.CanvasGroup.interactable = false;
                 _popupStack.Push(closeUI);
             }
             else
             {
-                closeUI.CanvasGroup.interactable = false;
                 sequence.Join(closeUI.CanvasGroup.DOFade(0f, _fadeDuration)
                     .SetEase(Ease.Linear)
                     .OnComplete(() =>
@@ -141,7 +160,6 @@ public class UIManager : Singleton<UIManager>
             {
                 openUI.CanvasGroup.interactable = true;
             }));
-        _currentActiveUI = openUI;
         return sequence;
     }
 

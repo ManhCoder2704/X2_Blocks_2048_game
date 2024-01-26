@@ -265,7 +265,7 @@ public class GameplayManager : Singleton<GameplayManager>
                 {
                     //PlayUI.Instance.ComboText.text = $"Combo +{_comboCount}"; /////////////////////////////////////////////////////////////////////////////
                     //PlayUI.Instance.ComboText.enabled = true;
-                    OnGetCombo.Invoke(_comboCount);
+                    OnGetCombo?.Invoke(_comboCount);
                     Invoke(nameof(AllowPlayerInteract), 1.5f);
                 }
                 else
