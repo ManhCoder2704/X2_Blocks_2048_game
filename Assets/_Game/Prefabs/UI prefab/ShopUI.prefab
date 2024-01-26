@@ -865,7 +865,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 35.2, y: -2.8}
+  m_AnchoredPosition: {x: 35.800003, y: 0.39999962}
   m_SizeDelta: {x: 57.1, y: 0.8911514}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7973464808025123517
@@ -6148,7 +6148,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7410060579645906367}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 0.83
   m_Interactable: 0
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -6166,8 +6166,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _canvasGroup: {fileID: 7228927075188247287}
   _isPopup: 0
-  _buyBtn: {fileID: 0}
-  _purchaseBtn: {fileID: 0}
   _escapeButton: {fileID: 2442151862983344333}
 --- !u!1 &7538222723744881441
 GameObject:

@@ -728,7 +728,7 @@ GameObject:
   - component: {fileID: 4077288100662301934}
   - component: {fileID: 7477072708261077186}
   m_Layer: 5
-  m_Name: ShopPopupUI
+  m_Name: ShopPopUpUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -802,7 +802,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1252369988123927523}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 0.59
   m_Interactable: 0
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
