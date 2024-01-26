@@ -5,13 +5,18 @@ using UnityEngine.UI;
 public class SwitchController : MonoBehaviour
 {
     [SerializeField] private Button _switchBtn;
+    [SerializeField] private Image _switchBG;
     [SerializeField] private Transform _toggleBtn;
 
-    private bool _isSelected;
+    private bool _isOn = true;
     private float _duration = 0.5f;
 
     void Start()
     {
+        if (_isOn)
+        {
+            _switchBG.color = Color.green;
+        }
         _switchBtn.onClick.AddListener(Switch);
     }
 
@@ -27,14 +32,14 @@ public class SwitchController : MonoBehaviour
     }
     private void SetColor()
     {
-        if (_isSelected)
+        if (_isOn)
         {
-            _switchBtn.image.color = Color.black;
+            _switchBG.DOColor(Color.gray, _duration);
         }
         else
         {
-            _switchBtn.image.color = Color.green;
+            _switchBG.DOColor(Color.green, _duration);
         }
-        _isSelected = !_isSelected;
+        _isOn = !_isOn;
     }
 }

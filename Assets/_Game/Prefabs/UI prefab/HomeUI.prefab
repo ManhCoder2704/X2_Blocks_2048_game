@@ -695,7 +695,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 748bf2a30b7b59d45b377c7e95331ef2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _canvasGroup: {fileID: 0}
+  _canvasGroup: {fileID: 4093094568343235157}
   _isPopup: 0
   _playBtn: {fileID: 855994610072888220}
   _questBtn: {fileID: 3747791667998773684}
