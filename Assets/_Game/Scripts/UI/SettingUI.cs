@@ -16,11 +16,11 @@ public class SettingUI : UIBase
     {
         _vibraBtn.onClick.AddListener(OnVibration);
         _musicBtn.onClick.AddListener(OnMusic);
-        _infoBtn.onClick.AddListener(OnInfo);
+        /*_infoBtn.onClick.AddListener(OnInfo);
         _rateBtn.onClick.AddListener(OnRate);
         _contactBtn.onClick.AddListener(OnContact);
         _likeBtn.onClick.AddListener(OnLike);
-        _policyBtn.onClick.AddListener(OnPolicy);
+        _policyBtn.onClick.AddListener(OnPolicy);*/
     }
 
     private void OnPolicy()

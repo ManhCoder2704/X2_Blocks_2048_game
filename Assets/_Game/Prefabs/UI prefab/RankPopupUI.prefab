@@ -9721,7 +9721,7 @@ GameObject:
   - component: {fileID: 309394774109154926}
   - component: {fileID: 4241448497259260102}
   m_Layer: 5
-  m_Name: RankUI
+  m_Name: RankPopupUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9813,7 +9813,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _canvasGroup: {fileID: 309394774109154926}
-  _isPopup: 0
+  _isPopup: 1
   _switchBtn: {fileID: 8285026213704381877}
   _toggleBtn: {fileID: 1759822408917757965}
   _escapeButton: {fileID: 6061180695671886338}

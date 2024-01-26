@@ -12,7 +12,7 @@ public class PausedUI : UIBase
     void Awake()
     {
         _homeBtn.onClick.AddListener(() => UIManager.Instance.OpenUIOrPopup(UIType.HomeUI));
-        _continueBtn.onClick.AddListener(() => UIManager.Instance.OpenUIOrPopup(UIType.PlayUI));
+        _continueBtn.onClick.AddListener(() => UIManager.Instance.ClosePopup(this));
         _restartBtn.onClick.AddListener(() =>
         {
             GameplayManager.Instance.ResetBoard();
@@ -20,7 +20,7 @@ public class PausedUI : UIBase
         });
         _vibraBtn.onClick.AddListener(OnVibration);
         _musicBtn.onClick.AddListener(OnMusic);
-        _themeBtn.onClick.AddListener(() => UIManager.Instance.OpenUIOrPopup(UIType.ThemeUI));
+        _themeBtn.onClick.AddListener(() => UIManager.Instance.OpenUIOrPopup(UIType.ThemePopupUI));
     }
 
     private void OnMusic()
