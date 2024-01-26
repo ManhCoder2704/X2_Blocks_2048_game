@@ -20,12 +20,12 @@ public class HomeUI : UIBase
 
     private void OnRank()
     {
-        UIManager.Instance.OpenUIOrPopup(UIType.RankUI);
+        UIManager.Instance.rankBtn.onClick.Invoke();
     }
 
     private void OnShop()
     {
-        UIManager.Instance.OpenUIOrPopup(UIType.ShopUI);
+        UIManager.Instance.shopBtn.onClick.Invoke();
     }
 
     private void JoinQuest()
