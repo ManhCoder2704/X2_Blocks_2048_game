@@ -36,6 +36,6 @@ public class HomeUI : UIBase
     private void StartGame()
     {
         Debug.Log("StartGame");
-        UIManager.Instance.OpenUIOrPopup(UIType.PlayUI);
+        UIManager.Instance.OpenUI(UIType.PlayUI);
     }
 }
