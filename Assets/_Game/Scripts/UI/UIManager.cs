@@ -16,13 +16,15 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private Transform _uiContainer;
     [SerializeField] private GameObject _loadingImage;
 
+
     private Dictionary<UIType, UIBase> _uiDict = new Dictionary<UIType, UIBase>();
     private UIBase _currentActivePage;
     private UIBase _currentActivePopup;
     private UIBase _currentActiveUI;
     private Stack<UIBase> _popupStack = new Stack<UIBase>();
     private Tween _loadingTween;
-
+    public Button rankBtn;
+    public Button shopBtn;
     void Awake()
     {
         FirstLoad();
