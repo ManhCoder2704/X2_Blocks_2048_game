@@ -24,31 +24,31 @@ public class MenuUI : UIBase
     private void OnSetting()
     {
         TurnOn(_settingBtn);
-        UIManager.Instance.OpenUIOrPopup(UIType.SettingUI);
+        UIManager.Instance.OpenUI(UIType.SettingUI);
     }
 
     private void OnTheme()
     {
         TurnOn(_themeBtn);
-        UIManager.Instance.OpenUIOrPopup(UIType.ThemeUI);
+        UIManager.Instance.OpenUI(UIType.ThemeUI);
     }
 
     private void OnRank()
     {
         TurnOn(_rankBtn);
-        UIManager.Instance.OpenUIOrPopup(UIType.RankUI);
+        UIManager.Instance.OpenUI(UIType.RankUI);
     }
 
     private void OnShop()
     {
         TurnOn(_shopBtn);
-        UIManager.Instance.OpenUIOrPopup(UIType.ShopUI);
+        UIManager.Instance.OpenUI(UIType.ShopUI);
     }
 
     private void OnHome()
     {
         TurnOn(_homeBtn);
-        UIManager.Instance.OpenUIOrPopup(UIType.HomeUI);
+        UIManager.Instance.OpenUI(UIType.HomeUI);
     }
     private void TurnOn(Button off)
     {

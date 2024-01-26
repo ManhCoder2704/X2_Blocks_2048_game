@@ -21,10 +21,10 @@ public class PlayUI : UIBase
     {
         GameplayManager.Instance.OnGetPoint += this.OnGetPoint;
         GameplayManager.Instance.OnReset += this.OnInit;
-        _pauseBtn.onClick.AddListener(() => UIManager.Instance.OpenUIOrPopup(UIType.PauseUI));
-        _adsBtn.onClick.AddListener(() => UIManager.Instance.OpenUIOrPopup(UIType.ShopUI));
-        _diamondBtn.onClick.AddListener(() => UIManager.Instance.OpenUIOrPopup(UIType.ShopPopupUI));
-        _highscoreBtn.onClick.AddListener(() => UIManager.Instance.OpenUIOrPopup(UIType.RankPopupUI));
+        _pauseBtn.onClick.AddListener(() => UIManager.Instance.OpenUI(UIType.PauseUI));
+        _adsBtn.onClick.AddListener(() => UIManager.Instance.OpenUI(UIType.ShopUI));
+        _diamondBtn.onClick.AddListener(() => UIManager.Instance.OpenUI(UIType.ShopPopupUI));
+        _highscoreBtn.onClick.AddListener(() => UIManager.Instance.OpenUI(UIType.RankPopupUI));
         OnInit();
     }
 
@@ -59,7 +59,7 @@ public class PlayUI : UIBase
 
     private void TurnOnTutorial()
     {
-        UIManager.Instance.OpenUIOrPopup(UIType.TutorialUI);
+        UIManager.Instance.OpenUI(UIType.TutorialUI);
     }
 
     [ContextMenu("SwapNextBlock")]

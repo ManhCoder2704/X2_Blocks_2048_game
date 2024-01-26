@@ -20,12 +20,12 @@ public class HomeUI : UIBase
 
     private void OnRank()
     {
-        UIManager.Instance.OpenUIOrPopup(UIType.RankUI);
+        UIManager.Instance.OpenUI(UIType.RankUI);
     }
 
     private void OnShop()
     {
-        UIManager.Instance.OpenUIOrPopup(UIType.ShopUI);
+        UIManager.Instance.OpenUI(UIType.ShopUI);
     }
 
     private void JoinQuest()
@@ -36,6 +36,6 @@ public class HomeUI : UIBase
     private void StartGame()
     {
         Debug.Log("StartGame");
-        UIManager.Instance.OpenUIOrPopup(UIType.PlayUI);
+        UIManager.Instance.OpenUI(UIType.PlayUI);
     }
 }

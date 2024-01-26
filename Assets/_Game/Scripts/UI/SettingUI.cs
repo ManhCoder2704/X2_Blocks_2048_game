@@ -45,7 +45,7 @@ public class SettingUI : UIBase
 
     private void OnInfo()
     {
-        UIManager.Instance.OpenUIOrPopup(UIType.TutorialUI);
+        UIManager.Instance.OpenUI(UIType.TutorialUI);
     }
 
     private void OnMusic()
