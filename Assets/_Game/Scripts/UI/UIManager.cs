@@ -18,8 +18,6 @@ public class UIManager : Singleton<UIManager>
 
 
     private Dictionary<UIType, UIBase> _uiDict = new Dictionary<UIType, UIBase>();
-    private UIBase _currentActivePage;
-    private UIBase _currentActivePopup;
     private UIBase _currentActiveUI;
     private Stack<UIBase> _popupStack = new Stack<UIBase>();
     private Tween _loadingTween;
