@@ -25,32 +25,25 @@ public class UIManager : Singleton<UIManager>
     public Button shopBtn;
     void Awake()
     {
-        FirstLoad();
-    }
-
-    private void FirstLoad()
-    {
         _loadingTween = _loadingImage.transform.DORotate(new Vector3(0, 0, -360), 1f, RotateMode.FastBeyond360)
             .SetEase(Ease.Linear)
             .SetLoops(-1);
         StartLoading();
-        StartCoroutine(FirstLoadCo());
     }
 
-    private IEnumerator FirstLoadCo()
+    public void FirstLoadUI()
     {
-        yield return new WaitForSeconds(2f);
         StopLoading();
         OpenUI(UIType.HomeUI);
     }
 
-    private void StartLoading()
+    public void StartLoading()
     {
         _loadingImage.SetActive(true);
         _loadingTween.Restart();
     }
 
-    private void StopLoading()
+    public void StopLoading()
     {
         _loadingTween.Kill();
         _loadingImage.SetActive(false);
