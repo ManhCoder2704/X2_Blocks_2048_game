@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 public class UIManager : Singleton<UIManager>
 {
-    [SerializeField] private Image _background;
+    [SerializeField] private GameObject _board;
     [SerializeField] private CanvasGroup _menu;
 
     [Header("UI Components")]
@@ -76,14 +76,14 @@ public class UIManager : Singleton<UIManager>
         if (uiType == UIType.PlayUI)
         {
             _menu.gameObject.SetActive(false);
-            _background.gameObject.SetActive(false);
+            _board.gameObject.SetActive(true);
             GameplayManager.Instance.ChangeGameState(GameStateEnum.Playing);
 
         }
         else if (uiType == UIType.HomeUI)
         {
             _menu.gameObject.SetActive(true);
-            _background.gameObject.SetActive(true);
+            _board.gameObject.SetActive(false);
             GameplayManager.Instance.ChangeGameState(GameStateEnum.Prepare);
 
         }
@@ -113,14 +113,14 @@ public class UIManager : Singleton<UIManager>
         if (GetUIReference(UIType.PlayUI) == _currentActiveUI)
         {
             _menu.gameObject.SetActive(false);
-            _background.gameObject.SetActive(false);
+            _board.gameObject.SetActive(true);
             GameplayManager.Instance.ChangeGameState(GameStateEnum.Playing);
 
         }
         else if (GetUIReference(UIType.HomeUI) == _currentActiveUI)
         {
             _menu.gameObject.SetActive(true);
-            _background.gameObject.SetActive(true);
+            _board.gameObject.SetActive(false);
             GameplayManager.Instance.ChangeGameState(GameStateEnum.Prepare);
         }
         else
