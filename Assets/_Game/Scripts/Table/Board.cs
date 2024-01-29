@@ -13,6 +13,7 @@ public class Board : MonoBehaviour
     [SerializeField] private Block _secondNextBlock;
     [SerializeField] private PointCounter _pointCounterPrefab;
     [SerializeField] private Transform _pointCounterContainer;
+    [SerializeField] private Line[] _lines;
 
     private int _minRandomBlockNumber = 1;
     private int _maxRandomBlockNumber = 3;
@@ -30,14 +31,14 @@ public class Board : MonoBehaviour
 
     private void Awake()
     {
-        _blockPool = new ObjectPool<Block>(_blockPrefab, _blockContainer, 10);
+        Debug.Log("Board Awake");
+        //_blockPool = new ObjectPool<Block>(_blockPrefab, _blockContainer, 10);
         _pointCounterPool = new ObjectPool<PointCounter>(_pointCounterPrefab, _pointCounterContainer, 5);
     }
 
     private void Start()
     {
         GameplayManager.Instance.OnCombineBlock += OnCombineBlock;
-        OnInit();
     }
     private void OnInit()
     {
@@ -74,6 +75,12 @@ public class Board : MonoBehaviour
         int randomNum = UnityEngine.Random.Range(1, 7);
         block.SpriteRenderer.color = CacheColor.GetColor(randomNum);
         block.BlockNum.Number = randomNum;
+    }
+
+    private void GetBlockInfo(Block block, int number)
+    {
+        block.SpriteRenderer.color = CacheColor.GetColor(number);
+        block.BlockNum.Number = number;
     }
 
     public void SetReviewBlockCoor(Vector3Int coor, bool visible)
@@ -186,7 +193,57 @@ public class Board : MonoBehaviour
             item.CurrentLine.GroundYCoordinate = 6;
             item.ReturnToPool();
         }
+        if (SaveManager.HasData<MapData>())
+        {
+            SaveManager.DeleteData<MapData>();
+        }
         _block_Coor_Dic.Clear();
         OnInit();
+    }
+
+    public MapData ExportMapData()
+    {
+        // Save data
+        MapData mapData = new MapData();
+        mapData.NextBlock = _nextBlock.BlockNum.Number;
+        mapData.SecondNextBlock = _secondNextBlock.BlockNum.Number;
+        mapData.Score = GameplayManager.Instance.Point.ToString();
+        foreach (KeyValuePair<Vector2Int, Block> item in _block_Coor_Dic)
+        {
+            mapData.LevelData.Add(new SerializeVector2Int(item.Key), item.Value.BlockNum.Number);
+        }
+        return mapData;
+    }
+
+    public void ImportMapData(MapData mapData)
+    {
+        // Load data
+        _blockPool = new ObjectPool<Block>(_blockPrefab, _blockContainer, 10);
+        if (mapData == null)
+        {
+            OnInit();
+            return;
+        }
+        int quantityBlock = 0;
+        GetBlockInfo(_nextBlock, mapData.NextBlock);
+        GetBlockInfo(_secondNextBlock, mapData.SecondNextBlock);
+        GameplayManager.Instance.Point = System.Numerics.BigInteger.Parse(mapData.Score);
+        foreach (KeyValuePair<SerializeVector2Int, int> item in mapData.LevelData)
+        {
+            quantityBlock++;
+            Vector2Int coor = new Vector2Int(item.Key.x, item.Key.y);
+            Block block = _blockPool.Pull();
+            block.transform.SetParent(_blockContainer);
+            block.SpriteRenderer.sortingOrder = 0;
+            block.SpriteRenderer.color = CacheColor.GetColor(item.Value);
+            block.BlockNum.Number = item.Value;
+            block.CurrentLine = _lines[coor.x];
+            block.CurrentLine.GroundYCoordinate--;
+            block.transform.position = new Vector3(coor.x, coor.y);
+            block.Coordinate = coor;
+            _block_Coor_Dic.Add(coor, block);
+            block.gameObject.SetActive(true);
+        }
+        GameplayManager.Instance.QuantityBlock = quantityBlock;
     }
 }

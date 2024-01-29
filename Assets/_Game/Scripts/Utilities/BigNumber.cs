@@ -65,4 +65,15 @@ public static class BigNumber
             displayText.text = number.ToString() + suffixes[suffixIndex];
         }
     }
+
+    public static BigInteger String2BigInterger(this string number)
+    {
+        BigInteger bigInteger = BigInteger.Parse(number);
+        return bigInteger;
+    }
+
+    public static void String2Point(this TMP_Text displayText, string numberText)
+    {
+        displayText.FormatBack(numberText.String2BigInterger());
+    }
 }
