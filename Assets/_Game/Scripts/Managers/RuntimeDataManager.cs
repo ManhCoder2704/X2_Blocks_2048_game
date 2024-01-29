@@ -3,10 +3,17 @@ using UnityEngine;
 
 public class RuntimeDataManager : Singleton<RuntimeDataManager>
 {
+    [SerializeField] private BackGroundSO _bgSo;
     [SerializeField] private SettingData _settingData;
     [SerializeField] private PlayerData _playerData;
     [SerializeField] private MapData _mapData;
     [SerializeField] private LogData _logData;
+
+    public SettingData SettingData { get => _settingData; set => _settingData = value; }
+    public PlayerData PlayerData { get => _playerData; set => _playerData = value; }
+    public MapData MapData { get => _mapData; set => _mapData = value; }
+    public LogData LogData { get => _logData; set => _logData = value; }
+    public BackGroundSO BgSo { get => _bgSo; set => _bgSo = value; }
 
     private void Awake()
     {
@@ -34,7 +41,7 @@ public class RuntimeDataManager : Singleton<RuntimeDataManager>
         else
         {
             // First time playing
-            _settingData = new SettingData();
+            _settingData = new SettingData(_bgSo.BackgroundListCount());
             SaveManager.SaveData(_settingData);
         }
         yield return null;
