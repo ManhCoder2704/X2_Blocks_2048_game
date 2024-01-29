@@ -9,7 +9,7 @@ public class UIManager : Singleton<UIManager>
 {
     [SerializeField] private GameObject _board;
     [SerializeField] private CanvasGroup _menu;
-
+    [SerializeField] private Image _background;
     [Header("UI Components")]
     [SerializeField] private List<UIBase> _uiComponents;
     [SerializeField] private float _fadeDuration = 0.2f;
@@ -23,6 +23,7 @@ public class UIManager : Singleton<UIManager>
     private Tween _loadingTween;
     public Button rankBtn;
     public Button shopBtn;
+
     void Awake()
     {
         _loadingTween = _loadingImage.transform.DORotate(new Vector3(0, 0, -360), 1f, RotateMode.FastBeyond360)
@@ -165,5 +166,10 @@ public class UIManager : Singleton<UIManager>
             temp.CanvasGroup.interactable = false;
             temp.CanvasGroup.alpha = 0f;
         }
+    }
+    public void ChangeBackground(Sprite bg, int id)
+    {
+        _background.sprite = bg;
+        RuntimeDataManager.Instance.SettingData.ThemeIndex = id;
     }
 }

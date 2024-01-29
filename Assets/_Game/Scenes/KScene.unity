@@ -1370,6 +1370,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _board: {fileID: 499794442}
   _menu: {fileID: 1095833041}
+  _background: {fileID: 1569604561}
   _uiComponents:
   - {fileID: 1423318653224008047, guid: 8aec6a94022b8614c9c706ca2657baf1, type: 3}
   - {fileID: 6732497615389158872, guid: 289971e8096e2b24788d6ed7a9c5b472, type: 3}
