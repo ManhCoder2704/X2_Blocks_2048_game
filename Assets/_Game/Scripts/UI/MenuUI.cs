@@ -23,30 +23,35 @@ public class MenuUI : UIBase
 
     private void OnSetting()
     {
+        SoundManager.Instance.PlaySFX(SFXType.Click);
         TurnOn(_settingBtn);
         UIManager.Instance.OpenUI(UIType.SettingUI);
     }
 
     private void OnTheme()
     {
+        SoundManager.Instance.PlaySFX(SFXType.Click);
         TurnOn(_themeBtn);
         UIManager.Instance.OpenUI(UIType.ThemeUI);
     }
 
     private void OnRank()
     {
+        SoundManager.Instance.PlaySFX(SFXType.Click);
         TurnOn(_rankBtn);
         UIManager.Instance.OpenUI(UIType.RankUI);
     }
 
     private void OnShop()
     {
+        SoundManager.Instance.PlaySFX(SFXType.Click);
         TurnOn(_shopBtn);
         UIManager.Instance.OpenUI(UIType.ShopUI);
     }
 
     private void OnHome()
     {
+        SoundManager.Instance.PlaySFX(SFXType.Click);
         TurnOn(_homeBtn);
         UIManager.Instance.OpenUI(UIType.HomeUI);
     }

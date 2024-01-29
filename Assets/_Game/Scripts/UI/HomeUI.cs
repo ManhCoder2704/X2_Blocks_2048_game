@@ -33,22 +33,24 @@ public class HomeUI : UIBase
     }
     private void OnRank()
     {
+        SoundManager.Instance.PlaySFX(SFXType.Click);
         UIManager.Instance.rankBtn.onClick.Invoke();
     }
 
     private void OnShop()
     {
+        SoundManager.Instance.PlaySFX(SFXType.Click);
         UIManager.Instance.shopBtn.onClick.Invoke();
     }
 
     private void JoinQuest()
     {
-        throw new NotImplementedException();
+        SoundManager.Instance.PlaySFX(SFXType.Click);
     }
 
     private void StartGame()
     {
-        Debug.Log("StartGame");
+        SoundManager.Instance.PlaySFX(SFXType.Start);
         UIManager.Instance.OpenUI(UIType.PlayUI);
     }
 }
