@@ -30,6 +30,7 @@ public class UIManager : Singleton<UIManager>
             .SetEase(Ease.Linear)
             .SetLoops(-1);
         StartLoading();
+        _background.sprite = RuntimeDataManager.Instance.BgSo.GetBackgroundByIndex(RuntimeDataManager.Instance.SettingData.ThemeIndex).bgImage;
     }
 
     public void FirstLoadUI()

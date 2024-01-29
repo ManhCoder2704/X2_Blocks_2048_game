@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,7 +11,7 @@ public class ThemeBox : MonoBehaviour
     [SerializeField] private GameObject _status;
     [SerializeField] private GameObject _priceBox;
     [SerializeField] private Image _background;
-    [SerializeField] private TMPro.TMP_Text _priceTxt;
+    [SerializeField] private TMP_Text _priceTxt;
 
     private int _price;
     private Sprite _mainBG;

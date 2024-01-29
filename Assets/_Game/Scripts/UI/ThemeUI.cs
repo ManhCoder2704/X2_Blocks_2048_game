@@ -1,6 +1,7 @@
 using DG.Tweening;
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,12 +11,14 @@ public class ThemeUI : UIBase
     [SerializeField] private Button _escapeButton;
     [SerializeField] private ThemeBox _prefabThemeBox;
     [SerializeField] private Transform _themeBoxContainer;
+    [SerializeField] private TMP_Text _gemsCountText;
 
     private int _themeChoosenIndex;
     private List<bool> _purchasedTheme;
     public static ThemeBox chosenThemeBox;
     void OnEnable()
     {
+        _gemsCountText.LerpNumber(RuntimeDataManager.Instance.PlayerData.Gems);
         _escapeButton.gameObject.SetActive(_isPopup);
         _themeChoosenIndex = RuntimeDataManager.Instance.SettingData.ThemeIndex;
         _purchasedTheme = RuntimeDataManager.Instance.SettingData.OwnThemeStatusList;

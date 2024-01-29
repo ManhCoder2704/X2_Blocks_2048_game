@@ -17,6 +17,8 @@ public class PlayUI : UIBase
     [SerializeField] private TMP_Text _diamondTxt;
     [SerializeField] private TMP_Text _highScoreTxt;
     [SerializeField] private TMP_Text _comboText;
+    [SerializeField] private TMP_Text _gemsCountText;
+    [SerializeField] private TMP_Text _highScoreText;
 
     private BigInteger point = 0;
 
@@ -36,6 +38,9 @@ public class PlayUI : UIBase
 
     private void OnEnable()
     {
+        _gemsCountText.LerpNumber(RuntimeDataManager.Instance.PlayerData.Gems);
+        _highScoreText.LerpNumber(RuntimeDataManager.Instance.PlayerData.HighScore);
+
         if (!PlayerPrefs.HasKey("Tutorial"))
         {
             Invoke(nameof(TurnOnTutorial), 0.01f);

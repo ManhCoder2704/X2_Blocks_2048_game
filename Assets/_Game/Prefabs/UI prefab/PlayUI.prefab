@@ -3158,3 +3158,5 @@ MonoBehaviour:
   _diamondTxt: {fileID: 7558101077470354725}
   _highScoreTxt: {fileID: 2850862071413435399}
   _comboText: {fileID: 289859813596329356}
+  _gemsCountText: {fileID: 7558101077470354725}
+  _highScoreText: {fileID: 2850862071413435399}
