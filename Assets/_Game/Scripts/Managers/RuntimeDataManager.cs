@@ -1,10 +1,10 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
 public class RuntimeDataManager : Singleton<RuntimeDataManager>
 {
     [SerializeField] private BackGroundSO _bgSo;
+    [SerializeField] private ShopItemSO _shopItemSO;
     [SerializeField] private SettingData _settingData;
     [SerializeField] private PlayerData _playerData;
     [SerializeField] private MapData _mapData;
@@ -15,6 +15,8 @@ public class RuntimeDataManager : Singleton<RuntimeDataManager>
     public MapData MapData { get => _mapData; set => _mapData = value; }
     public LogData LogData { get => _logData; set => _logData = value; }
     public BackGroundSO BgSo { get => _bgSo; set => _bgSo = value; }
+    public ShopItemSO ShopItemSO { get => _shopItemSO; set => _shopItemSO = value; }
+
     private void Awake()
     {
         StartCoroutine(LoadDataCO());
