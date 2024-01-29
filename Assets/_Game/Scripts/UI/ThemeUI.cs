@@ -18,7 +18,6 @@ public class ThemeUI : UIBase
     public static ThemeBox chosenThemeBox;
     void OnEnable()
     {
-        _gemsCountText.LerpNumber(RuntimeDataManager.Instance.PlayerData.Gems);
         _escapeButton.gameObject.SetActive(_isPopup);
         _themeChoosenIndex = RuntimeDataManager.Instance.SettingData.ThemeIndex;
         _purchasedTheme = RuntimeDataManager.Instance.SettingData.OwnThemeStatusList;
@@ -27,8 +26,13 @@ public class ThemeUI : UIBase
     {
         _escapeButton.onClick.AddListener(CloseTheme);
         SpawnButton();
+        OnGemChange(RuntimeDataManager.Instance.PlayerData.Gems);
+        RuntimeDataManager.Instance.PlayerData.OnGemsChange += OnGemChange;
     }
-
+    private void OnGemChange(int gems)
+    {
+        _gemsCountText.LerpNumber(gems);
+    }
     private void SpawnButton()
     {
         bool chosen;

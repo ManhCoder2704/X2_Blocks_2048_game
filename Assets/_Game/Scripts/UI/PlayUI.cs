@@ -32,19 +32,23 @@ public class PlayUI : UIBase
         _spellRemoveBtn.onClick.AddListener(RemoveOneBlockOnClick);
         _spellClearBtn.onClick.AddListener(ClearOneRowOnclick);
         _spellSwapBtn.onClick.AddListener(SwapNextBlockOnClick);
+        OnGemChange(RuntimeDataManager.Instance.PlayerData.Gems);
+        RuntimeDataManager.Instance.PlayerData.OnGemsChange += OnGemChange;
     }
-
+    private void OnGemChange(int gems)
+    {
+        _gemsCountText.LerpNumber(gems);
+    }
     private void OnEnable()
     {
-        _gemsCountText.LerpNumber(RuntimeDataManager.Instance.PlayerData.Gems);
-        _highScoreText.LerpNumber(RuntimeDataManager.Instance.PlayerData.HighScore);
-
+        _highScoreText.String2Point(RuntimeDataManager.Instance.PlayerData.HighScore);
         if (!PlayerPrefs.HasKey("Tutorial"))
         {
             Invoke(nameof(TurnOnTutorial), 0.01f);
             PlayerPrefs.SetInt("Tutorial", 1);
         }
         OnGetPoint(GameplayManager.Instance.Point);
+
     }
 
     private void OnGetCombo(int comboCount)

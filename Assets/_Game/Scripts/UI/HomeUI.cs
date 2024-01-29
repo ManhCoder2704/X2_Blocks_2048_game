@@ -15,18 +15,22 @@ public class HomeUI : UIBase
 
     void Awake()
     {
+        OnGemChange(RuntimeDataManager.Instance.PlayerData.Gems);
         _playBtn.onClick.AddListener(StartGame);
         _questBtn.onClick.AddListener(JoinQuest);
         _diamonBtn.onClick.AddListener(OnShop);
         _highScoreBtn.onClick.AddListener(OnRank);
+        RuntimeDataManager.Instance.PlayerData.OnGemsChange += OnGemChange;
     }
-
     private void OnEnable()
     {
-        _gemsCountText.LerpNumber(RuntimeDataManager.Instance.PlayerData.Gems);
         _highScoreText.String2Point(RuntimeDataManager.Instance.PlayerData.HighScore);
-    }
 
+    }
+    private void OnGemChange(int gems)
+    {
+        _gemsCountText.LerpNumber(gems);
+    }
     private void OnRank()
     {
         UIManager.Instance.rankBtn.onClick.Invoke();
