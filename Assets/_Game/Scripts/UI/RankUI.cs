@@ -5,6 +5,7 @@ using UnityEngine.Networking;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System;
+using TMPro;
 
 public class RankUI : UIBase
 {
@@ -14,6 +15,10 @@ public class RankUI : UIBase
     [SerializeField] private RankBox _rankBoxPrefab;
     [SerializeField] private RankBox _myRank;
     [SerializeField] private Transform _rankBoxContainer;
+    [SerializeField] private TMP_Text _highScoreText;
+    [SerializeField] private TMP_Text _name;
+    [SerializeField] private TMP_Text _ranking;
+    [SerializeField] private Image _nation;
 
     private float _duration = 0.5f;
 
@@ -21,6 +26,12 @@ public class RankUI : UIBase
     {
         _escapeButton.gameObject.SetActive(_isPopup);
     }
+    private void Awake()
+    {
+        OnHighScoreChange(RuntimeDataManager.Instance.PlayerData.HighScore);
+        RuntimeDataManager.Instance.PlayerData.OnHighScoreChange += OnHighScoreChange;
+    }
+
     void Start()
     {
         _switchBtn.onClick.AddListener(Switch);
@@ -28,6 +39,11 @@ public class RankUI : UIBase
         StartCoroutine(GetDataFromApi());
     }
 
+    }
+    private void OnHighScoreChange(string highScore)
+    {
+        _highScoreText.text = highScore;
+    }
     private void Switch()
     {
         _switchBtn.interactable = false;

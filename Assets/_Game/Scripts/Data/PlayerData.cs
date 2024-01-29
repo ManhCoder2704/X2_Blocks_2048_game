@@ -18,10 +18,19 @@ public class PlayerData
             OnGemsChange?.Invoke(value);
         }
     }
-    public string HighScore { get => _highScore; set => _highScore = value; }
+    public string HighScore
+    {
+        get => _highScore;
+        set
+        {
+            _highScore = value;
+            OnHighScoreChange?.Invoke(value);
+        }
+    }
     public string PlayerName { get => _playerName; set => _playerName = value; }
     public int HighestBlockIndex { get => _highestBlockIndex; set => _highestBlockIndex = value; }
     public Action<int> OnGemsChange;
+    public Action<string> OnHighScoreChange;
 
     public PlayerData()
     {
