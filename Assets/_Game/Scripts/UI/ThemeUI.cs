@@ -1,5 +1,4 @@
-using DG.Tweening;
-using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -7,7 +6,6 @@ using UnityEngine.UI;
 
 public class ThemeUI : UIBase
 {
-    [SerializeField] private BackGroundSO _bgSO;
     [SerializeField] private Button _escapeButton;
     [SerializeField] private ThemeBox _prefabThemeBox;
     [SerializeField] private Transform _themeBoxContainer;
@@ -35,15 +33,25 @@ public class ThemeUI : UIBase
     }
     private void SpawnButton()
     {
+        StartCoroutine(SpawnButtonCO());
+    }
+
+    private IEnumerator SpawnButtonCO()
+    {
+        UIManager.Instance.StartLoading();
+        BackGroundSO backgroundSO = RuntimeDataManager.Instance.BgSo;
+        int count = backgroundSO.BackgroundListCount();
         bool chosen;
-        for (int i = 0; i < _bgSO.BackgroundListCount(); i++)
+        for (int i = 0; i < count; i++)
         {
             chosen = i == _themeChoosenIndex;
             ThemeBox temp = Instantiate(_prefabThemeBox, _themeBoxContainer);
-            temp.OnInit(_bgSO.GetBackgroundByIndex(i), chosen, _purchasedTheme[i], i);
+            temp.OnInit(backgroundSO.GetBackgroundByIndex(i), chosen, _purchasedTheme[i], i);
             if (!chosen) continue;
             chosenThemeBox = temp;
         }
+        yield return new WaitForEndOfFrame();
+        UIManager.Instance.StopLoading();
     }
 
     private void CloseTheme()

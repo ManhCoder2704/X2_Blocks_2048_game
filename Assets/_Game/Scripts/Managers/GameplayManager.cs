@@ -379,6 +379,7 @@ public class GameplayManager : Singleton<GameplayManager>
 
     public void ChangeSkillState(ISkillState state)
     {
+        if (_currentSkillState == state) return;
         if (_currentSkillState != null)
         {
             _currentSkillState.Exit();

@@ -1,6 +1,9 @@
 using DG.Tweening;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class RankUI : UIBase
 {
@@ -34,4 +37,58 @@ public class RankUI : UIBase
     {
         UIManager.Instance.ClosePopup(this);
     }
+
+    IEnumerator GetDataFromApi()
+    {
+        using (UnityWebRequest www = UnityWebRequest.Get($"https://randomuser.me/api/?results={20}&inc=name,nat"))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.LogError("Error: " + www.error);
+            }
+            else
+            {
+                // Deserialize JSON response
+                ApiResponse apiResponse = JsonUtility.FromJson<ApiResponse>(www.downloadHandler.text);
+
+                // Access the data
+                foreach (Result result in apiResponse.results)
+                {
+                    string name = $"#{result.nat} {result.name.first} {result.name.last}";
+                }
+            }
+        }
+    }
+}
+[System.Serializable]
+public class Name
+{
+    public string title;
+    public string first;
+    public string last;
+}
+
+[System.Serializable]
+public class Result
+{
+    public Name name;
+    public string nat;
+}
+
+[System.Serializable]
+public class Info
+{
+    public string seed;
+    public int results;
+    public int page;
+    public string version;
+}
+
+[System.Serializable]
+public class ApiResponse
+{
+    public List<Result> results;
+    public Info info;
 }

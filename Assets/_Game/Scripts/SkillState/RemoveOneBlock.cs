@@ -7,8 +7,14 @@ public class RemoveOneBlock : ISkillState
     private Board _board;
     private List<Block> _actionBlocks;
     private Action _callback;
+    private const int _price = 100;
     public void Enter(Board board, List<Block> actionBlocks, Action callback)
     {
+        if (RuntimeDataManager.Instance.PlayerData.Gems < _price)
+        {
+            GameplayManager.Instance.ChangeSkillState(null);
+            return;
+        }
         _board = board;
         _actionBlocks = actionBlocks;
         _callback = callback;
@@ -16,11 +22,11 @@ public class RemoveOneBlock : ISkillState
 
     public void Execute(Vector2Int? inputCoor)
     {
+        RuntimeDataManager.Instance.PlayerData.Gems -= _price;
         _board.RemoveOneBlock(inputCoor, _actionBlocks, _callback);
     }
 
     public void Exit()
     {
-
     }
 }

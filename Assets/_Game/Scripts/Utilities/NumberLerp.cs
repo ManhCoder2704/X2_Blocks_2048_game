@@ -7,6 +7,7 @@ public static class NumberLerp
 
     public static void LerpNumber(this TMP_Text numberText, int targetNumber)
     {
+        if (numberText == null) return;
         // Get the current number from the text component
         int startNumber = int.Parse(numberText.text);
         if (startNumber == targetNumber) return;

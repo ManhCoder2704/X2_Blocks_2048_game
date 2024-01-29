@@ -7,8 +7,14 @@ public class SwapNextBlock : ISkillState
     private Board _board;
     private List<Block> _actionBlocks;
     private Action _callback;
+    private const int _price = 100;
     public void Enter(Board t, List<Block> actionBlocks, Action callback)
     {
+        if (RuntimeDataManager.Instance.PlayerData.Gems < _price)
+        {
+            GameplayManager.Instance.ChangeSkillState(null);
+            return;
+        }
         _board = t;
         _actionBlocks = actionBlocks;
         _callback = callback;
@@ -17,12 +23,12 @@ public class SwapNextBlock : ISkillState
 
     public void Execute(Vector2Int? inputCoor)
     {
+        RuntimeDataManager.Instance.PlayerData.Gems -= _price;
         _board.SwapNextBlock();
         GameplayManager.Instance.ChangeSkillState(null);
     }
 
     public void Exit()
     {
-
     }
 }

@@ -1239,6 +1239,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bgSo: {fileID: 11400000, guid: a617c17e58aca4e44a564f6e620d031d, type: 2}
+  _shopItemSO: {fileID: 11400000, guid: cbac17951319b1e48bd55a25c784c1b6, type: 2}
   _settingData:
     _isSoundOn: 1
     _isVibrationOn: 1
