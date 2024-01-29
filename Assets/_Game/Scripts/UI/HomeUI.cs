@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +10,8 @@ public class HomeUI : UIBase
     [SerializeField] private Transform _highScore;
     [SerializeField] private Button _diamonBtn;
     [SerializeField] private Button _highScoreBtn;
+    [SerializeField] private TMP_Text _gemsCountText;
+    [SerializeField] private TMP_Text _highScoreText;
 
     void Awake()
     {
@@ -16,6 +19,12 @@ public class HomeUI : UIBase
         _questBtn.onClick.AddListener(JoinQuest);
         _diamonBtn.onClick.AddListener(OnShop);
         _highScoreBtn.onClick.AddListener(OnRank);
+    }
+
+    private void OnEnable()
+    {
+        _gemsCountText.LerpNumber(RuntimeDataManager.Instance.PlayerData.Gems);
+        _highScoreText.LerpNumber(RuntimeDataManager.Instance.PlayerData.HighScore);
     }
 
     private void OnRank()

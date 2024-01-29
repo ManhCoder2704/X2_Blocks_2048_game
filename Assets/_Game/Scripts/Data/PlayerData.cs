@@ -16,7 +16,7 @@ public class PlayerData
 
     public PlayerData()
     {
-        _gems = 0;
+        _gems = 200;
         _highScore = 0;
         _playerName = "New Player";
         _highestBlockIndex = 0;

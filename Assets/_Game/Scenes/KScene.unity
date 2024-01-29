@@ -1232,7 +1232,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adb50a99454d30c4b81a804697a07a1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bgSo: {fileID: 0}
+  _bgSo: {fileID: 11400000, guid: a617c17e58aca4e44a564f6e620d031d, type: 2}
   _settingData:
     _isSoundOn: 1
     _isVibrationOn: 1

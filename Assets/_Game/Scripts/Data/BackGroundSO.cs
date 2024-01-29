@@ -5,13 +5,13 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "BackgroundData", menuName = "ScriptableObjects/BackGroundSO")]
 public class BackGroundSO : ScriptableObject
 {
-    [SerializeField] private List<BackgroundData> _listBackGround;
+    [SerializeField] private List<BackGroundData> _listBackGround;
 
     public int BackgroundListCount()
     {
         return _listBackGround.Count;
     }
-    public BackgroundData GetBackgroundByIndex(int index)
+    public BackGroundData GetBackgroundByIndex(int index)
     {
         return _listBackGround[index];
     }
