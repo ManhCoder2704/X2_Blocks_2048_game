@@ -9,10 +9,19 @@ public class PlayerData
     [SerializeField] private string _playerName;
     [SerializeField] private int _highestBlockIndex;
 
-    public int Gems { get => _gems; set => _gems = value; }
+    public int Gems
+    {
+        get => _gems;
+        set
+        {
+            _gems = value;
+            OnGemsChange?.Invoke(value);
+        }
+    }
     public string HighScore { get => _highScore; set => _highScore = value; }
     public string PlayerName { get => _playerName; set => _playerName = value; }
     public int HighestBlockIndex { get => _highestBlockIndex; set => _highestBlockIndex = value; }
+    public Action<int> OnGemsChange;
 
     public PlayerData()
     {

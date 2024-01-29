@@ -1,6 +1,7 @@
 using DG.Tweening;
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +11,7 @@ public class ThemeUI : UIBase
     [SerializeField] private Button _escapeButton;
     [SerializeField] private ThemeBox _prefabThemeBox;
     [SerializeField] private Transform _themeBoxContainer;
+    [SerializeField] private TMP_Text _gemsCountText;
 
     private int _themeChoosenIndex;
     private List<bool> _purchasedTheme;
@@ -24,8 +26,13 @@ public class ThemeUI : UIBase
     {
         _escapeButton.onClick.AddListener(CloseTheme);
         SpawnButton();
+        OnGemChange(RuntimeDataManager.Instance.PlayerData.Gems);
+        RuntimeDataManager.Instance.PlayerData.OnGemsChange += OnGemChange;
     }
-
+    private void OnGemChange(int gems)
+    {
+        _gemsCountText.LerpNumber(gems);
+    }
     private void SpawnButton()
     {
         bool chosen;

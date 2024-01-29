@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -14,7 +15,6 @@ public class RuntimeDataManager : Singleton<RuntimeDataManager>
     public MapData MapData { get => _mapData; set => _mapData = value; }
     public LogData LogData { get => _logData; set => _logData = value; }
     public BackGroundSO BgSo { get => _bgSo; set => _bgSo = value; }
-
     private void Awake()
     {
         StartCoroutine(LoadDataCO());

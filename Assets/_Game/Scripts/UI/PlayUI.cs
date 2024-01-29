@@ -17,6 +17,8 @@ public class PlayUI : UIBase
     [SerializeField] private TMP_Text _diamondTxt;
     [SerializeField] private TMP_Text _highScoreTxt;
     [SerializeField] private TMP_Text _comboText;
+    [SerializeField] private TMP_Text _gemsCountText;
+    [SerializeField] private TMP_Text _highScoreText;
 
     void Awake()
     {
@@ -30,16 +32,23 @@ public class PlayUI : UIBase
         _spellRemoveBtn.onClick.AddListener(RemoveOneBlockOnClick);
         _spellClearBtn.onClick.AddListener(ClearOneRowOnclick);
         _spellSwapBtn.onClick.AddListener(SwapNextBlockOnClick);
+        OnGemChange(RuntimeDataManager.Instance.PlayerData.Gems);
+        RuntimeDataManager.Instance.PlayerData.OnGemsChange += OnGemChange;
     }
-
+    private void OnGemChange(int gems)
+    {
+        _gemsCountText.LerpNumber(gems);
+    }
     private void OnEnable()
     {
+        _highScoreText.String2Point(RuntimeDataManager.Instance.PlayerData.HighScore);
         if (!PlayerPrefs.HasKey("Tutorial"))
         {
             Invoke(nameof(TurnOnTutorial), 0.01f);
             PlayerPrefs.SetInt("Tutorial", 1);
         }
         OnGetPoint(GameplayManager.Instance.Point);
+
     }
 
     private void OnGetCombo(int comboCount)
