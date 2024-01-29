@@ -702,6 +702,8 @@ MonoBehaviour:
   _highScore: {fileID: 891945421059497737}
   _diamonBtn: {fileID: 8072455937494874468}
   _highScoreBtn: {fileID: 6006875453138562989}
+  _gemsCountText: {fileID: 3961311070652805441}
+  _highScoreText: {fileID: 2630060576671514975}
 --- !u!225 &4093094568343235157
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -710,7 +712,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4705648004746790459}
   m_Enabled: 1
-  m_Alpha: 0.96
+  m_Alpha: 0
   m_Interactable: 0
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -779,7 +781,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1000
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 125cb55b44b24c4393181402bc6200e6, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 125cb55b44b24c4393181402bc6200e6, type: 2}
@@ -1650,7 +1652,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1000
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 125cb55b44b24c4393181402bc6200e6, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 125cb55b44b24c4393181402bc6200e6, type: 2}

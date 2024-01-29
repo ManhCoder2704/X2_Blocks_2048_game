@@ -23,7 +23,11 @@ public class SettingData
         _isVibrationOn = true;
         _isRemoveAds = false;
         _themeIndex = 0;
-        _ownThemeStatusList = new List<bool>(length);
+        _ownThemeStatusList = new List<bool>();
+        for (int i = 0; i < length; i++)
+        {
+            _ownThemeStatusList.Add(false);
+        }
         _ownThemeStatusList[0] = true;
         _ownThemeStatusList[1] = true;
     }
