@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class RuntimeDataManager : Singleton<RuntimeDataManager>
 {
@@ -24,18 +25,6 @@ public class RuntimeDataManager : Singleton<RuntimeDataManager>
 
     private IEnumerator LoadDataCO()
     {
-        if (SaveManager.HasData<PlayerData>())
-        {
-            SaveManager.LoadData(ref _playerData);
-        }
-        else
-        {
-            // First time playing
-            _playerData = new PlayerData();
-            SaveManager.SaveData(_playerData);
-        }
-        yield return null;
-
         if (SaveManager.HasData<SettingData>())
         {
             SaveManager.LoadData(ref _settingData);
@@ -46,7 +35,22 @@ public class RuntimeDataManager : Singleton<RuntimeDataManager>
             _settingData = new SettingData(_bgSo.BackgroundListCount());
             SaveManager.SaveData(_settingData);
         }
+        UIManager.Instance.Background.sprite = _bgSo.GetBackgroundByIndex(_settingData.ThemeIndex).bgImage;
         yield return null;
+
+        if (SaveManager.HasData<PlayerData>())
+        {
+            SaveManager.LoadData(ref _playerData);
+        }
+        else
+        {
+            // First time playing
+            _playerData = new PlayerData();
+            SaveManager.SaveData(_playerData);
+        }
+        GameplayManager.Instance.MaxPoint = _playerData.HighScore.String2BigInterger();
+        yield return null;
+
 
         if (SaveManager.HasData<LogData>())
         {

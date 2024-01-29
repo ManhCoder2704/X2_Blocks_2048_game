@@ -46,10 +46,16 @@ public class PlayUI : UIBase
         _spellSwapBtn.onClick.AddListener(SwapNextBlockOnClick);
         OnGemChange(RuntimeDataManager.Instance.PlayerData.Gems);
         RuntimeDataManager.Instance.PlayerData.OnGemsChange += OnGemChange;
+        OnHighScoreChange(RuntimeDataManager.Instance.PlayerData.HighScore);
+        RuntimeDataManager.Instance.PlayerData.OnHighScoreChange += OnHighScoreChange;
     }
     private void OnGemChange(int gems)
     {
         _gemsCountText.LerpNumber(gems);
+    }
+    private void OnHighScoreChange(string highScore)
+    {
+        _highScoreText.text = highScore;
     }
     private void OnEnable()
     {
@@ -65,6 +71,7 @@ public class PlayUI : UIBase
 
     private void OnGetCombo(int comboCount)
     {
+        SoundManager.Instance.PlaySFX(SFXType.Combo);
         _comboText.DOFade(1, 0.25f).OnComplete(() =>
         {
             _comboText.text = $"Combo +{comboCount}";
@@ -90,6 +97,7 @@ public class PlayUI : UIBase
     private void SwapNextBlockOnClick()
     {
         //TODO: Check user currency first
+        SoundManager.Instance.PlaySFX(SFXType.Skill);
         GameplayManager.Instance.ChangeSkillState(new SwapNextBlock());
     }
 
@@ -97,6 +105,7 @@ public class PlayUI : UIBase
     private void ClearOneRowOnclick()
     {
         //TODO: Check user currency first
+        SoundManager.Instance.PlaySFX(SFXType.Skill);
         GameplayManager.Instance.ChangeSkillState(new ClearOneRow());
     }
 
@@ -104,6 +113,7 @@ public class PlayUI : UIBase
     private void RemoveOneBlockOnClick()
     {
         //TODO: Check user currency first
+        SoundManager.Instance.PlaySFX(SFXType.Skill);
         GameplayManager.Instance.ChangeSkillState(new RemoveOneBlock());
     }
 }

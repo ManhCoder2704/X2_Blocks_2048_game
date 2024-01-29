@@ -9817,6 +9817,10 @@ MonoBehaviour:
   _switchBtn: {fileID: 8285026213704381877}
   _toggleBtn: {fileID: 1759822408917757965}
   _escapeButton: {fileID: 6061180695671886338}
+  _highScoreText: {fileID: 3825745414209949643}
+  _name: {fileID: 7830082058958014877}
+  _ranking: {fileID: 3871416330497564174}
+  _nation: {fileID: 5801607104597299564}
 --- !u!1 &9032100816022485693
 GameObject:
   m_ObjectHideFlags: 0

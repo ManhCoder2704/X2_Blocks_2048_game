@@ -17,6 +17,7 @@ public class GameplayManager : Singleton<GameplayManager>
     private int _comboCount = 0;
     private ISkillState _currentSkillState;
     private BigInteger _point = 0;
+    private BigInteger _maxPoint;
 
     public Action OnReset;
     public Action<BigInteger> OnGetPoint;
@@ -38,6 +39,7 @@ public class GameplayManager : Singleton<GameplayManager>
         }
     }
     public Board Board { get => _board; }
+    public BigInteger MaxPoint { get => _maxPoint; set => _maxPoint = value; }
 
     private void Awake()
     {
@@ -161,11 +163,12 @@ public class GameplayManager : Singleton<GameplayManager>
             // No similar block around then remove this block and continue
             if (combineBlocks.Count == 0)
             {
+                SoundManager.Instance.PlaySFX(SFXType.Shoot);
                 _actionBlocks.RemoveAt(i);
                 i--;
                 continue;
             }
-
+            SoundManager.Instance.PlaySFX(SFXType.Merge);
             _comboCount++;
 
             // Add this block to combine list
@@ -199,6 +202,11 @@ public class GameplayManager : Singleton<GameplayManager>
 
             int newNumber = maxBlock.BlockNum.Number + maxValue;
             Point += BigInteger.Pow(2, newNumber);
+            if (Point > _maxPoint)
+            {
+                MaxPoint = Point;
+                RuntimeDataManager.Instance.PlayerData.HighScore = MaxPoint.ToString();
+            }
             //maxBlock.BlockNum.Number += maxValue;
             sequence.Join(maxBlock.ChangeColorTo(newNumber, true));
 

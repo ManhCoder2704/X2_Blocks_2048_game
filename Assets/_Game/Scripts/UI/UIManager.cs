@@ -24,13 +24,14 @@ public class UIManager : Singleton<UIManager>
     public Button rankBtn;
     public Button shopBtn;
 
+    public Image Background { get => _background; set => _background = value; }
+
     void Awake()
     {
         _loadingTween = _loadingImage.transform.DORotate(new Vector3(0, 0, -360), 1f, RotateMode.FastBeyond360)
             .SetEase(Ease.Linear)
             .SetLoops(-1);
         StartLoading();
-        _background.sprite = RuntimeDataManager.Instance.BgSo.GetBackgroundByIndex(RuntimeDataManager.Instance.SettingData.ThemeIndex).bgImage;
     }
 
     public void FirstLoadUI()

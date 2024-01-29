@@ -57,6 +57,7 @@ public class ThemeBox : MonoBehaviour
         RuntimeDataManager.Instance.PlayerData.Gems -= this._price;
         this._purchased = true;
         _priceBox.SetActive(false);
+        RuntimeDataManager.Instance.SettingData.OwnThemeStatusList[_bgID] = true;
         SelectBG();
     }
     private void SelectBG()
