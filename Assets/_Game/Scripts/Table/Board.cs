@@ -240,6 +240,7 @@ public class Board : MonoBehaviour
             block.CurrentLine = _lines[coor.x];
             block.CurrentLine.GroundYCoordinate--;
             block.transform.position = new Vector3(coor.x, coor.y);
+            block.Coordinate = coor;
             _block_Coor_Dic.Add(coor, block);
             block.gameObject.SetActive(true);
         }

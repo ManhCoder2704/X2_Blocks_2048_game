@@ -236,7 +236,7 @@ public class GameplayManager : Singleton<GameplayManager>
                     item.CurrentLine.GroundYCoordinate = item.Coordinate.y;
                 item.CurrentLine = maxBlock.CurrentLine;
 
-
+                Debug.Log($"Remove block {1 << item.BlockNum.Number} with coor: {item.Coordinate}");
                 _board.Block_Coor_Dic.Remove(item.Coordinate);
                 _quantityBlock--;
 
@@ -277,7 +277,7 @@ public class GameplayManager : Singleton<GameplayManager>
                 if (_comboCount > 2)
                 {
                     OnGetCombo?.Invoke(_comboCount);
-                    Invoke(nameof(AllowPlayerInteract), 1.5f);
+                    Invoke(nameof(AllowPlayerInteract), 1f);
                 }
                 else
                     Invoke(nameof(AllowPlayerInteract), .25f);
@@ -349,11 +349,17 @@ public class GameplayManager : Singleton<GameplayManager>
     }
     public void ChangeGameState(GameStateEnum state)
     {
+        if (state != GameStateEnum.Playing)
+        {
+            _currentSkillState = null;
+        }
         CurrentState = state;
     }
     public void ResetBoard()
     {
         _quantityBlock = 0;
+        _point = 0;
+        _comboCount = 0;
         _board.ResetBoard();
         OnReset.Invoke();
     }
