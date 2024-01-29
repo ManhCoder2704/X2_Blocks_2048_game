@@ -4,12 +4,16 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System;
 
 public class RankUI : UIBase
 {
     [SerializeField] private Button _switchBtn;
     [SerializeField] private Transform _toggleBtn;
     [SerializeField] private Button _escapeButton;
+    [SerializeField] private RankBox _rankBoxPrefab;
+    [SerializeField] private RankBox _myRank;
+    [SerializeField] private Transform _rankBoxContainer;
 
     private float _duration = 0.5f;
 
@@ -21,6 +25,7 @@ public class RankUI : UIBase
     {
         _switchBtn.onClick.AddListener(Switch);
         _escapeButton.onClick.AddListener(CloseRank);
+        StartCoroutine(GetDataFromApi());
     }
 
     private void Switch()
@@ -38,9 +43,20 @@ public class RankUI : UIBase
         UIManager.Instance.ClosePopup(this);
     }
 
-    IEnumerator GetDataFromApi()
+    private IEnumerator GetDataFromApi()
     {
-        using (UnityWebRequest www = UnityWebRequest.Get($"https://randomuser.me/api/?results={20}&inc=name,nat"))
+        UIManager.Instance.StartLoading();
+        // Number of people in the leaderboard (10 in this case)
+        int leaderboardSize = 10;
+
+        // Create a Random instance
+        System.Random random = new System.Random(DateTime.UtcNow.DayOfYear.GetHashCode());
+
+        // Assuming you have a minimum and maximum score length
+        int minScoreLength = 10; // replace with your desired minimum score length
+        int maxScoreLength = 30; // replace with your desired maximum score length
+
+        using (UnityWebRequest www = UnityWebRequest.Get($"https://randomuser.me/api/?results={leaderboardSize}&inc=name,nat&seed=khanh"))
         {
             yield return www.SendWebRequest();
 
@@ -54,12 +70,34 @@ public class RankUI : UIBase
                 ApiResponse apiResponse = JsonUtility.FromJson<ApiResponse>(www.downloadHandler.text);
 
                 // Access the data
+                int i = 1;
                 foreach (Result result in apiResponse.results)
                 {
                     string name = $"#{result.nat} {result.name.first} {result.name.last}";
+                    Debug.Log(name);
+                    RankBox rankBox = Instantiate(_rankBoxPrefab, _rankBoxContainer);
+                    rankBox.Init(i++, name, GenerateRandomScore(minScoreLength, maxScoreLength, random).String2Point(), result.nat);
+                    yield return null;
                 }
             }
         }
+        _myRank.Init(random.Next(100, short.MaxValue), RuntimeDataManager.Instance.PlayerData.PlayerName, RuntimeDataManager.Instance.PlayerData.HighScore.String2Point(), "VN");
+        UIManager.Instance.StopLoading();
+    }
+
+    private string GenerateRandomScore(int minLength, int maxLength, System.Random random)
+    {
+        // Generate a random length within the specified range
+        int length = random.Next(minLength, maxLength + 1);
+
+        // Generate a random string of digits
+        string randomScore = "";
+        for (int i = 0; i < length; i++)
+        {
+            randomScore += random.Next(10).ToString(); // Append a random digit (0-9)
+        }
+
+        return randomScore;
     }
 }
 [System.Serializable]
