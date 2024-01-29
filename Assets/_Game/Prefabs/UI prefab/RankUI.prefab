@@ -2090,3 +2090,7 @@ MonoBehaviour:
   _rankBoxPrefab: {fileID: 7239582248644052891, guid: 0c16971de94e7f64abf7eed2f36c67b5, type: 3}
   _myRank: {fileID: 4046284516981354399}
   _rankBoxContainer: {fileID: 3501317455159115976}
+  _highScoreText: {fileID: 3825745414209949643}
+  _name: {fileID: 0}
+  _ranking: {fileID: 0}
+  _nation: {fileID: 0}
