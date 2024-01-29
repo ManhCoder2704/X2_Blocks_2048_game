@@ -25,10 +25,22 @@ public class PlayUI : UIBase
         GameplayManager.Instance.OnGetPoint += this.OnGetPoint;
         GameplayManager.Instance.OnReset += this.OnInit;
         GameplayManager.Instance.OnGetCombo += this.OnGetCombo;
-        _pauseBtn.onClick.AddListener(() => UIManager.Instance.OpenUI(UIType.PauseUI));
+        _pauseBtn.onClick.AddListener(() =>
+        {
+            SoundManager.Instance.PlaySFX(SFXType.Click);
+            UIManager.Instance.OpenUI(UIType.PauseUI);
+        });
         _adsBtn.onClick.AddListener(() => UIManager.Instance.OpenUI(UIType.ShopUI));
-        _diamondBtn.onClick.AddListener(() => UIManager.Instance.OpenUI(UIType.ShopPopupUI));
-        _highscoreBtn.onClick.AddListener(() => UIManager.Instance.OpenUI(UIType.RankPopupUI));
+        _diamondBtn.onClick.AddListener(() =>
+        {
+            SoundManager.Instance.PlaySFX(SFXType.Click);
+            UIManager.Instance.OpenUI(UIType.ShopPopupUI);
+        });
+        _highscoreBtn.onClick.AddListener(() =>
+        {
+            SoundManager.Instance.PlaySFX(SFXType.Click);
+            UIManager.Instance.OpenUI(UIType.RankPopupUI);
+        });
         _spellRemoveBtn.onClick.AddListener(RemoveOneBlockOnClick);
         _spellClearBtn.onClick.AddListener(ClearOneRowOnclick);
         _spellSwapBtn.onClick.AddListener(SwapNextBlockOnClick);

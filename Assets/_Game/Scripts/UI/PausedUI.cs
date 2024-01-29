@@ -25,12 +25,12 @@ public class PausedUI : UIBase
 
     private void OnMusic()
     {
-        //ToDo
+        SoundManager.Instance.ChangeSoundable();
     }
 
     private void OnVibration()
     {
-        //ToDo
+        SoundManager.Instance.ChangeVibratable();
     }
 
 }

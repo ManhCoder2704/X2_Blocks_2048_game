@@ -342,7 +342,7 @@ public class GameplayManager : Singleton<GameplayManager>
 
             }
             ChangeGameState(GameStateEnum.Loose);
-            //UIManager.Instance.OnLooseState(); //////////////////////////////////////////////////////////////////////////////////////
+            UIManager.Instance.OpenUI(UIType.LooseUI);
             return true;
         }
         return false;
