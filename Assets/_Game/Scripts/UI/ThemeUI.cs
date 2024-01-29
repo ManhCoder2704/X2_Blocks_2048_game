@@ -4,7 +4,10 @@ using UnityEngine.UI;
 
 public class ThemeUI : UIBase
 {
+    [SerializeField] private BackGroundSO _bgSO;
     [SerializeField] private Button _escapeButton;
+    [SerializeField] private ThemeBox _prefabThemeBox;
+    [SerializeField] private Transform _themeBoxContainer;
 
     void OnEnable()
     {

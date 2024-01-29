@@ -1232,24 +1232,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adb50a99454d30c4b81a804697a07a1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bgSo: {fileID: 0}
   _settingData:
     _isSoundOn: 1
     _isVibrationOn: 1
     _isRemoveAds: 0
     _themeIndex: 0
+    _ownThemeStatusList: 
   _playerData:
     _gems: 0
     _highScore: 0
     _playerName: New Player ...
-    _numberOfGame: 0
     _highestBlockIndex: 0
-    _level: 0
   _mapData:
-    _levelData:
-      m_keys: []
-      m_values: []
-    _nextBlock: {fileID: 0}
-    _secondNextBlock: {fileID: 0}
+    _nextBlock: 0
+    _secondNextBlock: 0
   _logData:
     _playTime: 0
 --- !u!1 &792398281
