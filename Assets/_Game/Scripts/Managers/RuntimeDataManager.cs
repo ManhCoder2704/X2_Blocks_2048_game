@@ -60,9 +60,36 @@ public class RuntimeDataManager : Singleton<RuntimeDataManager>
 
         if (SaveManager.HasData<MapData>())
         {
+            Debug.Log("Has map data");
+            yield return new WaitForSeconds(1f);
             SaveManager.LoadData(ref _mapData);
+            yield return new WaitForEndOfFrame();
+            GameplayManager.Instance.Board.ImportMapData(_mapData);
         }
+        else
+            GameplayManager.Instance.Board.ImportMapData(null);
         yield return null;
         UIManager.Instance.FirstLoadUI();
+    }
+
+    private void OnApplicationQuit()
+    {
+        SaveData();
+    }
+
+    private void OnApplicationFocus(bool focus)
+    {
+        if (!focus)
+        {
+            SaveData();
+        }
+    }
+
+    public void SaveData()
+    {
+        SaveManager.SaveData(_playerData);
+        SaveManager.SaveData(_settingData);
+        SaveManager.SaveData(_logData);
+        SaveManager.SaveData(GameplayManager.Instance.Board.ExportMapData());
     }
 }

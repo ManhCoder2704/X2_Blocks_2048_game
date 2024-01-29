@@ -24,7 +24,7 @@ public class HomeUI : UIBase
     private void OnEnable()
     {
         _gemsCountText.LerpNumber(RuntimeDataManager.Instance.PlayerData.Gems);
-        _highScoreText.LerpNumber(RuntimeDataManager.Instance.PlayerData.HighScore);
+        _highScoreText.String2Point(RuntimeDataManager.Instance.PlayerData.HighScore);
     }
 
     private void OnRank()

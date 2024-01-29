@@ -18,8 +18,6 @@ public class PlayUI : UIBase
     [SerializeField] private TMP_Text _highScoreTxt;
     [SerializeField] private TMP_Text _comboText;
 
-    private BigInteger point = 0;
-
     void Awake()
     {
         GameplayManager.Instance.OnGetPoint += this.OnGetPoint;
@@ -31,7 +29,6 @@ public class PlayUI : UIBase
         _spellRemoveBtn.onClick.AddListener(RemoveOneBlockOnClick);
         _spellClearBtn.onClick.AddListener(ClearOneRowOnclick);
         _spellSwapBtn.onClick.AddListener(SwapNextBlockOnClick);
-        OnInit();
     }
 
     private void OnEnable()
@@ -41,6 +38,7 @@ public class PlayUI : UIBase
             Invoke(nameof(TurnOnTutorial), 0.01f);
             PlayerPrefs.SetInt("Tutorial", 1);
         }
+        OnGetPoint(GameplayManager.Instance.Point);
     }
 
     private void OnGetCombo(int comboCount)
@@ -54,13 +52,11 @@ public class PlayUI : UIBase
 
     public void OnInit()
     {
-        this.point = 0;
         _scoreTxt.text = "0";
     }
-    private void OnGetPoint(int point)
+    private void OnGetPoint(BigInteger point)
     {
-        this.point += BigInteger.Pow(2, point);
-        _scoreTxt.FormatBack(this.point);
+        _scoreTxt.FormatBack(point);
     }
 
     private void TurnOnTutorial()
