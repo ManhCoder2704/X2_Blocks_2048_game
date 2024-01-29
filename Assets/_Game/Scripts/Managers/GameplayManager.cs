@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using System.Numerics;
 
 public class GameplayManager : Singleton<GameplayManager>
 {
@@ -15,9 +16,10 @@ public class GameplayManager : Singleton<GameplayManager>
     private int _quantityBlock = 0;
     private int _comboCount = 0;
     private ISkillState _currentSkillState;
+    private BigInteger _point = 0;
 
     public Action OnReset;
-    public Action<int> OnGetPoint;
+    public Action<BigInteger> OnGetPoint;
     public Action<Line> OnMouseDown;
     public Action<Line> OnMouseEnter;
     public Action<int> OnCombineBlock;
@@ -26,6 +28,16 @@ public class GameplayManager : Singleton<GameplayManager>
 
     public int QuantityBlock { get => _quantityBlock; set => _quantityBlock = value; }
     public bool IsBlockMoving { get => _isBlockMoving; set => _isBlockMoving = value; }
+    public BigInteger Point
+    {
+        get => _point;
+        set
+        {
+            _point = value;
+            OnGetPoint?.Invoke(_point);
+        }
+    }
+    public Board Board { get => _board; }
 
     private void Awake()
     {
@@ -41,7 +53,7 @@ public class GameplayManager : Singleton<GameplayManager>
         if (_isBlockMoving || CurrentState != GameStateEnum.Playing) return;
         if (_currentSkillState != null)
         {
-            Vector3 vector3 = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            UnityEngine.Vector3 vector3 = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
             int x = Mathf.RoundToInt(vector3.x);
             int y = Mathf.RoundToInt(vector3.y);
@@ -145,6 +157,7 @@ public class GameplayManager : Singleton<GameplayManager>
             //bool hasTopBlock = false;
             List<Block> combineBlocks = FindSimilarBlockAround(_actionBlocks[i]);
 
+            Debug.Log("Combine block: " + combineBlocks.Count);
             // No similar block around then remove this block and continue
             if (combineBlocks.Count == 0)
             {
@@ -185,7 +198,7 @@ public class GameplayManager : Singleton<GameplayManager>
             Debug.Log($"Current combine block is {1 << _actionBlocks[i].BlockNum.Number} with coor: {_actionBlocks[i].Coordinate}");
 
             int newNumber = maxBlock.BlockNum.Number + maxValue;
-            OnGetPoint.Invoke(newNumber);
+            Point += BigInteger.Pow(2, newNumber);
             //maxBlock.BlockNum.Number += maxValue;
             sequence.Join(maxBlock.ChangeColorTo(newNumber, true));
 
@@ -223,7 +236,7 @@ public class GameplayManager : Singleton<GameplayManager>
                     item.CurrentLine.GroundYCoordinate = item.Coordinate.y;
                 item.CurrentLine = maxBlock.CurrentLine;
 
-
+                Debug.Log($"Remove block {1 << item.BlockNum.Number} with coor: {item.Coordinate}");
                 _board.Block_Coor_Dic.Remove(item.Coordinate);
                 _quantityBlock--;
 
@@ -263,10 +276,8 @@ public class GameplayManager : Singleton<GameplayManager>
                 Debug.Log(_comboCount);
                 if (_comboCount > 2)
                 {
-                    //PlayUI.Instance.ComboText.text = $"Combo +{_comboCount}"; /////////////////////////////////////////////////////////////////////////////
-                    //PlayUI.Instance.ComboText.enabled = true;
                     OnGetCombo?.Invoke(_comboCount);
-                    Invoke(nameof(AllowPlayerInteract), 1.5f);
+                    Invoke(nameof(AllowPlayerInteract), 1f);
                 }
                 else
                     Invoke(nameof(AllowPlayerInteract), .25f);
@@ -338,11 +349,17 @@ public class GameplayManager : Singleton<GameplayManager>
     }
     public void ChangeGameState(GameStateEnum state)
     {
+        if (state != GameStateEnum.Playing)
+        {
+            _currentSkillState = null;
+        }
         CurrentState = state;
     }
     public void ResetBoard()
     {
         _quantityBlock = 0;
+        _point = 0;
+        _comboCount = 0;
         _board.ResetBoard();
         OnReset.Invoke();
     }
