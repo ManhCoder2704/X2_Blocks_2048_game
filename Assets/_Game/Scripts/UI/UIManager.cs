@@ -64,7 +64,7 @@ public class UIManager : Singleton<UIManager>
 
     public void OpenUI(UIType uiType)
     {
-
+        StopLoading();
         UIBase ui = GetUIReference(uiType);
 
         if (_currentActiveUI == ui) return;
@@ -92,6 +92,7 @@ public class UIManager : Singleton<UIManager>
 
     public void ClosePopup(UIBase currentPopup)
     {
+        StopLoading();
         if (_popupStack.Count == 0) return;
         _currentActiveUI = null;
         currentPopup.CanvasGroup.interactable = false;
