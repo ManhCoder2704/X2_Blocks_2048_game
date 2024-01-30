@@ -7,9 +7,9 @@ public class HomeUI : UIBase
 {
     [SerializeField] private Button _playBtn;
     [SerializeField] private Button _questBtn;
-    [SerializeField] private Transform _highScore;
     [SerializeField] private Button _diamonBtn;
     [SerializeField] private Button _highScoreBtn;
+    [SerializeField] private TMP_Text _highBlockText;
     [SerializeField] private TMP_Text _gemsCountText;
     [SerializeField] private TMP_Text _highScoreText;
 
@@ -27,6 +27,7 @@ public class HomeUI : UIBase
     private void OnEnable()
     {
         _highScoreText.String2Point(RuntimeDataManager.Instance.PlayerData.HighScore);
+        _highBlockText.text = Math.Pow(2, RuntimeDataManager.Instance.PlayerData.HighestBlockIndex + 1).ToString();
 
     }
     private void OnGemChange(int gems)
