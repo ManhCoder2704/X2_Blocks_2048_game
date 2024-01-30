@@ -2,7 +2,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
-using System.Collections;
 using System.Collections.Generic;
 
 public class UIManager : Singleton<UIManager>
@@ -43,12 +42,12 @@ public class UIManager : Singleton<UIManager>
     public void StartLoading()
     {
         _loadingImage.SetActive(true);
-        _loadingTween.Restart();
+        _loadingTween.Play();
     }
 
     public void StopLoading()
     {
-        _loadingTween.Kill();
+        _loadingTween.Pause();
         _loadingImage.SetActive(false);
     }
 

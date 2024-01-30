@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class RuntimeDataManager : Singleton<RuntimeDataManager>
 {
@@ -10,6 +9,7 @@ public class RuntimeDataManager : Singleton<RuntimeDataManager>
     [SerializeField] private PlayerData _playerData;
     [SerializeField] private MapData _mapData;
     [SerializeField] private LogData _logData;
+    private bool _doneLoading = false;
 
     public SettingData SettingData { get => _settingData; set => _settingData = value; }
     public PlayerData PlayerData { get => _playerData; set => _playerData = value; }
@@ -76,6 +76,7 @@ public class RuntimeDataManager : Singleton<RuntimeDataManager>
             GameplayManager.Instance.Board.ImportMapData(null);
         yield return null;
         UIManager.Instance.FirstLoadUI();
+        _doneLoading = true;
     }
 
     private void OnApplicationQuit()
@@ -93,6 +94,7 @@ public class RuntimeDataManager : Singleton<RuntimeDataManager>
 
     public void SaveData()
     {
+        if (!_doneLoading) return;
         SaveManager.SaveData(_playerData);
         SaveManager.SaveData(_settingData);
         SaveManager.SaveData(_logData);

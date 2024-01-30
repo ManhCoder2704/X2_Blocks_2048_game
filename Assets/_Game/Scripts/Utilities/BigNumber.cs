@@ -10,18 +10,18 @@ public static class BigNumber
 
     public static void FormatLargeNumberPowerOfTwo(this TMP_Text displayText, int number, string prefix = "")
     {
-        BigInteger bigInteger = BigInteger.Pow(2, number);
-        if (bigInteger < tenThousand)
+        BigInteger bigInteger = BigInteger.One << number;
+        if (BigInteger.Compare(bigInteger, thousand) < 0)
         {
             displayText.text = prefix + bigInteger.ToString();
         }
-        else if (bigInteger < milion)
+        else if (BigInteger.Compare(bigInteger, milion) < 0)
         {
             displayText.text = prefix + (bigInteger / thousand).ToString() + "K";
         }
-        else if (bigInteger < billion)
+        else if (BigInteger.Compare(bigInteger, billion) < 0)
         {
-            displayText.text = prefix + (bigInteger / thousand).ToString() + "M";
+            displayText.text = prefix + (bigInteger / milion).ToString() + "M";
         }
         else
         {
@@ -39,17 +39,17 @@ public static class BigNumber
     }
     public static void FormatBack(this TMP_Text displayText, BigInteger number)
     {
-        if (number < tenThousand)
+        if (BigInteger.Compare(number, thousand) < 0)
         {
             displayText.text = number.ToString();
         }
-        else if (number < milion)
+        else if (BigInteger.Compare(number, milion) < 0)
         {
             displayText.text = (number / thousand).ToString() + "K";
         }
-        else if (number < billion)
+        else if (BigInteger.Compare(number, billion) < 0)
         {
-            displayText.text = (number / thousand).ToString() + "M";
+            displayText.text = (number / milion).ToString() + "M";
         }
         else
         {
@@ -68,17 +68,17 @@ public static class BigNumber
 
     public static string FormatBack(BigInteger number)
     {
-        if (number < tenThousand)
+        if (BigInteger.Compare(number, thousand) < 0)
         {
             return number.ToString();
         }
-        else if (number < milion)
+        else if (BigInteger.Compare(number, milion) < 0)
         {
             return (number / thousand).ToString() + "K";
         }
-        else if (number < billion)
+        else if (BigInteger.Compare(number, billion) < 0)
         {
-            return (number / thousand).ToString() + "M";
+            return (number / milion).ToString() + "M";
         }
         else
         {
