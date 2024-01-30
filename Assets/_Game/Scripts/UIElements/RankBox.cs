@@ -1,6 +1,7 @@
+using System;
 using TMPro;
 using UnityEngine;
-
+[Serializable]
 public class RankBox : MonoBehaviour
 {
     [SerializeField] private TMP_Text _rank;

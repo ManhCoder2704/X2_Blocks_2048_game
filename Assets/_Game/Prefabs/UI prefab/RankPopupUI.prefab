@@ -622,7 +622,7 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 19
     m_Bottom: 0
-  m_ChildAlignment: 4
+  m_ChildAlignment: 1
   m_Spacing: 26.08
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
@@ -2090,3 +2090,4 @@ MonoBehaviour:
   _rankBoxPrefab: {fileID: 7239582248644052891, guid: 0c16971de94e7f64abf7eed2f36c67b5, type: 3}
   _myRank: {fileID: 6646147323438675398}
   _rankBoxContainer: {fileID: 3501317455159115976}
+  _rankScrollRect: {fileID: 1226869604709490580}
