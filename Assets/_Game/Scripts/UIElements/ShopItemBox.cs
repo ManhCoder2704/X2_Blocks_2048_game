@@ -15,7 +15,7 @@ public class ShopItemBox : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _shopItemBtn.onClick.AddListener(PurchaseItem);
+        _shopItemBtn.onClick.AddListener(ConfirmPurchase);
     }
 
     public void OnInit(ShopItemData itemData)
@@ -32,7 +32,10 @@ public class ShopItemBox : MonoBehaviour
         _gemsCount = Mathf.FloorToInt(itemData.GemsCount * (1 + (bonus / 100f)));
         _gemCount.text = _gemsCount.ToString();
     }
-
+    private void ConfirmPurchase()
+    {
+        UIManager.Instance.OpenConfirmUI(PurchaseItem, null, "Do You Want To Purchase This Theme?", null);
+    }
     private void PurchaseItem()
     {
         RuntimeDataManager.Instance.PlayerData.Gems += _gemsCount;

@@ -1,4 +1,6 @@
+using System;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -47,13 +49,20 @@ public class ThemeBox : MonoBehaviour
         }
         else
         {
-            PurchaseBG();
+            CheckMoney();
         }
     }
-
-    private void PurchaseBG()
+    private void CheckMoney()
     {
         if (RuntimeDataManager.Instance.PlayerData.Gems < this._price) return;
+        ConfirmPurchase();
+    }
+    private void ConfirmPurchase()
+    {
+        UIManager.Instance.OpenConfirmUI(PurchaseBG, null, "Do You Want To Purchase This Theme?", null);
+    }
+    private void PurchaseBG()
+    {
         RuntimeDataManager.Instance.PlayerData.Gems -= this._price;
         this._purchased = true;
         _priceBox.SetActive(false);
@@ -71,5 +80,10 @@ public class ThemeBox : MonoBehaviour
     {
         this._status.SetActive(chosen);
         this._chosen = chosen;
+    }
+    public void CheckPurchased(bool status)
+    {
+        this._purchased = status;
+        this._priceBox.SetActive(!status);
     }
 }

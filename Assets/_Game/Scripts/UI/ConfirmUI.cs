@@ -11,23 +11,29 @@ public class ConfirmUI : UIBase
     [SerializeField] private Button _yesBtn;
     [SerializeField] private Button _noBtn;
 
+    private Action OnAgree;
+    private Action OnDisagree;
     private void Start()
     {
         _yesBtn.onClick.AddListener(Agree);
         _noBtn.onClick.AddListener(Disagree);
     }
 
+    public void OnInit(Action agreeCallBack, Action disagreeCallBack, string content)
+    {
+        _contentTxt.text = content;
+        OnAgree = agreeCallBack;
+        OnDisagree = disagreeCallBack;
+    }
     private void Disagree()
     {
-        throw new NotImplementedException();
+        OnDisagree?.Invoke();
+        this.gameObject.SetActive(false);
     }
 
     private void Agree()
     {
-        throw new NotImplementedException();
-    }
-    private void SetContent(string content)
-    {
-        _contentTxt.text = content;
+        OnAgree?.Invoke();
+        this.gameObject.SetActive(false);
     }
 }

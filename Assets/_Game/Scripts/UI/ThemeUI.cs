@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -13,19 +14,32 @@ public class ThemeUI : UIBase
 
     private int _themeChoosenIndex;
     private List<bool> _purchasedTheme;
+    private List<ThemeBox> _spawnedBoxes = new List<ThemeBox>();
     public static ThemeBox chosenThemeBox;
+    private void Awake()
+    {
+        _themeChoosenIndex = RuntimeDataManager.Instance.SettingData.ThemeIndex;
+        _purchasedTheme = RuntimeDataManager.Instance.SettingData.OwnThemeStatusList;
+        SpawnButton();
+    }
     void OnEnable()
     {
         _escapeButton.gameObject.SetActive(_isPopup);
-        _themeChoosenIndex = RuntimeDataManager.Instance.SettingData.ThemeIndex;
-        _purchasedTheme = RuntimeDataManager.Instance.SettingData.OwnThemeStatusList;
+        RecheckThemeBox();
     }
     private void Start()
     {
         _escapeButton.onClick.AddListener(CloseTheme);
-        SpawnButton();
         OnGemChange(RuntimeDataManager.Instance.PlayerData.Gems);
         RuntimeDataManager.Instance.PlayerData.OnGemsChange += OnGemChange;
+    }
+    private void RecheckThemeBox()
+    {
+        List<bool> statusList = RuntimeDataManager.Instance.SettingData.OwnThemeStatusList;
+        for (int i = 0; i < _spawnedBoxes.Count; i++)
+        {
+            _spawnedBoxes[i].CheckPurchased(statusList[i]);
+        }
     }
     private void OnGemChange(int gems)
     {
@@ -33,12 +47,6 @@ public class ThemeUI : UIBase
     }
     private void SpawnButton()
     {
-        StartCoroutine(SpawnButtonCO());
-    }
-
-    private IEnumerator SpawnButtonCO()
-    {
-        UIManager.Instance.StartLoading();
         BackGroundSO backgroundSO = RuntimeDataManager.Instance.BgSo;
         int count = backgroundSO.BackgroundListCount();
         bool chosen;
@@ -47,11 +55,10 @@ public class ThemeUI : UIBase
             chosen = i == _themeChoosenIndex;
             ThemeBox temp = Instantiate(_prefabThemeBox, _themeBoxContainer);
             temp.OnInit(backgroundSO.GetBackgroundByIndex(i), chosen, _purchasedTheme[i], i);
+            _spawnedBoxes.Add(temp);
             if (!chosen) continue;
             chosenThemeBox = temp;
         }
-        yield return new WaitForEndOfFrame();
-        UIManager.Instance.StopLoading();
     }
 
     private void CloseTheme()

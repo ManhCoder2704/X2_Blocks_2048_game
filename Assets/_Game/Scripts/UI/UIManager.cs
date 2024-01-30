@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using System.Collections.Generic;
+using System;
 
 public class UIManager : Singleton<UIManager>
 {
@@ -14,6 +15,7 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private float _fadeDuration = 0.2f;
     [SerializeField] private Transform _uiContainer;
     [SerializeField] private GameObject _loadingImage;
+    [SerializeField] private ConfirmUI _confirmUI;
 
 
     private Dictionary<UIType, UIBase> _uiDict = new Dictionary<UIType, UIBase>();
@@ -32,7 +34,15 @@ public class UIManager : Singleton<UIManager>
             .SetLoops(-1);
         StartLoading();
     }
-
+    public void OpenConfirmUI(Action agreeCallBack, Action disagreeCallBack, string content, Action onOpen)
+    {
+        onOpen?.Invoke();
+        _confirmUI.gameObject.SetActive(true);
+        _currentActiveUI.CanvasGroup.interactable = false;
+        agreeCallBack += () => _currentActiveUI.CanvasGroup.interactable = true;
+        disagreeCallBack += () => _currentActiveUI.CanvasGroup.interactable = true;
+        _confirmUI.OnInit(agreeCallBack, disagreeCallBack, content);
+    }
     public void FirstLoadUI()
     {
         StopLoading();
