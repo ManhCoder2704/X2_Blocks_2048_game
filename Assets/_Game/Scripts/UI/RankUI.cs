@@ -93,17 +93,17 @@ public class RankUI : UIBase
 
     private void LoadPlayerData(bool hasConnection)
     {
-        System.Random random = new System.Random(_randomSeed);
         BigInteger playerScore = RuntimeDataManager.Instance.PlayerData.HighScore.String2BigInterger();
+        System.Random random = new System.Random(playerScore.GetHashCode());
         bool flag = (BigInteger.Compare(playerScore, 0) == 0 || !hasConnection);
         if (_isLocalRank)
         {
-            _localRank = random.Next(100, short.MaxValue);
+            _localRank = random.Next(100, short.MaxValue - playerScore.GetByteCount() * 8);
             _myRank.Init(flag ? "Unrank" : _localRank.ToString(), RuntimeDataManager.Instance.PlayerData.PlayerName, RuntimeDataManager.Instance.PlayerData.HighScore.String2Point(), "VN");
         }
         else
         {
-            _myRank.Init(flag ? "Unrank" : random.Next(Mathf.RoundToInt((float)(_localRank * random.NextDouble())), 100000).ToString(), RuntimeDataManager.Instance.PlayerData.PlayerName, RuntimeDataManager.Instance.PlayerData.HighScore.String2Point(), "#VN");
+            _myRank.Init(flag ? "Unrank" : random.Next(Mathf.RoundToInt((float)(_localRank * random.NextDouble() - playerScore.GetByteCount() * 8)), 100000 - playerScore.GetByteCount() * 8).ToString(), RuntimeDataManager.Instance.PlayerData.PlayerName, RuntimeDataManager.Instance.PlayerData.HighScore.String2Point(), "#VN");
         }
     }
 
