@@ -33,7 +33,7 @@ public class RankUI : UIBase
 
     private void OnHighScoreChange(string highScore)
     {
-        _highScoreText.text = highScore;
+        //_highScoreText.text = highScore;
     }
 
     private void Switch()
