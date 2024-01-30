@@ -47,7 +47,7 @@ public class RankUI : UIBase
         bool hasConnection = CheckWiFiConnection();
         if (hasConnection)
         {
-            if (_randomSeed != seed)
+            if (_randomSeed != seed || _globalRankDatas == null || _localRankDatas == null)
             {
                 _randomSeed = seed;
                 StartCoroutine(GetDataFromApi());
