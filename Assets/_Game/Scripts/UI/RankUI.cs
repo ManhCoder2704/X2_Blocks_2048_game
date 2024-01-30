@@ -39,11 +39,11 @@ public class RankUI : UIBase
         StartCoroutine(GetDataFromApi());
     }
 
-    }
     private void OnHighScoreChange(string highScore)
     {
         _highScoreText.text = highScore;
     }
+
     private void Switch()
     {
         _switchBtn.interactable = false;
