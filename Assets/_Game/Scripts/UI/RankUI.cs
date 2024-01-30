@@ -5,7 +5,6 @@ using UnityEngine.Networking;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System;
-using TMPro;
 using System.Numerics;
 
 public class RankUI : UIBase
