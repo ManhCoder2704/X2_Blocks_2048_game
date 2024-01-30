@@ -653,14 +653,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -696,10 +696,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _canvasGroup: {fileID: 2720954544849670079}
   _isPopup: 1
-  _bgSO: {fileID: 11400000, guid: a617c17e58aca4e44a564f6e620d031d, type: 2}
   _escapeButton: {fileID: 3024160025900517139}
   _prefabThemeBox: {fileID: 244294427654210983, guid: d364c839534300644a4f3671c8282411, type: 3}
   _themeBoxContainer: {fileID: 1129672920548543009}
+  _gemsCountText: {fileID: 0}
 --- !u!1 &9217451991264045580
 GameObject:
   m_ObjectHideFlags: 0

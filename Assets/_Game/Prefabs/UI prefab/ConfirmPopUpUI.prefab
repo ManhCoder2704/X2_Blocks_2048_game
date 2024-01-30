@@ -331,8 +331,9 @@ GameObject:
   - component: {fileID: 1361988139030760410}
   - component: {fileID: 6002117223859956303}
   - component: {fileID: 2317351622747495233}
+  - component: {fileID: 8291537645841536441}
   m_Layer: 5
-  m_Name: ConfirmRestartUI
+  m_Name: ConfirmPopUpUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -409,6 +410,23 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &8291537645841536441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3323418551114517410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7593324a78a8e8144ad226b6851d88da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _canvasGroup: {fileID: 2317351622747495233}
+  _isPopup: 1
+  _contentTxt: {fileID: 2115357806992080829}
+  _yesBtn: {fileID: 8441877477406038859}
+  _noBtn: {fileID: 448905365490519428}
 --- !u!1 &7108901244122610434
 GameObject:
   m_ObjectHideFlags: 0
