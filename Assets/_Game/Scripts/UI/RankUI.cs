@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System;
 using TMPro;
 using System.Numerics;
-using Unity.Mathematics;
 
 public class RankUI : UIBase
 {
@@ -17,6 +16,7 @@ public class RankUI : UIBase
     [SerializeField] private RankBox _rankBoxPrefab;
     [SerializeField] private RankBox _myRank;
     [SerializeField] private Transform _rankBoxContainer;
+    [SerializeField] private ScrollRect _rankScrollRect;
     private List<RankBox> rankBoxes;
     private List<RankData> _globalRankDatas;
     private List<RankData> _localRankDatas;
@@ -123,14 +123,10 @@ public class RankUI : UIBase
         }
     }
 
-    private void OnHighScoreChange(string highScore)
-    {
-        //_highScoreText.text = highScore;
-    }
-
     private void Switch()
     {
         _switchBtn.interactable = false;
+        _rankScrollRect.DOVerticalNormalizedPos(1, _duration);
         _toggleBtn.DOLocalMoveX(-_toggleBtn.localPosition.x, _duration)
             .OnComplete(() =>
             {
@@ -150,11 +146,11 @@ public class RankUI : UIBase
         UIManager.Instance.StartLoading();
 
         // Create a Random instance
-        System.Random random = new System.Random(DateTime.UtcNow.DayOfYear.GetHashCode());
+        System.Random random = new System.Random(_randomSeed);
 
         RankData[] globalRankData = new RankData[20];
         int i = 0;
-        using (UnityWebRequest www = UnityWebRequest.Get($"https://randomuser.me/api/?results={10}&inc=name,nat&nat=us&seed=khanh"))
+        using (UnityWebRequest www = UnityWebRequest.Get($"https://randomuser.me/api/?results={10}&inc=name,nat&nat=us&seed={_randomSeed}"))
         {
             yield return www.SendWebRequest();
 
@@ -178,7 +174,7 @@ public class RankUI : UIBase
             }
         }
 
-        using (UnityWebRequest www = UnityWebRequest.Get($"https://randomuser.me/api/?results={10}&inc=name,nat&seed=khanh"))
+        using (UnityWebRequest www = UnityWebRequest.Get($"https://randomuser.me/api/?results={10}&inc=name,nat&seed={_randomSeed}"))
         {
             yield return www.SendWebRequest();
 
@@ -201,10 +197,8 @@ public class RankUI : UIBase
                 }
             }
         }
-
         Array.Sort(globalRankData, (x, y) => BigInteger.Compare(y.score, x.score));
         _globalRankDatas = new List<RankData>(globalRankData);
-        _globalRankDatas.AddRange(globalRankData);
         _localRankDatas = new List<RankData>();
         foreach (RankData data in _globalRankDatas)
         {
@@ -214,6 +208,8 @@ public class RankUI : UIBase
             }
             yield return null;
         }
+
+        _globalRankDatas.RemoveRange(10, 10);
 
         LoadData();
 

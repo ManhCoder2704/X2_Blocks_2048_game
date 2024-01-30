@@ -1,5 +1,6 @@
+using System;
 using System.Numerics;
-
+[Serializable]
 public class RankData
 {
     public string name;
