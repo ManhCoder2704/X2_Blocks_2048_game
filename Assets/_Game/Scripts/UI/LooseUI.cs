@@ -26,7 +26,7 @@ public class LooseUI : UIBase
     private void Revive()
     {
         //ToDo : Get Skill
-        RuntimeDataManager.Instance.PlayerData.Gems -= 100;
+        RuntimeDataManager.Instance.PlayerData.Gems -= 700;
         UIManager.Instance.OpenUI(UIType.PlayUI);
     }
 }

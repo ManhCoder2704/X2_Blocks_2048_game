@@ -313,6 +313,12 @@ public class GameplayManager : Singleton<GameplayManager>
                 {
                     SoundManager.Instance.VibrateDevice();
                     ChangeGameState(GameStateEnum.Loose);
+                    if (RuntimeDataManager.Instance.PlayerData.Gems < 700)
+                    {
+                        ResetBoard();
+                        UIManager.Instance.OpenUI(UIType.PlayUI);
+                        return;
+                    }
                     UIManager.Instance.OpenUI(UIType.LooseUI);
                 }
 
