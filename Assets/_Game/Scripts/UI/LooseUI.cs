@@ -1,14 +1,33 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LooseUI : MonoBehaviour
+public class LooseUI : UIBase
 {
     [SerializeField] private Button _continueBtn;
     [SerializeField] private Button _restartBtn;
 
+    private void OnEnable()
+    {
+        SoundManager.Instance.PlaySFX(SFXType.Lost);
+    }
     void Start()
     {
-        _continueBtn.onClick.AddListener(() => UIManager.Instance.OnPlayState());
-        _restartBtn.onClick.AddListener(() => UIManager.Instance.Restart());
+        _continueBtn.onClick.AddListener(Revive);
+        _restartBtn.onClick.AddListener(Restart);
+    }
+
+    private void Restart()
+    {
+        GameplayManager.Instance.ResetBoard();
+        UIManager.Instance.OpenUI(UIType.PlayUI);
+    }
+
+    private void Revive()
+    {
+        GameplayManager.Instance.Board.RemoveTwoColumn();
+
+        RuntimeDataManager.Instance.PlayerData.Gems -= 700;
+        UIManager.Instance.OpenUI(UIType.PlayUI);
     }
 }
