@@ -172,6 +172,43 @@ public class Board : MonoBehaviour
         }
     }
 
+    [ContextMenu("RemoveTwoColumn")]
+    public void RemoveTwoColumn()
+    {
+        List<int> clolumnIndex = new List<int> { 0, 1, 2, 3, 4 };
+        int column1 = clolumnIndex[UnityEngine.Random.Range(0, clolumnIndex.Count)];
+        clolumnIndex.Remove(column1);
+        int column2 = clolumnIndex[UnityEngine.Random.Range(0, clolumnIndex.Count)];
+
+        Sequence sequence = DOTween.Sequence();
+        for (int i = 0; i < 7; i++)
+        {
+            if (_block_Coor_Dic.TryGetValue(new Vector2Int(column1, i), out Block block))
+            {
+                block.CurrentLine.GroundYCoordinate = 6;
+                _block_Coor_Dic.Remove(block.Coordinate);
+                sequence.Join(block.RemoveFromBoard());
+
+                GameplayManager.Instance.QuantityBlock--;
+            }
+        }
+        for (int i = 0; i < 7; i++)
+        {
+            if (_block_Coor_Dic.TryGetValue(new Vector2Int(column2, i), out Block block))
+            {
+                block.CurrentLine.GroundYCoordinate = 6;
+                _block_Coor_Dic.Remove(block.Coordinate);
+                sequence.Join(block.RemoveFromBoard());
+
+                GameplayManager.Instance.QuantityBlock--;
+            }
+        }
+        sequence.OnComplete(() =>
+        {
+
+        });
+    }
+
     public void OnCombineBlock(int number)
     {
         if (number > _maxRandomBlockNumber)
