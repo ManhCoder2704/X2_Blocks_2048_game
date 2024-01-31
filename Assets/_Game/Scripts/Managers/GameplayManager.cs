@@ -43,7 +43,6 @@ public class GameplayManager : Singleton<GameplayManager>
     public Board Board { get => _board; }
     public BigInteger MaxPoint { get => _maxPoint; set => _maxPoint = value; }
     public int HighestBlock { get => _highestBlock; set => _highestBlock = value; }
-    public ISkillState CurrentSkillState { get => _currentSkillState; set => _currentSkillState = value; }
 
     private void Awake()
     {
