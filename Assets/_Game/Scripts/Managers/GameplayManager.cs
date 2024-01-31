@@ -311,13 +311,14 @@ public class GameplayManager : Singleton<GameplayManager>
                 if (CheckLose())
                 {
                     SoundManager.Instance.VibrateDevice();
-                    ChangeGameState(GameStateEnum.Loose);
                     if (RuntimeDataManager.Instance.PlayerData.Gems < 700)
                     {
                         ResetBoard();
                         UIManager.Instance.OpenUI(UIType.PlayUI);
+                        UIManager.Instance.OpenNoticUI("You Don't Have Enough Money To Revive");
                         return;
                     }
+                    ChangeGameState(GameStateEnum.Loose);
                     UIManager.Instance.OpenUI(UIType.LooseUI);
                 }
 
