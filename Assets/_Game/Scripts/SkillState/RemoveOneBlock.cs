@@ -10,11 +10,6 @@ public class RemoveOneBlock : ISkillState
     private const int _price = 100;
     public void Enter(Board board, List<Block> actionBlocks, Action callback)
     {
-        if (RuntimeDataManager.Instance.PlayerData.Gems < _price)
-        {
-            GameplayManager.Instance.ChangeSkillState(null);
-            return;
-        }
         _board = board;
         _actionBlocks = actionBlocks;
         _callback = callback;

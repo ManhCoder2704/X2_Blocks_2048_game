@@ -10,11 +10,6 @@ public class SwapNextBlock : ISkillState
     private const int _price = 100;
     public void Enter(Board t, List<Block> actionBlocks, Action callback)
     {
-        if (RuntimeDataManager.Instance.PlayerData.Gems < _price)
-        {
-            GameplayManager.Instance.ChangeSkillState(null);
-            return;
-        }
         _board = t;
         _actionBlocks = actionBlocks;
         _callback = callback;

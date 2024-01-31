@@ -18,6 +18,7 @@ public class GameplayManager : Singleton<GameplayManager>
     private ISkillState _currentSkillState;
     private BigInteger _point = 0;
     private BigInteger _maxPoint;
+    private int _highestBlock = 0;
 
     public Action OnReset;
     public Action<BigInteger> OnGetPoint;
@@ -25,6 +26,7 @@ public class GameplayManager : Singleton<GameplayManager>
     public Action<Line> OnMouseEnter;
     public Action<int> OnCombineBlock;
     public Action<int> OnGetCombo;
+    public Action OnUseSkill;
     public GameStateEnum CurrentState;
 
     public int QuantityBlock { get => _quantityBlock; set => _quantityBlock = value; }
@@ -40,6 +42,8 @@ public class GameplayManager : Singleton<GameplayManager>
     }
     public Board Board { get => _board; }
     public BigInteger MaxPoint { get => _maxPoint; set => _maxPoint = value; }
+    public int HighestBlock { get => _highestBlock; set => _highestBlock = value; }
+    public ISkillState CurrentSkillState { get => _currentSkillState; set => _currentSkillState = value; }
 
     private void Awake()
     {
@@ -93,6 +97,11 @@ public class GameplayManager : Singleton<GameplayManager>
             if (checkBlock.BlockNum.Number == _currentPendingBlock.BlockNum.Number)
             {
                 int newNumber = checkBlock.BlockNum.Number + 1;
+                if (newNumber > HighestBlock)
+                {
+                    HighestBlock = newNumber;
+                    RuntimeDataManager.Instance.PlayerData.HighestBlockIndex = HighestBlock;
+                }
                 checkBlock.BlockNum.Number = newNumber;
                 checkBlock.SpriteRenderer.color = CacheColor.GetColor(newNumber);
                 _currentPendingBlock.ReturnToPool();
@@ -201,6 +210,11 @@ public class GameplayManager : Singleton<GameplayManager>
             Debug.Log($"Current combine block is {1 << _actionBlocks[i].BlockNum.Number} with coor: {_actionBlocks[i].Coordinate}");
 
             int newNumber = maxBlock.BlockNum.Number + maxValue;
+            if (newNumber > HighestBlock)
+            {
+                HighestBlock = newNumber;
+                RuntimeDataManager.Instance.PlayerData.HighestBlockIndex = HighestBlock;
+            }
             Point += BigInteger.Pow(2, newNumber);
             if (Point > _maxPoint)
             {
@@ -285,7 +299,7 @@ public class GameplayManager : Singleton<GameplayManager>
                 if (_comboCount > 2)
                 {
                     OnGetCombo?.Invoke(_comboCount);
-                    Invoke(nameof(AllowPlayerInteract), 1f);
+                    Invoke(nameof(AllowPlayerInteract), 2f);
                 }
                 else
                     Invoke(nameof(AllowPlayerInteract), .25f);
@@ -387,6 +401,8 @@ public class GameplayManager : Singleton<GameplayManager>
 
     public void ChangeSkillState(ISkillState state)
     {
+        if (state == null)
+            OnUseSkill?.Invoke();
         if (_currentSkillState == state) return;
         if (_currentSkillState != null)
         {

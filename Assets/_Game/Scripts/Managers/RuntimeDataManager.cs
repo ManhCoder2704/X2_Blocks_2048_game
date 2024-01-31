@@ -48,6 +48,7 @@ public class RuntimeDataManager : Singleton<RuntimeDataManager>
             _playerData = new PlayerData();
             SaveManager.SaveData(_playerData);
         }
+        GameplayManager.Instance.HighestBlock = _playerData.HighestBlockIndex;
         GameplayManager.Instance.MaxPoint = _playerData.HighScore.String2BigInterger();
         yield return null;
 
