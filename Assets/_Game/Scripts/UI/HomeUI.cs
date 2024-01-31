@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,6 +8,7 @@ public class HomeUI : UIBase
     [SerializeField] private Button _questBtn;
     [SerializeField] private Button _diamonBtn;
     [SerializeField] private Button _highScoreBtn;
+    [SerializeField] private Image _highestBlockImage;
     [SerializeField] private TMP_Text _highBlockText;
     [SerializeField] private TMP_Text _gemsCountText;
     [SerializeField] private TMP_Text _highScoreText;
@@ -27,7 +27,9 @@ public class HomeUI : UIBase
     private void OnEnable()
     {
         _highScoreText.String2Point(RuntimeDataManager.Instance.PlayerData.HighScore);
-        _highBlockText.text = Math.Pow(2, RuntimeDataManager.Instance.PlayerData.HighestBlockIndex + 1).ToString();
+        int highestBlock = RuntimeDataManager.Instance.PlayerData.HighestBlockIndex;
+        _highBlockText.FormatLargeNumberPowerOfTwo(highestBlock);
+        _highestBlockImage.color = CacheColor.GetColor(highestBlock);
 
     }
     private void OnGemChange(int gems)

@@ -13,12 +13,17 @@ public class PlayUI : UIBase
     [SerializeField] private Button _spellRemoveBtn;
     [SerializeField] private Button _spellClearBtn;
     [SerializeField] private Button _spellSwapBtn;
+    [SerializeField] private Image _spellRemoveImg;
+    [SerializeField] private Image _spellClearImg;
+    [SerializeField] private CanvasGroup[] _spellCanvas;
     [SerializeField] private TMP_Text _scoreTxt;
     [SerializeField] private TMP_Text _diamondTxt;
     [SerializeField] private TMP_Text _highScoreTxt;
     [SerializeField] private TMP_Text _comboText;
     [SerializeField] private TMP_Text _gemsCountText;
     [SerializeField] private TMP_Text _highScoreText;
+    private SkillType _currentSkillType = SkillType.None;
+    private Tween _spellBlinkTween;
 
     void Awake()
     {
@@ -50,11 +55,42 @@ public class PlayUI : UIBase
         _spellRemoveBtn.onClick.AddListener(RemoveOneBlockOnClick);
         _spellClearBtn.onClick.AddListener(ClearOneRowOnclick);
         _spellSwapBtn.onClick.AddListener(SwapNextBlockOnClick);
+        GameplayManager.Instance.OnUseSkill += KillBlickTwwen;
         OnGemChange(RuntimeDataManager.Instance.PlayerData.Gems);
         RuntimeDataManager.Instance.PlayerData.OnGemsChange += OnGemChange;
+        RuntimeDataManager.Instance.PlayerData.OnGemsChange += CheckSpell;
         OnHighScoreChange(RuntimeDataManager.Instance.PlayerData.HighScore);
         RuntimeDataManager.Instance.PlayerData.OnHighScoreChange += OnHighScoreChange;
+        CheckSpell(RuntimeDataManager.Instance.PlayerData.Gems);
     }
+    private void CheckSpell(int gems)
+    {
+        if (gems < 100)
+        {
+            _spellCanvas[0].alpha = 0.5f;
+            _spellCanvas[0].interactable = false;
+            _spellCanvas[1].alpha = 0.5f;
+            _spellCanvas[1].interactable = false;
+        }
+        else
+        {
+            _spellCanvas[0].alpha = 1f;
+            _spellCanvas[0].interactable = true;
+            _spellCanvas[1].alpha = 1f;
+            _spellCanvas[1].interactable = true;
+        }
+        if (gems < 400)
+        {
+            _spellCanvas[2].alpha = 0.5f;
+            _spellCanvas[2].interactable = false;
+        }
+        else
+        {
+            _spellCanvas[2].alpha = 1f;
+            _spellCanvas[2].interactable = true;
+        }
+    }
+
     private void OnGemChange(int gems)
     {
         _gemsCountText.LerpNumber(gems);
@@ -72,7 +108,6 @@ public class PlayUI : UIBase
             PlayerPrefs.SetInt("Tutorial", 1);
         }
         OnGetPoint(GameplayManager.Instance.Point);
-
     }
 
     private void OnGetCombo(int comboCount)
@@ -81,7 +116,7 @@ public class PlayUI : UIBase
         _comboText.DOFade(1, 0.25f).OnComplete(() =>
         {
             _comboText.text = $"Combo +{comboCount}";
-            _comboText.DOFade(0, 0.5f);
+            _comboText.DOFade(0, 1.75f);
         });
     }
 
@@ -102,6 +137,7 @@ public class PlayUI : UIBase
     [ContextMenu("SwapNextBlock")]
     private void SwapNextBlockOnClick()
     {
+        if (RuntimeDataManager.Instance.PlayerData.Gems < 100) return;
         //TODO: Check user currency first
         GameplayManager.Instance.ChangeSkillState(new SwapNextBlock());
     }
@@ -109,6 +145,13 @@ public class PlayUI : UIBase
     [ContextMenu("ClearOneRow")]
     private void ClearOneRowOnclick()
     {
+        if (_currentSkillType == SkillType.ClearOneRow)
+        {
+            GameplayManager.Instance.ChangeSkillState(null);
+        }
+        KillBlickTwwen();
+        if (RuntimeDataManager.Instance.PlayerData.Gems < 400) return;
+        _spellBlinkTween = _spellClearImg.DOFade(0.25f, 0.3f).SetLoops(-1, LoopType.Yoyo);
         //TODO: Check user currency first
         GameplayManager.Instance.ChangeSkillState(new ClearOneRow());
     }
@@ -116,7 +159,28 @@ public class PlayUI : UIBase
     [ContextMenu("RemoveOneBlock")]
     private void RemoveOneBlockOnClick()
     {
+        if (_currentSkillType == SkillType.RemoveOneBlock)
+        {
+            GameplayManager.Instance.ChangeSkillState(null);
+        }
+        KillBlickTwwen();
+        if (RuntimeDataManager.Instance.PlayerData.Gems < 100) return;
+        _spellBlinkTween = _spellRemoveImg.DOFade(0.25f, 0.3f).SetLoops(-1, LoopType.Yoyo);
         //TODO: Check user currency first
         GameplayManager.Instance.ChangeSkillState(new RemoveOneBlock());
     }
+
+    private void KillBlickTwwen()
+    {
+        _spellBlinkTween?.Restart();
+        _spellBlinkTween?.Kill();
+    }
+}
+
+public enum SkillType
+{
+    None,
+    RemoveOneBlock,
+    ClearOneRow,
+    SwapNextBlock
 }
