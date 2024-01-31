@@ -398,7 +398,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2052023362693839073
 RectTransform:
   m_ObjectHideFlags: 0
@@ -466,7 +466,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1418511824726063956}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 0
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -486,11 +486,8 @@ MonoBehaviour:
   _isPopup: 0
   _vibraBtn: {fileID: 2572910877056969614}
   _musicBtn: {fileID: 5863678903348080526}
-  _infoBtn: {fileID: 0}
-  _rateBtn: {fileID: 0}
-  _contactBtn: {fileID: 0}
-  _likeBtn: {fileID: 0}
-  _policyBtn: {fileID: 0}
+  _musicIcon: {fileID: 5118890425365409229}
+  _vibraIcon: {fileID: 514493329504881862}
 --- !u!1 &2199645558690588299
 GameObject:
   m_ObjectHideFlags: 0
@@ -502,6 +499,7 @@ GameObject:
   - component: {fileID: 2982351291517507144}
   - component: {fileID: 7302106399360555467}
   - component: {fileID: 5704372043938703837}
+  - component: {fileID: 514493329504881862}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -566,6 +564,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &514493329504881862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2199645558690588299}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dff7e304d5315214e8e62f3cb9f4c696, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _thisImage: {fileID: 5704372043938703837}
+  _onSprite: {fileID: 21300000, guid: de5fcea26140b47afabc3d46c088b53b, type: 3}
+  _offSprite: {fileID: 0}
 --- !u!1 &3801571748141792391
 GameObject:
   m_ObjectHideFlags: 0
@@ -602,7 +615,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: -255.47845, y: 46.58}
-  m_SizeDelta: {x: 349.1471, y: 319.8685}
+  m_SizeDelta: {x: 349.1471, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &236647592110963601
 CanvasRenderer:
@@ -877,6 +890,7 @@ GameObject:
   - component: {fileID: 7364666393568540474}
   - component: {fileID: 143797143899338765}
   - component: {fileID: 6002096720180725598}
+  - component: {fileID: 5118890425365409229}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -941,6 +955,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &5118890425365409229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5300637423264533778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dff7e304d5315214e8e62f3cb9f4c696, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _thisImage: {fileID: 4869976178761033903}
+  _onSprite: {fileID: 0}
+  _offSprite: {fileID: 0}
 --- !u!1 &5898713979496571583
 GameObject:
   m_ObjectHideFlags: 0
@@ -1488,7 +1517,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -0.000015258464, y: -0.00006529865}
-  m_SizeDelta: {x: 0, y: 772.77}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1312447378427409449
 MonoBehaviour:
