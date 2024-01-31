@@ -97,7 +97,6 @@ public class PlayUI : UIBase
     private void SwapNextBlockOnClick()
     {
         //TODO: Check user currency first
-        SoundManager.Instance.PlaySFX(SFXType.Skill);
         GameplayManager.Instance.ChangeSkillState(new SwapNextBlock());
     }
 
@@ -105,7 +104,6 @@ public class PlayUI : UIBase
     private void ClearOneRowOnclick()
     {
         //TODO: Check user currency first
-        SoundManager.Instance.PlaySFX(SFXType.Skill);
         GameplayManager.Instance.ChangeSkillState(new ClearOneRow());
     }
 
@@ -113,7 +111,6 @@ public class PlayUI : UIBase
     private void RemoveOneBlockOnClick()
     {
         //TODO: Check user currency first
-        SoundManager.Instance.PlaySFX(SFXType.Skill);
         GameplayManager.Instance.ChangeSkillState(new RemoveOneBlock());
     }
 }

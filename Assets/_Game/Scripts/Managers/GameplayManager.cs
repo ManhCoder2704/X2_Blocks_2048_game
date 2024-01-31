@@ -392,9 +392,7 @@ public class GameplayManager : Singleton<GameplayManager>
         {
             _currentSkillState.Exit();
         }
-
         _currentSkillState = state;
-
         if (_currentSkillState != null)
         {
             _currentSkillState.Enter(_board, _actionBlocks, BlockDropState);

@@ -24,6 +24,7 @@ public class SwapNextBlock : ISkillState
     public void Execute(Vector2Int? inputCoor)
     {
         RuntimeDataManager.Instance.PlayerData.Gems -= _price;
+        SoundManager.Instance.PlaySFX(SFXType.Skill);
         _board.SwapNextBlock();
         GameplayManager.Instance.ChangeSkillState(null);
     }
