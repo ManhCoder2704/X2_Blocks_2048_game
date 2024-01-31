@@ -54,7 +54,11 @@ public class ThemeBox : MonoBehaviour
     }
     private void CheckMoney()
     {
-        if (RuntimeDataManager.Instance.PlayerData.Gems < this._price) return;
+        if (RuntimeDataManager.Instance.PlayerData.Gems < this._price)
+        {
+            UIManager.Instance.OpenNoticUI("You Don't Have Enough Money");
+            return;
+        }
         ConfirmPurchase();
     }
     private void ConfirmPurchase()

@@ -16,6 +16,7 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private Transform _uiContainer;
     [SerializeField] private GameObject _loadingImage;
     [SerializeField] private ConfirmUI _confirmUI;
+    [SerializeField] private NotificationUI _noticUI;
 
 
     private Dictionary<UIType, UIBase> _uiDict = new Dictionary<UIType, UIBase>();
@@ -42,6 +43,12 @@ public class UIManager : Singleton<UIManager>
         agreeCallBack += () => _currentActiveUI.CanvasGroup.interactable = true;
         disagreeCallBack += () => _currentActiveUI.CanvasGroup.interactable = true;
         _confirmUI.OnInit(agreeCallBack, disagreeCallBack, content);
+    }
+    public void OpenNoticUI(string content)
+    {
+        _noticUI.gameObject.SetActive(true);
+        _currentActiveUI.CanvasGroup.interactable = false;
+        _noticUI.SetContent(content);
     }
     public void FirstLoadUI()
     {

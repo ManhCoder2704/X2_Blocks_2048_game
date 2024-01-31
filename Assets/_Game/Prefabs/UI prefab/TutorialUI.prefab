@@ -33,10 +33,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 4153498337884713559}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 787.54285, y: -49.913956}
-  m_SizeDelta: {x: 107.6631, y: 99.82791}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 107.6631, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3047560296676154966
 CanvasRenderer:
@@ -274,10 +274,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 4153498337884713559}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 162.51428, y: -49.913956}
-  m_SizeDelta: {x: 107.6631, y: 99.82791}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 107.6631, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4785068691197218790
 CanvasRenderer:
@@ -461,7 +461,7 @@ RectTransform:
   m_AnchorMin: {x: 0.18447895, y: 0.344362}
   m_AnchorMax: {x: 0.82272637, y: 0.81385076}
   m_AnchoredPosition: {x: 0.26556396, y: 2}
-  m_SizeDelta: {x: 0.6168823, y: 1.6837745}
+  m_SizeDelta: {x: 0.6168823, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1460344581475520838
 CanvasRenderer:
@@ -668,7 +668,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &4715724625486558454
 RectTransform:
   m_ObjectHideFlags: 0
@@ -688,10 +688,10 @@ RectTransform:
   - {fileID: 4153498337884713559}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.062000003, y: 0.17347917}
-  m_AnchorMax: {x: 0.92862964, y: 0.83500004}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: -5, y: 8}
+  m_SizeDelta: {x: -144, y: 1270}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3081160873703695785
 CanvasRenderer:
@@ -739,7 +739,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7377630977902770019}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 0
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0

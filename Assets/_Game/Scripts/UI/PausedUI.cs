@@ -10,6 +10,9 @@ public class PausedUI : UIBase
     [SerializeField] private Button _vibraBtn;
     [SerializeField] private Button _musicBtn;
     [SerializeField] private Button _themeBtn;
+
+    private SwitchController _musicSwitcher;
+    private SwitchController _vibraSwitcher;
     void Awake()
     {
         _homeBtn.onClick.AddListener(() => UIManager.Instance.OpenUI(UIType.HomeUI));
@@ -18,8 +21,15 @@ public class PausedUI : UIBase
         _vibraBtn.onClick.AddListener(OnVibration);
         _musicBtn.onClick.AddListener(OnMusic);
         _themeBtn.onClick.AddListener(() => UIManager.Instance.OpenUI(UIType.ThemePopupUI));
-    }
 
+        _musicSwitcher = _musicBtn.GetComponent<SwitchController>();
+        _vibraSwitcher = _vibraBtn.GetComponent<SwitchController>();
+    }
+    private void OnEnable()
+    {
+        _musicSwitcher.CheckStatus(RuntimeDataManager.Instance.SettingData.IsSoundOn);
+        _vibraSwitcher.CheckStatus(RuntimeDataManager.Instance.SettingData.IsVibrationOn);
+    }
     private void Continue()
     {
         UIManager.Instance.ClosePopup(this);

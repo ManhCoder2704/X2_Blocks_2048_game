@@ -597,7 +597,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 36.1, y: 0.6000061}
-  m_SizeDelta: {x: 57.1, y: 0}
+  m_SizeDelta: {x: 57.1, y: 2.9016342}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6088578569284156816
 CanvasRenderer:
@@ -984,7 +984,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _canvasGroup: {fileID: 2720954544849670079}
   _isPopup: 0
-  _bgSO: {fileID: 11400000, guid: a617c17e58aca4e44a564f6e620d031d, type: 2}
   _escapeButton: {fileID: 3024160025900517139}
   _prefabThemeBox: {fileID: 244294427654210983, guid: d364c839534300644a4f3671c8282411, type: 3}
   _themeBoxContainer: {fileID: 1129672920548543009}

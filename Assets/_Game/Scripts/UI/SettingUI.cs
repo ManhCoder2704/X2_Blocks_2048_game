@@ -22,13 +22,13 @@ public class SettingUI : UIBase
 
     private void OnMusic()
     {
-        _musicIcon.Swap(RuntimeDataManager.Instance.SettingData.IsSoundOn);
         SoundManager.Instance.ChangeSoundable();
+        _musicIcon.Swap(RuntimeDataManager.Instance.SettingData.IsSoundOn);
     }
 
     private void OnVibration()
     {
-        _vibraIcon.Swap(RuntimeDataManager.Instance.SettingData.IsVibrationOn);
         SoundManager.Instance.ChangeVibratable();
+        _vibraIcon.Swap(RuntimeDataManager.Instance.SettingData.IsVibrationOn);
     }
 }

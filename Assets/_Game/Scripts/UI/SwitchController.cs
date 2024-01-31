@@ -7,16 +7,11 @@ public class SwitchController : MonoBehaviour
     [SerializeField] private Button _switchBtn;
     [SerializeField] private Image _switchBG;
     [SerializeField] private Transform _toggleBtn;
+    [SerializeField] private Vector2 _onPos;
 
-    private bool _isOn = true;
     private float _duration = 0.5f;
-
     void Start()
     {
-        if (_isOn)
-        {
-            _switchBG.color = Color.green;
-        }
         _switchBtn.onClick.AddListener(Switch);
     }
 
@@ -32,7 +27,7 @@ public class SwitchController : MonoBehaviour
     }
     private void SetColor()
     {
-        if (_isOn)
+        if (_switchBG.color == Color.green)
         {
             _switchBG.DOColor(Color.gray, _duration);
         }
@@ -40,6 +35,19 @@ public class SwitchController : MonoBehaviour
         {
             _switchBG.DOColor(Color.green, _duration);
         }
-        _isOn = !_isOn;
+    }
+    public void CheckStatus(bool isOn)
+    {
+        if (isOn)
+        {
+            _switchBG.color = Color.green;
+            _toggleBtn.DOLocalMoveX(_onPos.x,0f);
+        }
+        else
+        {
+            _switchBG.color = Color.gray;
+            _toggleBtn.DOLocalMoveX(-_onPos.x, 0f);
+
+        }
     }
 }

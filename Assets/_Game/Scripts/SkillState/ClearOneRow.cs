@@ -23,6 +23,7 @@ public class ClearOneRow : ISkillState
     public void Execute(Vector2Int? inputCoor)
     {
         RuntimeDataManager.Instance.PlayerData.Gems -= _price;
+        SoundManager.Instance.PlaySFX(SFXType.Skill);
         _board.ClearOneRow(inputCoor, _actionBlocks, _callback);
     }
 
