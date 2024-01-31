@@ -298,6 +298,8 @@ public class GameplayManager : Singleton<GameplayManager>
                 Debug.Log(_comboCount);
                 if (_comboCount > 2)
                 {
+                    SoundManager.Instance.VibrateDevice();
+                    RuntimeDataManager.Instance.PlayerData.Gems += _comboCount;
                     OnGetCombo?.Invoke(_comboCount);
                     Invoke(nameof(AllowPlayerInteract), 2f);
                 }
@@ -309,7 +311,9 @@ public class GameplayManager : Singleton<GameplayManager>
 
                 if (CheckLose())
                 {
-                    Debug.Log("Lose");
+                    SoundManager.Instance.VibrateDevice();
+                    ChangeGameState(GameStateEnum.Loose);
+                    UIManager.Instance.OpenUI(UIType.LooseUI);
                 }
 
             }
@@ -363,8 +367,7 @@ public class GameplayManager : Singleton<GameplayManager>
                 }
 
             }
-            ChangeGameState(GameStateEnum.Loose);
-            UIManager.Instance.OpenUI(UIType.LooseUI);
+
             return true;
         }
         return false;

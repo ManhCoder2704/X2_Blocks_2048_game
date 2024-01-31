@@ -988,6 +988,7 @@ MonoBehaviour:
   _prefabThemeBox: {fileID: 244294427654210983, guid: d364c839534300644a4f3671c8282411, type: 3}
   _themeBoxContainer: {fileID: 1129672920548543009}
   _gemsCountText: {fileID: 7711819765805694958}
+  _gemsBtn: {fileID: 1826334478629881500}
 --- !u!1 &8540924379746905147
 GameObject:
   m_ObjectHideFlags: 0
