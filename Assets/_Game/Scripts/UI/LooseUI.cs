@@ -13,7 +13,7 @@ public class LooseUI : UIBase
     }
     void Start()
     {
-        _continueBtn.onClick.AddListener(Continue);
+        _continueBtn.onClick.AddListener(Revive);
         _restartBtn.onClick.AddListener(Restart);
     }
 
@@ -23,9 +23,10 @@ public class LooseUI : UIBase
         UIManager.Instance.OpenUI(UIType.PlayUI);
     }
 
-    private void Continue()
+    private void Revive()
     {
         //ToDo : Get Skill
+        RuntimeDataManager.Instance.PlayerData.Gems -= 100;
         UIManager.Instance.OpenUI(UIType.PlayUI);
     }
 }

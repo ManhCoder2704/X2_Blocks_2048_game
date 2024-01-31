@@ -27,6 +27,7 @@ public class UIManager : Singleton<UIManager>
     public Button shopBtn;
 
     public Image Background { get => _background; set => _background = value; }
+    public UIBase CurrentActiveUI { get => _currentActiveUI; set => _currentActiveUI = value; }
 
     void Awake()
     {
@@ -47,7 +48,6 @@ public class UIManager : Singleton<UIManager>
     public void OpenNoticUI(string content)
     {
         _noticUI.gameObject.SetActive(true);
-        _currentActiveUI.CanvasGroup.interactable = false;
         _noticUI.SetContent(content);
     }
     public void FirstLoadUI()
@@ -58,12 +58,14 @@ public class UIManager : Singleton<UIManager>
 
     public void StartLoading()
     {
+        _menu.interactable = false;
         _loadingImage.SetActive(true);
         _loadingTween.Play();
     }
 
     public void StopLoading()
     {
+        _menu.interactable = true;
         _loadingTween.Pause();
         _loadingImage.SetActive(false);
     }

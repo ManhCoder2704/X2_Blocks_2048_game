@@ -30,7 +30,13 @@ public class PlayUI : UIBase
             SoundManager.Instance.PlaySFX(SFXType.Click);
             UIManager.Instance.OpenUI(UIType.PauseUI);
         });
-        _adsBtn.onClick.AddListener(() => UIManager.Instance.OpenUI(UIType.ShopUI));
+        _adsBtn.onClick.AddListener(() =>
+            {
+                //Watch Ads
+                RuntimeDataManager.Instance.PlayerData.Gems += 100;
+            }
+            );
+
         _diamondBtn.onClick.AddListener(() =>
         {
             SoundManager.Instance.PlaySFX(SFXType.Click);
