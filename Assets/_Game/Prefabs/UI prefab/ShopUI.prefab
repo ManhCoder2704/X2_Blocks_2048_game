@@ -582,8 +582,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 808.5}
-  m_SizeDelta: {x: 1080, y: 1617}
+  m_AnchoredPosition: {x: 0, y: 781.8127}
+  m_SizeDelta: {x: 1080, y: 1563.6255}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1722633133488790469
 CanvasRenderer:
@@ -885,7 +885,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 540, y: -136.2143}
+  m_AnchoredPosition: {x: 540, y: -60.2143}
   m_SizeDelta: {x: 964.86, y: 82.4286}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &4709259094668530626
@@ -1457,10 +1457,10 @@ RectTransform:
   - {fileID: 6960373077441735693}
   m_Father: {fileID: 2722550301845809933}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: -540, y: 1571.8877}
+  m_SizeDelta: {x: 1080, y: 1571.8877}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &8939073275939452337
 CanvasRenderer:
@@ -2170,10 +2170,10 @@ RectTransform:
   - {fileID: 2722550301845809933}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -893.485}
-  m_SizeDelta: {x: 1080, y: 1786.969}
+  m_AnchorMin: {x: 0, y: 0.06689583}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 1.6860352}
+  m_SizeDelta: {x: 0, y: -3.3733063}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3664356241041509847
 CanvasRenderer:
@@ -2276,7 +2276,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 540, y: -706.6836}
+  m_AnchoredPosition: {x: 540, y: -630.6836}
   m_SizeDelta: {x: 1078.3601, y: 968.51}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &4907867782734806927
@@ -2794,7 +2794,7 @@ MonoBehaviour:
   m_Padding:
     m_Left: 0
     m_Right: 0
-    m_Top: 95
+    m_Top: 19
     m_Bottom: 0
   m_ChildAlignment: 4
   m_Spacing: 45
