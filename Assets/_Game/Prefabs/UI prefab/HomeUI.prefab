@@ -520,10 +520,10 @@ RectTransform:
   - {fileID: 2968081914784479103}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 0.062314816}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 66.816}
-  m_SizeDelta: {x: 0, y: -133.63}
+  m_AnchoredPosition: {x: 0, y: 0.315979}
+  m_SizeDelta: {x: 0, y: -0.6300049}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4993686784268530080
 CanvasRenderer:
@@ -578,7 +578,6 @@ MonoBehaviour:
   _canvasGroup: {fileID: 4093094568343235157}
   _isPopup: 0
   _playBtn: {fileID: 855994610072888220}
-  _questBtn: {fileID: 0}
   _diamonBtn: {fileID: 8072455937494874468}
   _highScoreBtn: {fileID: 6006875453138562989}
   _highestBlockImage: {fileID: 3056981028954236831}
