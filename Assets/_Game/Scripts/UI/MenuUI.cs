@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MenuUI : MonoBehaviour
+public class MenuUI : UIBase
 {
     [SerializeField] private Button _homeBtn;
     [SerializeField] private Button _shopBtn;
@@ -23,32 +23,37 @@ public class MenuUI : MonoBehaviour
 
     private void OnSetting()
     {
+        SoundManager.Instance.PlaySFX(SFXType.Click);
         TurnOn(_settingBtn);
-        UIManager.Instance.OnSettingState();
+        UIManager.Instance.OpenUI(UIType.SettingUI);
     }
 
     private void OnTheme()
     {
+        SoundManager.Instance.PlaySFX(SFXType.Click);
         TurnOn(_themeBtn);
-        UIManager.Instance.OnThemeState();
+        UIManager.Instance.OpenUI(UIType.ThemeUI);
     }
 
     private void OnRank()
     {
+        SoundManager.Instance.PlaySFX(SFXType.Click);
         TurnOn(_rankBtn);
-        UIManager.Instance.OnRankState();
+        UIManager.Instance.OpenUI(UIType.RankUI);
     }
 
     private void OnShop()
     {
+        SoundManager.Instance.PlaySFX(SFXType.Click);
         TurnOn(_shopBtn);
-        UIManager.Instance.OnShopState();
+        UIManager.Instance.OpenUI(UIType.ShopUI);
     }
 
     private void OnHome()
     {
+        SoundManager.Instance.PlaySFX(SFXType.Click);
         TurnOn(_homeBtn);
-        UIManager.Instance.OnHomeState();
+        UIManager.Instance.OpenUI(UIType.HomeUI);
     }
     private void TurnOn(Button off)
     {

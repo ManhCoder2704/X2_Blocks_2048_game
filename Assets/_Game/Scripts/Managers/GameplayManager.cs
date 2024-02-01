@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using System.Numerics;
 
 public class GameplayManager : Singleton<GameplayManager>
 {
@@ -14,13 +15,34 @@ public class GameplayManager : Singleton<GameplayManager>
     private bool _isBlockMoving = false;
     private int _quantityBlock = 0;
     private int _comboCount = 0;
+    private ISkillState _currentSkillState;
+    private BigInteger _point = 0;
+    private BigInteger _maxPoint;
+    private int _highestBlock = 0;
 
     public Action OnReset;
-    public Action<int> OnGetPoint;
+    public Action<BigInteger> OnGetPoint;
     public Action<Line> OnMouseDown;
     public Action<Line> OnMouseEnter;
     public Action<int> OnCombineBlock;
+    public Action<int> OnGetCombo;
+    public Action OnUseSkill;
     public GameStateEnum CurrentState;
+
+    public int QuantityBlock { get => _quantityBlock; set => _quantityBlock = value; }
+    public bool IsBlockMoving { get => _isBlockMoving; set => _isBlockMoving = value; }
+    public BigInteger Point
+    {
+        get => _point;
+        set
+        {
+            _point = value;
+            OnGetPoint?.Invoke(_point);
+        }
+    }
+    public Board Board { get => _board; }
+    public BigInteger MaxPoint { get => _maxPoint; set => _maxPoint = value; }
+    public int HighestBlock { get => _highestBlock; set => _highestBlock = value; }
 
     private void Awake()
     {
@@ -30,12 +52,26 @@ public class GameplayManager : Singleton<GameplayManager>
         Application.targetFrameRate = 60;
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
     }
+
     private void OnLineMouseDown(Line line)
     {
         if (_isBlockMoving || CurrentState != GameStateEnum.Playing) return;
+        if (_currentSkillState != null)
+        {
+            UnityEngine.Vector3 vector3 = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+            int x = Mathf.RoundToInt(vector3.x);
+            int y = Mathf.RoundToInt(vector3.y);
+
+            _currentSkillState.Execute(new Vector2Int(x, y));
+
+            _isBlockMoving = true;
+            return;
+        }
         _currentPendingBlock = _board.GetNextBlock();
         PendingShoot(line);
     }
+
     private void OnLineMouseEnter(Line line)
     {
         if (_currentSelectLine == null || _isBlockMoving || CurrentState != GameStateEnum.Playing) return;
@@ -60,6 +96,11 @@ public class GameplayManager : Singleton<GameplayManager>
             if (checkBlock.BlockNum.Number == _currentPendingBlock.BlockNum.Number)
             {
                 int newNumber = checkBlock.BlockNum.Number + 1;
+                if (newNumber > HighestBlock)
+                {
+                    HighestBlock = newNumber;
+                    RuntimeDataManager.Instance.PlayerData.HighestBlockIndex = HighestBlock;
+                }
                 checkBlock.BlockNum.Number = newNumber;
                 checkBlock.SpriteRenderer.color = CacheColor.GetColor(newNumber);
                 _currentPendingBlock.ReturnToPool();
@@ -126,14 +167,16 @@ public class GameplayManager : Singleton<GameplayManager>
             //bool hasTopBlock = false;
             List<Block> combineBlocks = FindSimilarBlockAround(_actionBlocks[i]);
 
+            Debug.Log("Combine block: " + combineBlocks.Count);
             // No similar block around then remove this block and continue
             if (combineBlocks.Count == 0)
             {
+                SoundManager.Instance.PlaySFX(SFXType.Shoot);
                 _actionBlocks.RemoveAt(i);
                 i--;
                 continue;
             }
-
+            SoundManager.Instance.PlaySFX(SFXType.Merge);
             _comboCount++;
 
             // Add this block to combine list
@@ -166,9 +209,21 @@ public class GameplayManager : Singleton<GameplayManager>
             Debug.Log($"Current combine block is {1 << _actionBlocks[i].BlockNum.Number} with coor: {_actionBlocks[i].Coordinate}");
 
             int newNumber = maxBlock.BlockNum.Number + maxValue;
-            OnGetPoint.Invoke(newNumber);
+            if (newNumber > HighestBlock)
+            {
+                HighestBlock = newNumber;
+                RuntimeDataManager.Instance.PlayerData.HighestBlockIndex = HighestBlock;
+            }
+            Point += BigInteger.Pow(2, newNumber);
+            if (Point > _maxPoint)
+            {
+                MaxPoint = Point;
+                RuntimeDataManager.Instance.PlayerData.HighScore = MaxPoint.ToString();
+            }
             //maxBlock.BlockNum.Number += maxValue;
             sequence.Join(maxBlock.ChangeColorTo(newNumber, true));
+
+            _board.GetPointCounter().ShowPoint(newNumber, maxBlock.transform.position);
 
             // Setup combine sequence
             foreach (var item in maxCombineBlockRelative)
@@ -202,7 +257,7 @@ public class GameplayManager : Singleton<GameplayManager>
                     item.CurrentLine.GroundYCoordinate = item.Coordinate.y;
                 item.CurrentLine = maxBlock.CurrentLine;
 
-
+                Debug.Log($"Remove block {1 << item.BlockNum.Number} with coor: {item.Coordinate}");
                 _board.Block_Coor_Dic.Remove(item.Coordinate);
                 _quantityBlock--;
 
@@ -242,9 +297,10 @@ public class GameplayManager : Singleton<GameplayManager>
                 Debug.Log(_comboCount);
                 if (_comboCount > 2)
                 {
-                    PlayUI.Instance.ComboText.text = $"Combo +{_comboCount}";
-                    PlayUI.Instance.ComboText.enabled = true;
-                    Invoke(nameof(AllowPlayerInteract), 1.5f);
+                    SoundManager.Instance.VibrateDevice();
+                    RuntimeDataManager.Instance.PlayerData.Gems += _comboCount;
+                    OnGetCombo?.Invoke(_comboCount);
+                    Invoke(nameof(AllowPlayerInteract), 2f);
                 }
                 else
                     Invoke(nameof(AllowPlayerInteract), .25f);
@@ -254,7 +310,16 @@ public class GameplayManager : Singleton<GameplayManager>
 
                 if (CheckLose())
                 {
-                    Debug.Log("Lose");
+                    SoundManager.Instance.VibrateDevice();
+                    if (RuntimeDataManager.Instance.PlayerData.Gems < 700)
+                    {
+                        ResetBoard();
+                        UIManager.Instance.OpenUI(UIType.PlayUI);
+                        UIManager.Instance.OpenNoticUI("You Don't Have Enough Money To Revive");
+                        return;
+                    }
+                    ChangeGameState(GameStateEnum.Loose);
+                    UIManager.Instance.OpenUI(UIType.LooseUI);
                 }
 
             }
@@ -308,19 +373,24 @@ public class GameplayManager : Singleton<GameplayManager>
                 }
 
             }
-            ChangeGameState(GameStateEnum.Loose);
-            UIManager.Instance.OnLooseState();
+
             return true;
         }
         return false;
     }
     public void ChangeGameState(GameStateEnum state)
     {
+        if (state != GameStateEnum.Playing)
+        {
+            _currentSkillState = null;
+        }
         CurrentState = state;
     }
     public void ResetBoard()
     {
         _quantityBlock = 0;
+        _point = 0;
+        _comboCount = 0;
         _board.ResetBoard();
         OnReset.Invoke();
     }
@@ -334,7 +404,23 @@ public class GameplayManager : Singleton<GameplayManager>
 
     private void AllowPlayerInteract()
     {
-        PlayUI.Instance.ComboText.enabled = false;
+        //PlayUI.Instance.ComboText.enabled = false;/////////////////////////////////////////////////////////////////////
         _isBlockMoving = false;
+    }
+
+    public void ChangeSkillState(ISkillState state)
+    {
+        if (state == null)
+            OnUseSkill?.Invoke();
+        if (_currentSkillState == state) return;
+        if (_currentSkillState != null)
+        {
+            _currentSkillState.Exit();
+        }
+        _currentSkillState = state;
+        if (_currentSkillState != null)
+        {
+            _currentSkillState.Enter(_board, _actionBlocks, BlockDropState);
+        }
     }
 }

@@ -48,18 +48,30 @@ public class Block : MonoBehaviour, IPoolable<Block>
     {
         Color color = CacheColor.GetColor(colorNumber);
         return DOTween.To(() => _spriteRenderer.color, color => _spriteRenderer.color = color, color, 0.25f)
-            .OnPlay(() =>
+            .SetEase(Ease.Linear)
+            .OnStart(() =>
             {
                 if (isAdmin)
                 {
                     transform.DOScale(1, 0.125f).SetLoops(2, LoopType.Yoyo);
                 }
             })
-            .SetEase(Ease.Linear)
             .OnComplete(() =>
             {
                 this.BlockNum.Number = colorNumber;
                 GameplayManager.Instance.OnCombineBlock?.Invoke(this.BlockNum.Number);
+            });
+    }
+
+    public Tween RemoveFromBoard()
+    {
+        return transform.DOScale(0, 0.25f)
+            .SetEase(Ease.Linear)
+            .OnComplete(() =>
+            {
+                Debug.Log($"{1 << this.BlockNum.Number} RemoveFromBoard complete");
+                ReturnToPool();
+                transform.localScale = Vector3.one * 0.95f;
             });
     }
 

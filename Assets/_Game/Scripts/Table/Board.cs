@@ -1,3 +1,5 @@
+using DG.Tweening;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,6 +11,9 @@ public class Board : MonoBehaviour
     [SerializeField] private DictionaryLib.Block_Coor_Dic _block_Coor_Dic;
     [SerializeField] private Block _nextBlock;
     [SerializeField] private Block _secondNextBlock;
+    [SerializeField] private PointCounter _pointCounterPrefab;
+    [SerializeField] private Transform _pointCounterContainer;
+    [SerializeField] private Line[] _lines;
 
     private int _minRandomBlockNumber = 1;
     private int _maxRandomBlockNumber = 3;
@@ -22,16 +27,18 @@ public class Board : MonoBehaviour
     }
 
     private ObjectPool<Block> _blockPool;
+    private ObjectPool<PointCounter> _pointCounterPool;
 
     private void Awake()
     {
-        _blockPool = new ObjectPool<Block>(_blockPrefab, _blockContainer, 10);
+        Debug.Log("Board Awake");
+        //_blockPool = new ObjectPool<Block>(_blockPrefab, _blockContainer, 10);
+        _pointCounterPool = new ObjectPool<PointCounter>(_pointCounterPrefab, _pointCounterContainer, 5);
     }
 
     private void Start()
     {
         GameplayManager.Instance.OnCombineBlock += OnCombineBlock;
-        OnInit();
     }
     private void OnInit()
     {
@@ -42,6 +49,13 @@ public class Board : MonoBehaviour
     {
         _nextBlock.CopyValueFrom(_secondNextBlock);
         GetBlockInfo(_secondNextBlock);
+    }
+
+    public PointCounter GetPointCounter()
+    {
+        PointCounter pointCounter = _pointCounterPool.Pull();
+        pointCounter.transform.SetParent(_pointCounterContainer);
+        return pointCounter;
     }
 
     public Block GetNextBlock()
@@ -63,6 +77,12 @@ public class Board : MonoBehaviour
         block.BlockNum.Number = randomNum;
     }
 
+    private void GetBlockInfo(Block block, int number)
+    {
+        block.SpriteRenderer.color = CacheColor.GetColor(number);
+        block.BlockNum.Number = number;
+    }
+
     public void SetReviewBlockCoor(Vector3Int coor, bool visible)
     {
         _reviewBlock.transform.position = coor;
@@ -74,9 +94,119 @@ public class Board : MonoBehaviour
         _reviewBlock.gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// Skill: Swap next block with second next block
+    /// </summary>
     public void SwapNextBlock()
     {
-        _nextBlock.CopyValueFrom(_secondNextBlock);
+        _nextBlock.SwapValueWith(_secondNextBlock);
+        GameplayManager.Instance.IsBlockMoving = false;
+    }
+
+    /// <summary>
+    /// Skill: Clear one row
+    /// </summary>
+    public void ClearOneRow(Vector2Int? inputCoor, List<Block> actionBlocks, Action callback)
+    {
+        Sequence sequence = DOTween.Sequence();
+        for (int i = 0; i < 5; i++)
+        {
+            if (_block_Coor_Dic.TryGetValue(new Vector2Int(i, inputCoor.Value.y), out Block block))
+            {
+                block.CurrentLine.GroundYCoordinate = block.Coordinate.y;
+                _block_Coor_Dic.Remove(block.Coordinate);
+                sequence.Join(block.RemoveFromBoard());
+
+                GameplayManager.Instance.QuantityBlock--;
+
+                for (int j = inputCoor.Value.y - 1; j >= 0; j--)
+                {
+                    if (_block_Coor_Dic.TryGetValue(new Vector2Int(i, j), out Block dropBlock))
+                    {
+                        Debug.Log($"Add drop block {1 << dropBlock.BlockNum.Number} with coor: {dropBlock.Coordinate}");
+                        actionBlocks.Add(dropBlock);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+        sequence.OnComplete(() =>
+        {
+            callback?.Invoke();
+            GameplayManager.Instance.ChangeSkillState(null);
+        });
+    }
+
+    /// <summary>
+    /// Remove one block
+    /// </summary>
+    public void RemoveOneBlock(Vector2Int? inputCoor, List<Block> actionBlocks, Action callback)
+    {
+        if (_block_Coor_Dic.TryGetValue(new Vector2Int(inputCoor.Value.x, inputCoor.Value.y), out Block block))
+        {
+            block.CurrentLine.GroundYCoordinate = block.Coordinate.y;
+            _block_Coor_Dic.Remove(block.Coordinate);
+            block.RemoveFromBoard().OnComplete(() =>
+            {
+                callback?.Invoke();
+                GameplayManager.Instance.ChangeSkillState(null);
+            });
+
+            GameplayManager.Instance.QuantityBlock--;
+
+            for (int j = inputCoor.Value.y - 1; j >= 0; j--)
+            {
+                if (_block_Coor_Dic.TryGetValue(new Vector2Int(inputCoor.Value.x, j), out Block dropBlock))
+                {
+                    Debug.Log($"Add drop block {1 << dropBlock.BlockNum.Number} with coor: {dropBlock.Coordinate}");
+                    actionBlocks.Add(dropBlock);
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+    }
+
+    [ContextMenu("RemoveTwoColumn")]
+    public void RemoveTwoColumn()
+    {
+        List<int> clolumnIndex = new List<int> { 0, 1, 2, 3, 4 };
+        int column1 = clolumnIndex[UnityEngine.Random.Range(0, clolumnIndex.Count)];
+        clolumnIndex.Remove(column1);
+        int column2 = clolumnIndex[UnityEngine.Random.Range(0, clolumnIndex.Count)];
+
+        Sequence sequence = DOTween.Sequence();
+        for (int i = 0; i < 7; i++)
+        {
+            if (_block_Coor_Dic.TryGetValue(new Vector2Int(column1, i), out Block block))
+            {
+                block.CurrentLine.GroundYCoordinate = 6;
+                _block_Coor_Dic.Remove(block.Coordinate);
+                sequence.Join(block.RemoveFromBoard());
+
+                GameplayManager.Instance.QuantityBlock--;
+            }
+        }
+        for (int i = 0; i < 7; i++)
+        {
+            if (_block_Coor_Dic.TryGetValue(new Vector2Int(column2, i), out Block block))
+            {
+                block.CurrentLine.GroundYCoordinate = 6;
+                _block_Coor_Dic.Remove(block.Coordinate);
+                sequence.Join(block.RemoveFromBoard());
+
+                GameplayManager.Instance.QuantityBlock--;
+            }
+        }
+        sequence.OnComplete(() =>
+        {
+
+        });
     }
 
     public void OnCombineBlock(int number)
@@ -92,6 +222,7 @@ public class Board : MonoBehaviour
         }
 
     }
+
     public void ResetBoard()
     {
         foreach (Block item in _block_Coor_Dic.Values)
@@ -99,7 +230,57 @@ public class Board : MonoBehaviour
             item.CurrentLine.GroundYCoordinate = 6;
             item.ReturnToPool();
         }
+        if (SaveManager.HasData<MapData>())
+        {
+            SaveManager.DeleteData<MapData>();
+        }
         _block_Coor_Dic.Clear();
         OnInit();
+    }
+
+    public MapData ExportMapData()
+    {
+        // Save data
+        MapData mapData = new MapData();
+        mapData.NextBlock = _nextBlock.BlockNum.Number;
+        mapData.SecondNextBlock = _secondNextBlock.BlockNum.Number;
+        mapData.Score = GameplayManager.Instance.Point.ToString();
+        foreach (KeyValuePair<Vector2Int, Block> item in _block_Coor_Dic)
+        {
+            mapData.LevelData.Add(new SerializeVector2Int(item.Key), item.Value.BlockNum.Number);
+        }
+        return mapData;
+    }
+
+    public void ImportMapData(MapData mapData)
+    {
+        // Load data
+        _blockPool = new ObjectPool<Block>(_blockPrefab, _blockContainer, 10);
+        if (mapData == null)
+        {
+            OnInit();
+            return;
+        }
+        int quantityBlock = 0;
+        GetBlockInfo(_nextBlock, mapData.NextBlock);
+        GetBlockInfo(_secondNextBlock, mapData.SecondNextBlock);
+        GameplayManager.Instance.Point = System.Numerics.BigInteger.Parse(mapData.Score);
+        foreach (KeyValuePair<SerializeVector2Int, int> item in mapData.LevelData)
+        {
+            quantityBlock++;
+            Vector2Int coor = new Vector2Int(item.Key.x, item.Key.y);
+            Block block = _blockPool.Pull();
+            block.transform.SetParent(_blockContainer);
+            block.SpriteRenderer.sortingOrder = 0;
+            block.SpriteRenderer.color = CacheColor.GetColor(item.Value);
+            block.BlockNum.Number = item.Value;
+            block.CurrentLine = _lines[coor.x];
+            block.CurrentLine.GroundYCoordinate--;
+            block.transform.position = new Vector3(coor.x, coor.y);
+            block.Coordinate = coor;
+            _block_Coor_Dic.Add(coor, block);
+            block.gameObject.SetActive(true);
+        }
+        GameplayManager.Instance.QuantityBlock = quantityBlock;
     }
 }
