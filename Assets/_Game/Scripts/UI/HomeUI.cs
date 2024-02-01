@@ -5,7 +5,6 @@ using UnityEngine.UI;
 public class HomeUI : UIBase
 {
     [SerializeField] private Button _playBtn;
-    [SerializeField] private Button _questBtn;
     [SerializeField] private Button _diamonBtn;
     [SerializeField] private Button _highScoreBtn;
     [SerializeField] private Image _highestBlockImage;
@@ -16,7 +15,6 @@ public class HomeUI : UIBase
     void Awake()
     {
         _playBtn.onClick.AddListener(StartGame);
-        _questBtn.onClick.AddListener(JoinQuest);
         _diamonBtn.onClick.AddListener(OnShop);
         _highScoreBtn.onClick.AddListener(OnRank);
         OnGemChange(RuntimeDataManager.Instance.PlayerData.Gems);
