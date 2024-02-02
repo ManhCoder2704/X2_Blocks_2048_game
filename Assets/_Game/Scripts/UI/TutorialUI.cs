@@ -9,6 +9,7 @@ public class TutorialUI : UIBase
 
     [SerializeField] private Button nextButton;
     [SerializeField] private Button previousButton;
+    [SerializeField] private Button escapeButton;
     [SerializeField] private Image tutorialImage;
     [SerializeField] private TMP_Text tutorialDescription;
     [SerializeField] private Button playButton;
@@ -30,6 +31,7 @@ public class TutorialUI : UIBase
         this.nextButton.onClick.AddListener(NextTutorial);
         this.previousButton.onClick.AddListener(PreviousTutorial);
         this.playButton.onClick.AddListener(CloseTutorial);
+        this.escapeButton.onClick.AddListener(CloseTutorial);
     }
 
     private void NextTutorial()

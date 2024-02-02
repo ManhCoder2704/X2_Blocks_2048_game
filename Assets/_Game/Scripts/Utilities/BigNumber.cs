@@ -11,64 +11,17 @@ public static class BigNumber
     public static void FormatLargeNumberPowerOfTwo(this TMP_Text displayText, int number, string prefix = "")
     {
         BigInteger bigInteger = BigInteger.One << number;
-        if (BigInteger.Compare(bigInteger, thousand) < 0)
-        {
-            displayText.text = prefix + bigInteger.ToString();
-        }
-        else if (BigInteger.Compare(bigInteger, milion) < 0)
-        {
-            displayText.text = prefix + (bigInteger / thousand).ToString() + "K";
-        }
-        else if (BigInteger.Compare(bigInteger, billion) < 0)
-        {
-            displayText.text = prefix + (bigInteger / milion).ToString() + "M";
-        }
-        else
-        {
-            char[] suffixes = { 'B', 'T', 'Q', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 'u', 'v', 'w', 'x', 'y', 'z' };
-            int suffixIndex = 0;
-
-            while (bigInteger >= 1000L && suffixIndex < suffixes.Length - 1)
-            {
-                bigInteger /= 1000L;
-                suffixIndex++;
-            }
-
-            displayText.text = prefix + bigInteger.ToString() + suffixes[suffixIndex];
-        }
+        displayText.FormatBack(bigInteger);
+        displayText.text = prefix + displayText.text;
     }
     public static void FormatBack(this TMP_Text displayText, BigInteger number)
     {
-        if (BigInteger.Compare(number, thousand) < 0)
-        {
-            displayText.text = number.ToString();
-        }
-        else if (BigInteger.Compare(number, milion) < 0)
-        {
-            displayText.text = (number / thousand).ToString() + "K";
-        }
-        else if (BigInteger.Compare(number, billion) < 0)
-        {
-            displayText.text = (number / milion).ToString() + "M";
-        }
-        else
-        {
-            char[] suffixes = { 'B', 'T', 'Q', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 'u', 'v', 'w', 'x', 'y', 'z' };
-            int suffixIndex = 0;
-
-            while (number >= 1000L && suffixIndex < suffixes.Length - 1)
-            {
-                number /= 1000L;
-                suffixIndex++;
-            }
-
-            displayText.text = number.ToString() + suffixes[suffixIndex];
-        }
+        displayText.text = FormatBack(number);
     }
 
     public static string FormatBack(BigInteger number)
     {
-        if (BigInteger.Compare(number, thousand) < 0)
+        if (BigInteger.Compare(number, tenThousand) < 0)
         {
             return number.ToString();
         }
@@ -82,16 +35,16 @@ public static class BigNumber
         }
         else
         {
-            char[] suffixes = { 'B', 'T', 'Q', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 'u', 'v', 'w', 'x', 'y', 'z' };
+            char[] suffixes = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 'u', 'v', 'w', 'x', 'y', 'z' };
             int suffixIndex = 0;
-
-            while (number >= 1000L && suffixIndex < suffixes.Length - 1)
+            number /= billion;
+            while (number >= milion && suffixIndex < suffixes.Length - 1)
             {
-                number /= 1000L;
+                number /= milion;
                 suffixIndex++;
             }
 
-            return number.ToString() + suffixes[suffixIndex];
+            return number.ToString("N0") + " " + suffixes[suffixIndex];
         }
     }
 

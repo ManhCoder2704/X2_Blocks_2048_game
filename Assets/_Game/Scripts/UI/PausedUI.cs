@@ -10,6 +10,7 @@ public class PausedUI : UIBase
     [SerializeField] private Button _vibraBtn;
     [SerializeField] private Button _musicBtn;
     [SerializeField] private Button _themeBtn;
+    [SerializeField] private Button _escapeBtn;
 
     private SwitchController _musicSwitcher;
     private SwitchController _vibraSwitcher;
@@ -21,6 +22,7 @@ public class PausedUI : UIBase
         _vibraBtn.onClick.AddListener(OnVibration);
         _musicBtn.onClick.AddListener(OnMusic);
         _themeBtn.onClick.AddListener(() => UIManager.Instance.OpenUI(UIType.ThemePopupUI));
+        _escapeBtn.onClick.AddListener(Continue);
 
         _musicSwitcher = _musicBtn.GetComponent<SwitchController>();
         _vibraSwitcher = _vibraBtn.GetComponent<SwitchController>();
@@ -40,7 +42,7 @@ public class PausedUI : UIBase
         Action agree = Restart;
         agree += Continue;
         Action disagree = () => this.gameObject.SetActive(true);
-        UIManager.Instance.OpenConfirmUI(agree, disagree, "Do You Want To Restart?", ()=>this.gameObject.SetActive(false));
+        UIManager.Instance.OpenConfirmUI(agree, disagree, "Do You Want To Restart?", () => this.gameObject.SetActive(false));
     }
     private void Restart()
     {
