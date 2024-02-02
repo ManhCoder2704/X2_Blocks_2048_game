@@ -167,7 +167,7 @@ public class RankUI : UIBase
                 {
                     string name = $"{result.name.first} {result.name.last}";
                     Debug.Log(name);
-                    globalRankData[i++] = new RankData(name, BigInteger.Parse(GenerateRandomScore(20, 40, random)), "#VN");
+                    globalRankData[i++] = new RankData(name, BigInteger.Parse(GenerateRandomScore(8, 15, random)), "#VN");
                     yield return null;
                 }
             }
@@ -191,7 +191,7 @@ public class RankUI : UIBase
                 {
                     string name = $"{result.name.first} {result.name.last}";
                     Debug.Log(name);
-                    globalRankData[i++] = new RankData(name, BigInteger.Parse(GenerateRandomScore(30, 60, random)), "#" + result.nat);
+                    globalRankData[i++] = new RankData(name, BigInteger.Parse(GenerateRandomScore(10, 20, random)), "#" + result.nat);
                     yield return null;
                 }
             }
