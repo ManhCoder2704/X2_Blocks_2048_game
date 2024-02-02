@@ -98,7 +98,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b79752af6953dd44a2718e4f575718c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _lineIndex: 0
+  _lineIndex: 4
+  _spriteRenderer: {fileID: 4870298755534558552}
 --- !u!65 &3828360871431476850
 BoxCollider:
   m_ObjectHideFlags: 0

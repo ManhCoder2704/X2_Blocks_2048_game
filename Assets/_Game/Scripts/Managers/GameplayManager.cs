@@ -79,7 +79,9 @@ public class GameplayManager : Singleton<GameplayManager>
     }
     private void PendingShoot(Line line)
     {
+        _currentSelectLine?.ChangeColorTo();
         _currentSelectLine = line;
+        _currentSelectLine.ChangeColorTo(_currentPendingBlock.BlockNum.Number);
         _currentPendingBlock.transform.position = new Vector3Int(line.LineIndex, 0);
         _currentPendingBlock.gameObject.SetActive(line.GroundYCoordinate > 0);
         _board.SetReviewBlockCoor(new Vector3Int(line.LineIndex, _currentSelectLine.GroundYCoordinate), line.GroundYCoordinate > -1);
@@ -89,6 +91,7 @@ public class GameplayManager : Singleton<GameplayManager>
     }
     private void OnLineMouseUp()
     {
+        _currentSelectLine?.ChangeColorTo();
         if (_currentSelectLine == null || _isBlockMoving) return;
         if (_currentSelectLine.GroundYCoordinate == -1)
         {
@@ -138,6 +141,11 @@ public class GameplayManager : Singleton<GameplayManager>
         for (int i = 0; i < _actionBlocks.Count; i++)
         {
             Block block = _actionBlocks[i];
+            if (block.BlockNum.Number > HighestBlock)
+            {
+                HighestBlock = block.BlockNum.Number;
+                RuntimeDataManager.Instance.PlayerData.HighestBlockIndex = HighestBlock;
+            }
             Vector2Int newCoordinate = new Vector2Int(block.Coordinate.x, block.CurrentLine.GroundYCoordinate);
             Debug.Log(block.Coordinate + " " + newCoordinate);
             if (block.Coordinate.y > newCoordinate.y)

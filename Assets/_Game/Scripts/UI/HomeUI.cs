@@ -26,8 +26,16 @@ public class HomeUI : UIBase
     {
         _highScoreText.String2Point(RuntimeDataManager.Instance.PlayerData.HighScore);
         int highestBlock = RuntimeDataManager.Instance.PlayerData.HighestBlockIndex;
-        _highBlockText.FormatLargeNumberPowerOfTwo(highestBlock);
-        _highestBlockImage.color = CacheColor.GetColor(highestBlock);
+        if (highestBlock > 0)
+        {
+            _highestBlockImage.gameObject.SetActive(true);
+            _highBlockText.FormatLargeNumberPowerOfTwo(highestBlock);
+            _highestBlockImage.color = CacheColor.GetColor(highestBlock);
+        }
+        else
+        {
+            _highestBlockImage.gameObject.SetActive(false);
+        }
 
     }
     private void OnGemChange(int gems)
@@ -48,11 +56,6 @@ public class HomeUI : UIBase
     {
         SoundManager.Instance.PlaySFX(SFXType.Click);
         UIManager.Instance.shopBtn.onClick.Invoke();
-    }
-
-    private void JoinQuest()
-    {
-        SoundManager.Instance.PlaySFX(SFXType.Click);
     }
 
     private void StartGame()

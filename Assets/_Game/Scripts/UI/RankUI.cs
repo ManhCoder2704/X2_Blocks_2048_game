@@ -66,7 +66,7 @@ public class RankUI : UIBase
         for (int i = 0; i < 10; i++)
         {
             RankBox rankBox = Instantiate(_rankBoxPrefab, _rankBoxContainer);
-            rankBox.Init((i + 1).ToString(), "", "", "");
+            //rankBox.Init((i + 1).ToString(), "", "", "");
             rankBoxes.Add(rankBox);
         }
     }
