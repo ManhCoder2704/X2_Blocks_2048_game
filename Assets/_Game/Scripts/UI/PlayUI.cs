@@ -170,6 +170,8 @@ public class PlayUI : UIBase
         KillBlickTween();
         if (RuntimeDataManager.Instance.PlayerData.Gems < 400) return;
         _currentSkillType = SkillType.ClearOneRow;
+        _currentSpellActiveBG = _spellClearBtn.image;
+        _currentSpellActiveBG.color = _spellActiveColor;
         _spellBlinkTween = _spellClearImg.DOFade(0.25f, 0.3f).SetLoops(-1, LoopType.Yoyo);
         //TODO: Check user currency first
         GameplayManager.Instance.ChangeSkillState(new ClearOneRow());

@@ -31,6 +31,7 @@ public class UIManager : Singleton<UIManager>
 
     void Awake()
     {
+        _menu.interactable = false;
         _loadingTween = _loadingImage.transform.DORotate(new Vector3(0, 0, -360), 1f, RotateMode.FastBeyond360)
             .SetEase(Ease.Linear)
             .SetLoops(-1);
@@ -53,19 +54,18 @@ public class UIManager : Singleton<UIManager>
     public void FirstLoadUI()
     {
         StopLoading();
+        _menu.interactable = true;
         OpenUI(UIType.HomeUI);
     }
 
     public void StartLoading()
     {
-        _menu.interactable = false;
         _loadingImage.SetActive(true);
         _loadingTween.Play();
     }
 
     public void StopLoading()
     {
-        _menu.interactable = true;
         _loadingTween.Pause();
         _loadingImage.SetActive(false);
     }

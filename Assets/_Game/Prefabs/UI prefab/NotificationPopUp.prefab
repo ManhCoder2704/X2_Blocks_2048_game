@@ -196,7 +196,7 @@ MonoBehaviour:
   _isPopup: 1
   _contentTxt: {fileID: 2115357806992080829}
   _yesBtn: {fileID: 8441877477406038859}
-  _escapeBtn: {fileID: 0}
+  _escapeBtn: {fileID: 1628948355564981898}
 --- !u!1 &7108901244122610434
 GameObject:
   m_ObjectHideFlags: 0
