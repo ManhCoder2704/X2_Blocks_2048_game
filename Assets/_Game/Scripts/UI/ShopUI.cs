@@ -21,6 +21,7 @@ public class ShopUI : UIBase
     void OnEnable()
     {
         _escapeButton.gameObject.SetActive(_isPopup);
+        _escapePanel.gameObject.SetActive(_isPopup);
     }
 
     private void SpawnButton()
