@@ -6,6 +6,7 @@ public class SettingUI : UIBase
 {
     [SerializeField] private Button _vibraBtn;
     [SerializeField] private Button _musicBtn;
+    [SerializeField] private Button _resetDataBtn;
     [SerializeField] private IconController _musicIcon;
     [SerializeField] private IconController _vibraIcon;
 
@@ -13,7 +14,14 @@ public class SettingUI : UIBase
     {
         _vibraBtn.onClick.AddListener(OnVibration);
         _musicBtn.onClick.AddListener(OnMusic);
+        _resetDataBtn.onClick.AddListener(ResetData);
     }
+
+    private void ResetData()
+    {
+        RuntimeDataManager.Instance.ResetData();
+    }
+
     private void OnEnable()
     {
         _musicIcon.Swap(RuntimeDataManager.Instance.SettingData.IsSoundOn);

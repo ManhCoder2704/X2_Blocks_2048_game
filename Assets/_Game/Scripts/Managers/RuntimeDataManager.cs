@@ -102,4 +102,27 @@ public class RuntimeDataManager : Singleton<RuntimeDataManager>
         SaveManager.SaveData(_logData);
         SaveManager.SaveData(GameplayManager.Instance.Board.ExportMapData());
     }
+    public void ResetData()
+    {
+        if (SaveManager.HasData<PlayerData>())
+        {
+            SaveManager.DeleteData<PlayerData>();
+            _playerData = new PlayerData();
+        }
+        if (SaveManager.HasData<SettingData>())
+        {
+            SaveManager.DeleteData<SettingData>();
+            _settingData = new SettingData(_bgSo.BackgroundListCount());
+        }
+        if (SaveManager.HasData<MapData>())
+        {
+            SaveManager.DeleteData<MapData>();
+            _mapData = new MapData();
+        }
+        if (SaveManager.HasData<LogData>())
+        {
+            SaveManager.DeleteData<LogData>();
+            _logData = new LogData();
+        }
+    }
 }

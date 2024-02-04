@@ -17,6 +17,11 @@ public class ClearOneRow : ISkillState
 
     public void Execute(Vector2Int? inputCoor)
     {
+        if (!_board.Block_Coor_Dic.ContainsKey(inputCoor.Value))
+        {
+            GameplayManager.Instance.ChangeSkillState(null);
+            return;
+        }
         RuntimeDataManager.Instance.PlayerData.Gems -= _price;
         SoundManager.Instance.PlaySFX(SFXType.Skill);
         _board.ClearOneRow(inputCoor, _actionBlocks, _callback);
