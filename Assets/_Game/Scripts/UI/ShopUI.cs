@@ -7,11 +7,13 @@ public class ShopUI : UIBase
 {
     [SerializeField] private TMP_Text _gemsCountText;
     [SerializeField] private Button _escapeButton;
+    [SerializeField] private Button _escapePanel;
     [SerializeField] private Transform _shopItemContainer;
     [SerializeField] private ShopItemBox _prefabShopItemBox;
     void Awake()
     {
         _escapeButton.onClick.AddListener(CloseShop);
+        _escapePanel.onClick.AddListener(CloseShop);
         OnGemChange(RuntimeDataManager.Instance.PlayerData.Gems);
         RuntimeDataManager.Instance.PlayerData.OnGemsChange += OnGemChange;
         SpawnButton();
@@ -19,6 +21,7 @@ public class ShopUI : UIBase
     void OnEnable()
     {
         _escapeButton.gameObject.SetActive(_isPopup);
+        _escapePanel.gameObject.SetActive(_isPopup);
     }
 
     private void SpawnButton()

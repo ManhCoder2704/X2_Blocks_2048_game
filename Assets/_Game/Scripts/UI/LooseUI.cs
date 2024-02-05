@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class LooseUI : UIBase
 {
+    //[SerializeField] private Button _escapeBtn;
     [SerializeField] private Button _continueBtn;
     [SerializeField] private Button _restartBtn;
 
@@ -15,6 +16,7 @@ public class LooseUI : UIBase
     {
         _continueBtn.onClick.AddListener(Revive);
         _restartBtn.onClick.AddListener(Restart);
+        //_escapeBtn.onClick.AddListener(Restart);
     }
 
     private void Restart()

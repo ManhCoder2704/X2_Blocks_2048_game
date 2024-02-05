@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,6 +6,7 @@ using UnityEngine.UI;
 public class ConfirmUI : UIBase
 {
     [SerializeField] private TMP_Text _contentTxt;
+    [SerializeField] private Button _escapeBtn;
     [SerializeField] private Button _yesBtn;
     [SerializeField] private Button _noBtn;
 
@@ -17,6 +16,7 @@ public class ConfirmUI : UIBase
     {
         _yesBtn.onClick.AddListener(Agree);
         _noBtn.onClick.AddListener(Disagree);
+        _escapeBtn.onClick.AddListener(Disagree);
     }
 
     public void OnInit(Action agreeCallBack, Action disagreeCallBack, string content)

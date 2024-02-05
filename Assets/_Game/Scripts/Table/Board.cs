@@ -42,6 +42,8 @@ public class Board : MonoBehaviour
     }
     private void OnInit()
     {
+        _minRandomBlockNumber = 1;
+        _maxRandomBlockNumber = 3;
         GetBlockInfo(_nextBlock);
         GetBlockInfo(_secondNextBlock);
     }
@@ -71,8 +73,8 @@ public class Board : MonoBehaviour
 
     private void GetBlockInfo(Block block)
     {
-        //int randomNum = UnityEngine.Random.Range(_minRandomBlockNumber, _maxRandomBlockNumber);
-        int randomNum = UnityEngine.Random.Range(1, 7);
+        int randomNum = UnityEngine.Random.Range(_minRandomBlockNumber, _maxRandomBlockNumber);
+        //int randomNum = UnityEngine.Random.Range(1, 7);
         block.SpriteRenderer.color = CacheColor.GetColor(randomNum);
         block.BlockNum.Number = randomNum;
     }
@@ -211,14 +213,14 @@ public class Board : MonoBehaviour
 
     public void OnCombineBlock(int number)
     {
-        if (number > _maxRandomBlockNumber)
+        if (number > _maxRandomBlockNumber && _maxRandomBlockNumber < 7)
         {
-            _maxRandomBlockNumber = number;
-            if (_maxRandomBlockNumber - _minRandomBlockNumber > 6)
+            _maxRandomBlockNumber = Mathf.Min(number, 7);
+            /*if (_maxRandomBlockNumber - _minRandomBlockNumber > 6)
             {
                 _minRandomBlockNumber = _maxRandomBlockNumber - 6;
                 // TODO: Increase difficulty
-            }
+            }*/
         }
 
     }
@@ -256,7 +258,7 @@ public class Board : MonoBehaviour
     {
         // Load data
         _blockPool = new ObjectPool<Block>(_blockPrefab, _blockContainer, 10);
-        if (mapData == null)
+        if (mapData == null || mapData.LevelData.Count == 0)
         {
             OnInit();
             return;

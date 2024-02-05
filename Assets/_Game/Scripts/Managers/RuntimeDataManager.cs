@@ -35,6 +35,7 @@ public class RuntimeDataManager : Singleton<RuntimeDataManager>
             _settingData = new SettingData(_bgSo.BackgroundListCount());
             SaveManager.SaveData(_settingData);
         }
+        SoundManager.Instance.OnInit();
         UIManager.Instance.Background.sprite = _bgSo.GetBackgroundByIndex(_settingData.ThemeIndex).bgImage;
         yield return null;
 

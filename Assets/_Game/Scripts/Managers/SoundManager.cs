@@ -9,7 +9,7 @@ public class SoundManager : Singleton<SoundManager>
     private bool soundAble = true;
     private bool vibratAble = true;
 
-    private void Awake()
+    public void OnInit()
     {
         soundAble = RuntimeDataManager.Instance.SettingData.IsSoundOn;
         vibratAble = RuntimeDataManager.Instance.SettingData.IsVibrationOn;

@@ -5,7 +5,6 @@ using UnityEngine.UI;
 public class HomeUI : UIBase
 {
     [SerializeField] private Button _playBtn;
-    [SerializeField] private Button _questBtn;
     [SerializeField] private Button _diamonBtn;
     [SerializeField] private Button _highScoreBtn;
     [SerializeField] private Image _highestBlockImage;
@@ -16,7 +15,6 @@ public class HomeUI : UIBase
     void Awake()
     {
         _playBtn.onClick.AddListener(StartGame);
-        _questBtn.onClick.AddListener(JoinQuest);
         _diamonBtn.onClick.AddListener(OnShop);
         _highScoreBtn.onClick.AddListener(OnRank);
         OnGemChange(RuntimeDataManager.Instance.PlayerData.Gems);
@@ -28,8 +26,16 @@ public class HomeUI : UIBase
     {
         _highScoreText.String2Point(RuntimeDataManager.Instance.PlayerData.HighScore);
         int highestBlock = RuntimeDataManager.Instance.PlayerData.HighestBlockIndex;
-        _highBlockText.FormatLargeNumberPowerOfTwo(highestBlock);
-        _highestBlockImage.color = CacheColor.GetColor(highestBlock);
+        if (highestBlock > 0)
+        {
+            _highestBlockImage.gameObject.SetActive(true);
+            _highBlockText.FormatLargeNumberPowerOfTwo(highestBlock);
+            _highestBlockImage.color = CacheColor.GetColor(highestBlock);
+        }
+        else
+        {
+            _highestBlockImage.gameObject.SetActive(false);
+        }
 
     }
     private void OnGemChange(int gems)
@@ -50,11 +56,6 @@ public class HomeUI : UIBase
     {
         SoundManager.Instance.PlaySFX(SFXType.Click);
         UIManager.Instance.shopBtn.onClick.Invoke();
-    }
-
-    private void JoinQuest()
-    {
-        SoundManager.Instance.PlaySFX(SFXType.Click);
     }
 
     private void StartGame()
