@@ -66,6 +66,7 @@ public class PlayUI : UIBase
         OnHighScoreChange(RuntimeDataManager.Instance.PlayerData.HighScore);
         RuntimeDataManager.Instance.PlayerData.OnHighScoreChange += OnHighScoreChange;
         CheckSpell(RuntimeDataManager.Instance.PlayerData.Gems);
+        this.gameObject.SetActive(false);
     }
     private void CheckSpell(int gems)
     {
