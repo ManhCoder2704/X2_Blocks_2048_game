@@ -1,4 +1,3 @@
-
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
@@ -87,11 +86,16 @@ public class UIManager : Singleton<UIManager>
         UIBase ui = GetUIReference(uiType);
 
         if (_currentActiveUI == ui) return;
+        if (_currentActiveUI != null && GetUIReference(UIType.PlayUI) == _currentActiveUI)
+        {
+            GameplayManager.Instance.ChangeSkillState(null);
+        }
         if (uiType == UIType.PlayUI)
         {
             _menu.gameObject.SetActive(false);
             _board.gameObject.SetActive(true);
             GameplayManager.Instance.ChangeGameState(GameStateEnum.Playing);
+            GameplayManager.Instance.IsBlockMoving = false;
 
         }
         else if (uiType == UIType.HomeUI)
@@ -130,7 +134,7 @@ public class UIManager : Singleton<UIManager>
             _menu.gameObject.SetActive(false);
             _board.gameObject.SetActive(true);
             GameplayManager.Instance.ChangeGameState(GameStateEnum.Playing);
-
+            GameplayManager.Instance.IsBlockMoving = false;
         }
         else if (GetUIReference(UIType.HomeUI) == _currentActiveUI)
         {

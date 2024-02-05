@@ -1,4 +1,4 @@
-using System.IO;
+//using System.IO;
 using UnityEngine;
 
 public static class SaveManager
@@ -46,15 +46,5 @@ public static class SaveManager
     {
         return PlayerPrefs.HasKey(typeof(T).ToString());
         //return File.Exists(Application.persistentDataPath + "/" + typeof(T).ToString() + ".json");
-    }
-
-    /// <summary>
-    /// Delete file or playerPrefs.
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    public static void DeletaData<T>()
-    {
-        PlayerPrefs.DeleteKey(typeof(T).ToString());
-        //File.Delete(Application.persistentDataPath + "/" + typeof(T).ToString() + ".json");
     }
 }

@@ -66,6 +66,7 @@ public class PlayUI : UIBase
         OnHighScoreChange(RuntimeDataManager.Instance.PlayerData.HighScore);
         RuntimeDataManager.Instance.PlayerData.OnHighScoreChange += OnHighScoreChange;
         CheckSpell(RuntimeDataManager.Instance.PlayerData.Gems);
+        this.gameObject.SetActive(false);
     }
     private void CheckSpell(int gems)
     {
@@ -152,7 +153,6 @@ public class PlayUI : UIBase
     {
         if (GameplayManager.Instance.QuantityBlock == 0 || GameplayManager.Instance.IsBlockMoving) return;
         if (RuntimeDataManager.Instance.PlayerData.Gems < 100) return;
-        //TODO: Check user currency first
         _currentSkillType = SkillType.SwapNextBlock;
         GameplayManager.Instance.ChangeSkillState(new SwapNextBlock());
     }
@@ -169,10 +169,7 @@ public class PlayUI : UIBase
         }
         KillBlickTween();
         if (RuntimeDataManager.Instance.PlayerData.Gems < 400) return;
-        _currentSkillType = SkillType.ClearOneRow;
-        _currentSpellActiveBG = _spellClearBtn.image;
-        _currentSpellActiveBG.color = _spellActiveColor;
-        _spellBlinkTween = _spellClearImg.DOFade(0.25f, 0.3f).SetLoops(-1, LoopType.Yoyo);
+        BlinkSkillBG(SkillType.ClearOneRow, _spellClearBtn.image);
         //TODO: Check user currency first
         GameplayManager.Instance.ChangeSkillState(new ClearOneRow());
     }
@@ -189,10 +186,7 @@ public class PlayUI : UIBase
         }
         KillBlickTween();
         if (RuntimeDataManager.Instance.PlayerData.Gems < 100) return;
-        _currentSkillType = SkillType.RemoveOneBlock;
-        _currentSpellActiveBG = _spellRemoveBtn.image;
-        _currentSpellActiveBG.color = _spellActiveColor;
-        _spellBlinkTween = _spellRemoveImg.DOFade(0.25f, 0.3f).SetLoops(-1, LoopType.Yoyo);
+        BlinkSkillBG(SkillType.RemoveOneBlock, _spellRemoveBtn.image);
         //TODO: Check user currency first
         GameplayManager.Instance.ChangeSkillState(new RemoveOneBlock());
     }
@@ -206,6 +200,14 @@ public class PlayUI : UIBase
         {
             _currentSpellActiveBG.color = _spellNormalColor;
         }
+    }
+
+    private void BlinkSkillBG(SkillType skill, Image imageBG)
+    {
+        _currentSkillType = skill;
+        _currentSpellActiveBG = imageBG;
+        _currentSpellActiveBG.color = _spellActiveColor;
+        _spellBlinkTween = _currentSpellActiveBG.DOFade(0.25f, 0.3f).SetLoops(-1, LoopType.Yoyo);
     }
 }
 

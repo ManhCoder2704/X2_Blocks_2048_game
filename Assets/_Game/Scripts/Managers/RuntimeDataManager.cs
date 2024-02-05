@@ -86,13 +86,19 @@ public class RuntimeDataManager : Singleton<RuntimeDataManager>
         SaveData();
     }
 
+#if UNITY_EDITOR
     private void OnApplicationFocus(bool focus)
     {
-        if (!focus)
-        {
-            SaveData();
-        }
+        SaveData();
     }
+#endif
+
+#if UNITY_ANDROID
+    private void OnApplicationPause(bool pause)
+    {
+        SaveData();
+    }
+#endif
 
     public void SaveData()
     {
@@ -101,5 +107,28 @@ public class RuntimeDataManager : Singleton<RuntimeDataManager>
         SaveManager.SaveData(_settingData);
         SaveManager.SaveData(_logData);
         SaveManager.SaveData(GameplayManager.Instance.Board.ExportMapData());
+    }
+    public void ResetData()
+    {
+        if (SaveManager.HasData<PlayerData>())
+        {
+            SaveManager.DeleteData<PlayerData>();
+            _playerData = new PlayerData();
+        }
+        if (SaveManager.HasData<SettingData>())
+        {
+            SaveManager.DeleteData<SettingData>();
+            _settingData = new SettingData(_bgSo.BackgroundListCount());
+        }
+        if (SaveManager.HasData<MapData>())
+        {
+            SaveManager.DeleteData<MapData>();
+            _mapData = new MapData();
+        }
+        if (SaveManager.HasData<LogData>())
+        {
+            SaveManager.DeleteData<LogData>();
+            _logData = new LogData();
+        }
     }
 }
