@@ -1,4 +1,4 @@
-using System.IO;
+//using System.IO;
 using UnityEngine;
 
 public static class SaveManager
@@ -11,8 +11,8 @@ public static class SaveManager
     public static void SaveData<T>(this T data)
     {
         string json = JsonUtility.ToJson(data);
-        //PlayerPrefs.SetString(typeof(T).ToString(), json);
-        File.WriteAllText(Application.persistentDataPath + "/" + typeof(T).ToString() + ".json", json);
+        PlayerPrefs.SetString(typeof(T).ToString(), json);
+        //File.WriteAllText(Application.persistentDataPath + "/" + typeof(T).ToString() + ".json", json);
     }
 
     /// <summary>
@@ -22,8 +22,8 @@ public static class SaveManager
     /// <returns></returns>
     public static void LoadData<T>(ref T t)
     {
-        string json = File.ReadAllText(Application.persistentDataPath + "/" + typeof(T).ToString() + ".json");
-        //string json = PlayerPrefs.GetString(typeof(T).ToString());
+        //string json = File.ReadAllText(Application.persistentDataPath + "/" + typeof(T).ToString() + ".json");
+        string json = PlayerPrefs.GetString(typeof(T).ToString());
         t = JsonUtility.FromJson<T>(json);
     }
 
@@ -33,8 +33,8 @@ public static class SaveManager
     /// <typeparam name="T"></typeparam>
     public static void DeleteData<T>()
     {
-        //PlayerPrefs.DeleteKey(typeof(T).ToString());
-        File.Delete(Application.persistentDataPath + "/" + typeof(T).ToString() + ".json");
+        PlayerPrefs.DeleteKey(typeof(T).ToString());
+        //File.Delete(Application.persistentDataPath + "/" + typeof(T).ToString() + ".json");
     }
 
     /// <summary>
@@ -44,8 +44,7 @@ public static class SaveManager
     /// <returns></returns>
     public static bool HasData<T>()
     {
-        //return PlayerPrefs.HasKey(typeof(T).ToString());
-        return File.Exists(Application.persistentDataPath + "/" + typeof(T).ToString() + ".json");
+        return PlayerPrefs.HasKey(typeof(T).ToString());
+        //return File.Exists(Application.persistentDataPath + "/" + typeof(T).ToString() + ".json");
     }
-
 }

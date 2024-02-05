@@ -20,6 +20,7 @@ public class RemoveOneBlock : ISkillState
         if (!_board.Block_Coor_Dic.ContainsKey(inputCoor.Value))
         {
             Debug.Log("$$$$$$$$not contain");
+            GameplayManager.Instance.IsBlockMoving = false;
             GameplayManager.Instance.ChangeSkillState(null);
             return;
         }

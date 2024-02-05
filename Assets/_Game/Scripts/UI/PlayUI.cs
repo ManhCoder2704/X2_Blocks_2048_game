@@ -3,7 +3,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
-using UnityEditor.Experimental.GraphView;
 
 public class PlayUI : UIBase
 {
@@ -169,7 +168,7 @@ public class PlayUI : UIBase
         }
         KillBlickTween();
         if (RuntimeDataManager.Instance.PlayerData.Gems < 400) return;
-        BlinkSkillBG(SkillType.ClearOneRow);
+        BlinkSkillBG(SkillType.ClearOneRow, _spellClearBtn.image);
         //TODO: Check user currency first
         GameplayManager.Instance.ChangeSkillState(new ClearOneRow());
     }
@@ -186,7 +185,7 @@ public class PlayUI : UIBase
         }
         KillBlickTween();
         if (RuntimeDataManager.Instance.PlayerData.Gems < 100) return;
-        BlinkSkillBG(SkillType.RemoveOneBlock);
+        BlinkSkillBG(SkillType.RemoveOneBlock, _spellRemoveBtn.image);
         //TODO: Check user currency first
         GameplayManager.Instance.ChangeSkillState(new RemoveOneBlock());
     }
@@ -202,12 +201,12 @@ public class PlayUI : UIBase
         }
     }
 
-    private void BlinkSkillBG(SkillType skill)
+    private void BlinkSkillBG(SkillType skill, Image imageBG)
     {
         _currentSkillType = skill;
-        _currentSpellActiveBG = _spellRemoveBtn.image;
+        _currentSpellActiveBG = imageBG;
         _currentSpellActiveBG.color = _spellActiveColor;
-        _spellBlinkTween = _spellRemoveImg.DOFade(0.25f, 0.3f).SetLoops(-1, LoopType.Yoyo);
+        _spellBlinkTween = _currentSpellActiveBG.DOFade(0.25f, 0.3f).SetLoops(-1, LoopType.Yoyo);
     }
 }
 

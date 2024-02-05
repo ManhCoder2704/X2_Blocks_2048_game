@@ -86,13 +86,19 @@ public class RuntimeDataManager : Singleton<RuntimeDataManager>
         SaveData();
     }
 
+#if UNITY_EDITOR
     private void OnApplicationFocus(bool focus)
     {
-        if (!focus)
-        {
-            SaveData();
-        }
+        SaveData();
     }
+#endif
+
+#if UNITY_ANDROID
+    private void OnApplicationPause(bool pause)
+    {
+        SaveData();
+    }
+#endif
 
     public void SaveData()
     {

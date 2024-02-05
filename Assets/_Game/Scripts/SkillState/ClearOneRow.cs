@@ -19,6 +19,7 @@ public class ClearOneRow : ISkillState
     {
         if (!_board.Block_Coor_Dic.ContainsKey(inputCoor.Value))
         {
+            GameplayManager.Instance.IsBlockMoving = false;
             GameplayManager.Instance.ChangeSkillState(null);
             return;
         }
