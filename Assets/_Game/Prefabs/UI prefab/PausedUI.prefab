@@ -434,7 +434,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 135.00006}
-  m_SizeDelta: {x: 380.44, y: 124}
+  m_SizeDelta: {x: 474.88, y: 137}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2054088312331913172
 CanvasRenderer:
@@ -2387,7 +2387,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _switchBtn: {fileID: 3215178721220250895}
-  _switchBG: {fileID: 4000770166141046886}
   _fill: {fileID: 6164486266137498031}
   _toggle: {fileID: 7987825329815077825}
   _onPos: {x: 56, y: 0}
@@ -2923,7 +2922,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _switchBtn: {fileID: 1949240882843635413}
-  _switchBG: {fileID: 4672156294313172202}
   _fill: {fileID: 4203636576980971604}
   _toggle: {fileID: 2124163796833340456}
   _onPos: {x: 56, y: 0}
