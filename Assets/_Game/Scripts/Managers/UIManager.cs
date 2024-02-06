@@ -42,10 +42,10 @@ public class UIManager : Singleton<UIManager>
         disagreeCallBack += () => _currentActiveUI.CanvasGroup.interactable = true;
         _confirmUI.OnInit(agreeCallBack, disagreeCallBack, content, title);
     }
-    public void OpenNoticUI(string content)
+    public void OpenNoticUI(string content, string title)
     {
         _noticUI.gameObject.SetActive(true);
-        _noticUI.SetContent(content);
+        _noticUI.SetContent(content, title);
     }
     public void FirstLoadUI()
     {
