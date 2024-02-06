@@ -34,7 +34,7 @@ public class ShopItemBox : MonoBehaviour
     }
     private void ConfirmPurchase()
     {
-        UIManager.Instance.OpenConfirmUI(PurchaseItem, null, "Do You Want To Purchase Gems?", "Gems Confirm", null);
+        UIManager.Instance.OpenConfirmUI(PurchaseItem, null, "Do You Want To Purchase Gems?", null);
     }
     private void PurchaseItem()
     {

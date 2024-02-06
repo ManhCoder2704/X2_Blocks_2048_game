@@ -29,8 +29,8 @@ public class PausedUI : UIBase
     }
     private void OnEnable()
     {
-        _musicSwitcher.SetColor(RuntimeDataManager.Instance.SettingData.IsSoundOn);
-        _vibraSwitcher.SetColor(RuntimeDataManager.Instance.SettingData.IsVibrationOn);
+        _musicSwitcher.CheckStatus(RuntimeDataManager.Instance.SettingData.IsSoundOn);
+        _vibraSwitcher.CheckStatus(RuntimeDataManager.Instance.SettingData.IsVibrationOn);
     }
     private void Continue()
     {
@@ -42,7 +42,7 @@ public class PausedUI : UIBase
         Action agree = Restart;
         agree += Continue;
         Action disagree = () => this.gameObject.SetActive(true);
-        UIManager.Instance.OpenConfirmUI(agree, disagree, "Do You Want To Restart?", "Restart", () => this.gameObject.SetActive(false));
+        UIManager.Instance.OpenConfirmUI(agree, disagree, "Do You Want To Restart?", () => this.gameObject.SetActive(false));
     }
     private void Restart()
     {
