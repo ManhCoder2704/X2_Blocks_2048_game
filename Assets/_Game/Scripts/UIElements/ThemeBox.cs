@@ -63,7 +63,7 @@ public class ThemeBox : MonoBehaviour
     }
     private void ConfirmPurchase()
     {
-        UIManager.Instance.OpenConfirmUI(PurchaseBG, null, "Do You Want To Purchase This Theme?", null);
+        UIManager.Instance.OpenConfirmUI(PurchaseBG, null, "Do You Want To Purchase This Theme?", "Theme Confirm", null);
     }
     private void PurchaseBG()
     {

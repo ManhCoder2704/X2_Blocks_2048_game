@@ -33,14 +33,14 @@ public class UIManager : Singleton<UIManager>
             .SetLoops(-1);
         StartLoading();
     }
-    public void OpenConfirmUI(Action agreeCallBack, Action disagreeCallBack, string content, Action onOpen)
+    public void OpenConfirmUI(Action agreeCallBack, Action disagreeCallBack, string content, string title, Action onOpen)
     {
         onOpen?.Invoke();
         _confirmUI.gameObject.SetActive(true);
         _currentActiveUI.CanvasGroup.interactable = false;
         agreeCallBack += () => _currentActiveUI.CanvasGroup.interactable = true;
         disagreeCallBack += () => _currentActiveUI.CanvasGroup.interactable = true;
-        _confirmUI.OnInit(agreeCallBack, disagreeCallBack, content);
+        _confirmUI.OnInit(agreeCallBack, disagreeCallBack, content, title);
     }
     public void OpenNoticUI(string content)
     {
