@@ -136,7 +136,7 @@ public class RankUI : UIBase
         }
     }
 
-    private void CloseRank()
+    public void CloseRank()
     {
         UIManager.Instance.ClosePopup(this);
         Sequence sequence = DOTween.Sequence();

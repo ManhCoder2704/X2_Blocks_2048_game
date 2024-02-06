@@ -30,7 +30,8 @@ public class HomeUI : UIBase
         {
             _highestBlockImage.gameObject.SetActive(true);
             _highBlockText.FormatLargeNumberPowerOfTwo(highestBlock);
-            _highestBlockImage.color = CacheColor.GetColor(highestBlock);
+            //_highBlockText.color = CacheColor.GetColor(highestBlock);
+            //_highestBlockImage.color = CacheColor.GetColor(highestBlock);
         }
         else
         {
