@@ -10,6 +10,8 @@ public class ShopItemBox : MonoBehaviour
     [SerializeField] private TMP_Text _priceTxt;
     [SerializeField] private TMP_Text _bonusTxt;
     [SerializeField] private TMP_Text _gemCount;
+    [SerializeField] private TMP_Text _packageName;
+    [SerializeField] private GameObject _badge;
 
     private int _gemsCount;
     // Start is called before the first frame update
@@ -25,12 +27,14 @@ public class ShopItemBox : MonoBehaviour
         if (bonus <= 0)
         {
             _bonusTxt.enabled = false;
+            _badge.SetActive(false);
         }
         _bonusTxt.text = $"+{bonus}% BONUS";
         CultureInfo culture = new CultureInfo("vi-VN");
         _priceTxt.text = itemData.Price.ToString("C", culture);
         _gemsCount = Mathf.FloorToInt(itemData.GemsCount * (1 + (bonus / 100f)));
         _gemCount.text = _gemsCount.ToString();
+        _packageName.text = itemData.PackageName;
     }
     private void ConfirmPurchase()
     {

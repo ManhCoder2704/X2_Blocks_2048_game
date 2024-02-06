@@ -48,14 +48,12 @@ public class HomeUI : UIBase
     }
     private void OnRank()
     {
-        SoundManager.Instance.PlaySFX(SFXType.Click);
-        UIManager.Instance.rankBtn.onClick.Invoke();
+        UIManager.Instance.MenuNavigatorBar.OpenRank();
     }
 
     private void OnShop()
     {
-        SoundManager.Instance.PlaySFX(SFXType.Click);
-        UIManager.Instance.shopBtn.onClick.Invoke();
+        UIManager.Instance.MenuNavigatorBar.OpenShop();
     }
 
     private void StartGame()

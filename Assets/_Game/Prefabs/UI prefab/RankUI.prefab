@@ -548,8 +548,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 64.999756}
-  m_SizeDelta: {x: 0, y: -130.00049}
+  m_AnchoredPosition: {x: 0, y: 90}
+  m_SizeDelta: {x: 0, y: -180}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3537779118003752027
 CanvasRenderer:
@@ -572,7 +572,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 0.011764706, g: 0.24705882, b: 0.6431373, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -615,6 +615,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _canvasGroup: {fileID: 309394774109154926}
   _isPopup: 0
+  _rankPanel: {fileID: 9069691854753263937}
   _leaderboardNavigator: {fileID: 538190344260649351}
   _rankBoxPrefab_blue: {fileID: 8095799025995948333, guid: 1bcbfb6080bfa6d4abf828f38f8a5776, type: 3}
   _rankBoxPrefab_yellow: {fileID: 3077209533941682913, guid: e6b0ce5a1cca12449a902ddc2b69d6ff, type: 3}

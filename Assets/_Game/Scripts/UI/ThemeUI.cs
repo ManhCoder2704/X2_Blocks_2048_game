@@ -38,14 +38,13 @@ public class ThemeUI : UIBase
 
     private void OpenShop()
     {
-        SoundManager.Instance.PlaySFX(SFXType.Click);
         if (_isPopup)
         {
             UIManager.Instance.OpenUI(UIType.ShopPopupUI);
         }
         else
         {
-            UIManager.Instance.shopBtn.onClick.Invoke();
+            UIManager.Instance.MenuNavigatorBar.OpenShop();
         }
     }
 
