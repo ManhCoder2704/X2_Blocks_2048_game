@@ -24,6 +24,7 @@ public class HomeUI : UIBase
     }
     private void OnEnable()
     {
+        UIManager.Instance.OnOffBG(false);
         _highScoreText.String2Point(RuntimeDataManager.Instance.PlayerData.HighScore);
         int highestBlock = RuntimeDataManager.Instance.PlayerData.HighestBlockIndex;
         if (highestBlock > 0)

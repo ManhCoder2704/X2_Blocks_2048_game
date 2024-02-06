@@ -19,12 +19,11 @@ public class PlayUI : UIBase
     [SerializeField] private Color _spellNormalColor;
     [SerializeField] private Color _spellActiveColor;
     [SerializeField] private TMP_Text _scoreTxt;
-    [SerializeField] private TMP_Text _diamondTxt;
-    [SerializeField] private TMP_Text _highScoreTxt;
     [SerializeField] private TMP_Text _comboText;
     [SerializeField] private Image _comboBG;
     [SerializeField] private TMP_Text _gemsCountText;
     [SerializeField] private TMP_Text _highScoreText;
+
     private SkillType _currentSkillType = SkillType.None;
     private Tween _spellBlinkTween;
     private Image _currentSpellActiveBG;
@@ -74,25 +73,25 @@ public class PlayUI : UIBase
         {
             _spellCanvas[0].alpha = 0.75f;
             _spellCanvas[0].interactable = false;
-            _spellCanvas[1].alpha = 0.75f;
-            _spellCanvas[1].interactable = false;
-        }
-        else
-        {
-            _spellCanvas[0].alpha = 1f;
-            _spellCanvas[0].interactable = true;
-            _spellCanvas[1].alpha = 1f;
-            _spellCanvas[1].interactable = true;
-        }
-        if (gems < 400)
-        {
             _spellCanvas[2].alpha = 0.75f;
             _spellCanvas[2].interactable = false;
         }
         else
         {
+            _spellCanvas[0].alpha = 1f;
+            _spellCanvas[0].interactable = true;
             _spellCanvas[2].alpha = 1f;
             _spellCanvas[2].interactable = true;
+        }
+        if (gems < 400)
+        {
+            _spellCanvas[1].alpha = 0.75f;
+            _spellCanvas[1].interactable = false;
+        }
+        else
+        {
+            _spellCanvas[1].alpha = 1f;
+            _spellCanvas[1].interactable = true;
         }
     }
 
@@ -106,6 +105,7 @@ public class PlayUI : UIBase
     }
     private void OnEnable()
     {
+        UIManager.Instance.OnOffBG(true);
         _highScoreText.String2Point(RuntimeDataManager.Instance.PlayerData.HighScore);
         if (!PlayerPrefs.HasKey("Tutorial"))
         {
