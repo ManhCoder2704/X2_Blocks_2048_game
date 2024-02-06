@@ -340,8 +340,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 92.31592}
-  m_SizeDelta: {x: 0, y: -184.63}
+  m_AnchoredPosition: {x: 0, y: 90.00048}
+  m_SizeDelta: {x: 0, y: -179.99904}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4993686784268530080
 CanvasRenderer:
@@ -364,7 +364,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 0.011764706, g: 0.24705882, b: 0.6431373, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -396,8 +396,8 @@ MonoBehaviour:
   _canvasGroup: {fileID: 4093094568343235157}
   _isPopup: 0
   _playBtn: {fileID: 4352467584017976809}
-  _diamonBtn: {fileID: 6114766041769489815}
-  _highScoreBtn: {fileID: 4613225243668455872}
+  _diamonBtn: {fileID: 8662278964956641500}
+  _highScoreBtn: {fileID: 170675877343019638}
   _highestBlockImage: {fileID: 3056981028954236831}
   _highBlockText: {fileID: 7164293911961659067}
   _gemsCountText: {fileID: 6114766042360340247}
@@ -448,10 +448,10 @@ RectTransform:
   - {fileID: 4636420982102171591}
   m_Father: {fileID: 891945421059497737}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -126.666664}
-  m_SizeDelta: {x: 930, y: 100}
+  m_SizeDelta: {x: 1080, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2117819646356964831
 MonoBehaviour:
@@ -489,7 +489,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2968081914784479103}
   - component: {fileID: 2395622811614635297}
-  - component: {fileID: 213543481719218436}
   m_Layer: 5
   m_Name: Top
   m_TagString: Untagged
@@ -526,36 +525,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7560828769569526397}
   m_CullTransparentMesh: 1
---- !u!114 &213543481719218436
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7560828769569526397}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.25882354, g: 0.30980393, b: 0.8, a: 1}
-  m_RaycastTarget: 0
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &7665246390035080037
 GameObject:
   m_ObjectHideFlags: 0
@@ -705,8 +674,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1014,14 +983,9 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 409b3607742f8344cb6a464b9ba8a47f, type: 3}
---- !u!224 &4613225242414183711 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 4994606247019783422, guid: 409b3607742f8344cb6a464b9ba8a47f, type: 3}
-  m_PrefabInstance: {fileID: 384230943054483937}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &4613225243668455872 stripped
+--- !u!114 &170675877343019638 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4994606245865386017, guid: 409b3607742f8344cb6a464b9ba8a47f, type: 3}
+  m_CorrespondingSourceObject: {fileID: 507583837782119319, guid: 409b3607742f8344cb6a464b9ba8a47f, type: 3}
   m_PrefabInstance: {fileID: 384230943054483937}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
@@ -1030,6 +994,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!224 &4613225242414183711 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 4994606247019783422, guid: 409b3607742f8344cb6a464b9ba8a47f, type: 3}
+  m_PrefabInstance: {fileID: 384230943054483937}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &4613225244217428800 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4994606246406920865, guid: 409b3607742f8344cb6a464b9ba8a47f, type: 3}
@@ -1256,17 +1225,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4300579540459291058, guid: 29a259106f383034d8a971ac71c001a8, type: 3}
   m_PrefabInstance: {fileID: 8030684630470779130}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6114766041769489815 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4300579539197416813, guid: 29a259106f383034d8a971ac71c001a8, type: 3}
-  m_PrefabInstance: {fileID: 8030684630470779130}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &6114766042360340247 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4300579538655789037, guid: 29a259106f383034d8a971ac71c001a8, type: 3}
@@ -1276,5 +1234,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8662278964956641500 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1676502128156366886, guid: 29a259106f383034d8a971ac71c001a8, type: 3}
+  m_PrefabInstance: {fileID: 8030684630470779130}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

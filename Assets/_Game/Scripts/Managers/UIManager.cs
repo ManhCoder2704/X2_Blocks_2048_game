@@ -21,8 +21,6 @@ public class UIManager : Singleton<UIManager>
     private UIBase _currentActiveUI;
     private Stack<UIBase> _popupStack = new Stack<UIBase>();
     private Tween _loadingTween;
-
-    public Image Background { get => _background; set => _background = value; }
     public UIBase CurrentActiveUI { get => _currentActiveUI; set => _currentActiveUI = value; }
     public MenuNavigatorBar MenuNavigatorBar { get => _menuNavigatorBar; set => _menuNavigatorBar = value; }
 
@@ -56,6 +54,7 @@ public class UIManager : Singleton<UIManager>
 
     public void StartLoading()
     {
+        _background.gameObject.SetActive(true);
         _loadingImage.SetActive(true);
         _loadingTween.Play();
     }
@@ -193,5 +192,9 @@ public class UIManager : Singleton<UIManager>
     {
         _background.sprite = bg;
         RuntimeDataManager.Instance.SettingData.ThemeIndex = id;
+    }
+    public void OnOffBG(bool status)
+    {
+        _background.gameObject.SetActive(status);
     }
 }
