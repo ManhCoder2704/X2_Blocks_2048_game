@@ -30,7 +30,8 @@ public class HomeUI : UIBase
         {
             _highestBlockImage.gameObject.SetActive(true);
             _highBlockText.FormatLargeNumberPowerOfTwo(highestBlock);
-            _highestBlockImage.color = CacheColor.GetColor(highestBlock);
+            //_highBlockText.color = CacheColor.GetColor(highestBlock);
+            //_highestBlockImage.color = CacheColor.GetColor(highestBlock);
         }
         else
         {
@@ -48,14 +49,12 @@ public class HomeUI : UIBase
     }
     private void OnRank()
     {
-        SoundManager.Instance.PlaySFX(SFXType.Click);
-        UIManager.Instance.rankBtn.onClick.Invoke();
+        UIManager.Instance.MenuNavigatorBar.OpenRank();
     }
 
     private void OnShop()
     {
-        SoundManager.Instance.PlaySFX(SFXType.Click);
-        UIManager.Instance.shopBtn.onClick.Invoke();
+        UIManager.Instance.MenuNavigatorBar.OpenShop();
     }
 
     private void StartGame()

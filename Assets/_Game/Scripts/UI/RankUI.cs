@@ -9,6 +9,7 @@ using System.Numerics;
 
 public class RankUI : UIBase
 {
+    [SerializeField] private RectTransform _rankPanel;
     [SerializeField] private LeaderboardNavigator _leaderboardNavigator;
     [SerializeField] private RankBox _rankBoxPrefab_blue;
     [SerializeField] private RankBox _rankBoxPrefab_yellow;
@@ -22,7 +23,7 @@ public class RankUI : UIBase
     private bool _isLocalRank = true;
     private int _localRank;
 
-    private float _duration = 0.5f;
+    private float _duration = .5f;
     private void Awake()
     {
         CreateRankBox();
@@ -31,6 +32,12 @@ public class RankUI : UIBase
     void OnEnable()
     {
         CheckRankSeed();
+        if (IsPopup)
+        {
+            Sequence sequence = DOTween.Sequence();
+            sequence.Append(_rankPanel.DOPivotY(0, 0f).SetEase(Ease.OutCubic));
+            sequence.Append(_rankPanel.DOAnchorPosY(0, _duration).SetEase(Ease.OutCubic));
+        }
     }
 
     void Start()
@@ -129,9 +136,12 @@ public class RankUI : UIBase
         }
     }
 
-    private void CloseRank()
+    public void CloseRank()
     {
         UIManager.Instance.ClosePopup(this);
+        Sequence sequence = DOTween.Sequence();
+        sequence.Append(_rankPanel.DOAnchorPosY(90, _duration).SetEase(Ease.OutCubic));
+        sequence.Append(_rankPanel.DOPivotY(0.5f, 0f).SetEase(Ease.OutCubic));
     }
 
     private IEnumerator GetDataFromApi()
