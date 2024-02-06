@@ -324,7 +324,7 @@ public class GameplayManager : Singleton<GameplayManager>
                     {
                         ResetBoard();
                         UIManager.Instance.OpenUI(UIType.PlayUI);
-                        UIManager.Instance.OpenNoticUI("You Don't Have Enough Money To Revive");
+                        UIManager.Instance.OpenNoticUI("You Don't Have Enough Money To Revive", "Notification");
                         return;
                     }
                     ChangeGameState(GameStateEnum.Loose);
