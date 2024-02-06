@@ -12,8 +12,8 @@ public class RankBox : MonoBehaviour
     public void Init(string rank, string name, string score, string country)
     {
         _rank.text = rank;
-        _name.text = name;
+        _name.text = $"#{country}: {name}";
         _score.text = score;
-        _country.text = country;
+        //_country.text = country;
     }
 }
