@@ -1,4 +1,3 @@
-
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
@@ -8,7 +7,7 @@ using System;
 public class UIManager : Singleton<UIManager>
 {
     [SerializeField] private GameObject _board;
-    [SerializeField] private CanvasGroup _menu;
+    [SerializeField] private MenuNavigatorBar _menuNavigatorBar;
     [SerializeField] private Image _background;
     [Header("UI Components")]
     [SerializeField] private List<UIBase> _uiComponents;
@@ -18,48 +17,44 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private ConfirmUI _confirmUI;
     [SerializeField] private NotificationUI _noticUI;
 
-
     private Dictionary<UIType, UIBase> _uiDict = new Dictionary<UIType, UIBase>();
     private UIBase _currentActiveUI;
     private Stack<UIBase> _popupStack = new Stack<UIBase>();
     private Tween _loadingTween;
-    public Button rankBtn;
-    public Button shopBtn;
-
-    public Image Background { get => _background; set => _background = value; }
     public UIBase CurrentActiveUI { get => _currentActiveUI; set => _currentActiveUI = value; }
+    public MenuNavigatorBar MenuNavigatorBar { get => _menuNavigatorBar; set => _menuNavigatorBar = value; }
 
     void Awake()
     {
-        _menu.interactable = false;
         _loadingTween = _loadingImage.transform.DORotate(new Vector3(0, 0, -360), 1f, RotateMode.FastBeyond360)
             .SetEase(Ease.Linear)
             .SetLoops(-1);
         StartLoading();
     }
-    public void OpenConfirmUI(Action agreeCallBack, Action disagreeCallBack, string content, Action onOpen)
+    public void OpenConfirmUI(Action agreeCallBack, Action disagreeCallBack, string content, string title, Action onOpen)
     {
         onOpen?.Invoke();
         _confirmUI.gameObject.SetActive(true);
         _currentActiveUI.CanvasGroup.interactable = false;
         agreeCallBack += () => _currentActiveUI.CanvasGroup.interactable = true;
         disagreeCallBack += () => _currentActiveUI.CanvasGroup.interactable = true;
-        _confirmUI.OnInit(agreeCallBack, disagreeCallBack, content);
+        _confirmUI.OnInit(agreeCallBack, disagreeCallBack, content, title);
     }
-    public void OpenNoticUI(string content)
+    public void OpenNoticUI(string content, string title)
     {
         _noticUI.gameObject.SetActive(true);
-        _noticUI.SetContent(content);
+        _noticUI.SetContent(content, title);
     }
     public void FirstLoadUI()
     {
         StopLoading();
-        _menu.interactable = true;
+        _menuNavigatorBar.gameObject.SetActive(true);
         OpenUI(UIType.HomeUI);
     }
 
     public void StartLoading()
     {
+        _background.gameObject.SetActive(true);
         _loadingImage.SetActive(true);
         _loadingTween.Play();
     }
@@ -87,16 +82,21 @@ public class UIManager : Singleton<UIManager>
         UIBase ui = GetUIReference(uiType);
 
         if (_currentActiveUI == ui) return;
+        if (_currentActiveUI != null && GetUIReference(UIType.PlayUI) == _currentActiveUI)
+        {
+            GameplayManager.Instance.ChangeSkillState(null);
+        }
         if (uiType == UIType.PlayUI)
         {
-            _menu.gameObject.SetActive(false);
+            _menuNavigatorBar.gameObject.SetActive(false);
             _board.gameObject.SetActive(true);
             GameplayManager.Instance.ChangeGameState(GameStateEnum.Playing);
+            GameplayManager.Instance.IsBlockMoving = false;
 
         }
         else if (uiType == UIType.HomeUI)
         {
-            _menu.gameObject.SetActive(true);
+            _menuNavigatorBar.gameObject.SetActive(true);
             _board.gameObject.SetActive(false);
             GameplayManager.Instance.ChangeGameState(GameStateEnum.Prepare);
 
@@ -127,14 +127,14 @@ public class UIManager : Singleton<UIManager>
 
         if (GetUIReference(UIType.PlayUI) == _currentActiveUI)
         {
-            _menu.gameObject.SetActive(false);
+            _menuNavigatorBar.gameObject.SetActive(false);
             _board.gameObject.SetActive(true);
             GameplayManager.Instance.ChangeGameState(GameStateEnum.Playing);
-
+            GameplayManager.Instance.IsBlockMoving = false;
         }
         else if (GetUIReference(UIType.HomeUI) == _currentActiveUI)
         {
-            _menu.gameObject.SetActive(true);
+            _menuNavigatorBar.gameObject.SetActive(true);
             _board.gameObject.SetActive(false);
             GameplayManager.Instance.ChangeGameState(GameStateEnum.Prepare);
         }
@@ -192,5 +192,9 @@ public class UIManager : Singleton<UIManager>
     {
         _background.sprite = bg;
         RuntimeDataManager.Instance.SettingData.ThemeIndex = id;
+    }
+    public void OnOffBG(bool status)
+    {
+        _background.gameObject.SetActive(status);
     }
 }

@@ -9,10 +9,10 @@ using System.Numerics;
 
 public class RankUI : UIBase
 {
-    [SerializeField] private Button _switchBtn;
-    [SerializeField] private Transform _toggleBtn;
-    [SerializeField] private Button _escapeButton;
-    [SerializeField] private RankBox _rankBoxPrefab;
+    [SerializeField] private RectTransform _rankPanel;
+    [SerializeField] private LeaderboardNavigator _leaderboardNavigator;
+    [SerializeField] private RankBox _rankBoxPrefab_blue;
+    [SerializeField] private RankBox _rankBoxPrefab_yellow;
     [SerializeField] private RankBox _myRank;
     [SerializeField] private Transform _rankBoxContainer;
     [SerializeField] private ScrollRect _rankScrollRect;
@@ -23,7 +23,7 @@ public class RankUI : UIBase
     private bool _isLocalRank = true;
     private int _localRank;
 
-    private float _duration = 0.5f;
+    private float _duration = .5f;
     private void Awake()
     {
         CreateRankBox();
@@ -31,14 +31,18 @@ public class RankUI : UIBase
 
     void OnEnable()
     {
-        _escapeButton.gameObject.SetActive(_isPopup);
         CheckRankSeed();
+        if (IsPopup)
+        {
+            Sequence sequence = DOTween.Sequence();
+            sequence.Append(_rankPanel.DOPivotY(0, 0f).SetEase(Ease.OutCubic));
+            sequence.Append(_rankPanel.DOAnchorPosY(0, _duration).SetEase(Ease.OutCubic));
+        }
     }
 
     void Start()
     {
-        _switchBtn.onClick.AddListener(Switch);
-        _escapeButton.onClick.AddListener(CloseRank);
+        _leaderboardNavigator.Init(IsPopup ? CloseRank : null, ChangeBoard, ChangeBoard);
     }
 
     private void CheckRankSeed()
@@ -63,12 +67,22 @@ public class RankUI : UIBase
     private void CreateRankBox()
     {
         rankBoxes = new List<RankBox>();
-        for (int i = 0; i < 10; i++)
+        for (int i = 1; i < 11; i++)
         {
-            RankBox rankBox = Instantiate(_rankBoxPrefab, _rankBoxContainer);
-            //rankBox.Init((i + 1).ToString(), "", "", "");
+            RankBox rankBox;
+            if (i % 2 == 0)
+                rankBox = Instantiate(_rankBoxPrefab_yellow, _rankBoxContainer);
+            else
+                rankBox = Instantiate(_rankBoxPrefab_blue, _rankBoxContainer);
             rankBoxes.Add(rankBox);
         }
+        Debug.Log(rankBoxes.Count);
+    }
+
+    private void ChangeBoard()
+    {
+        _isLocalRank = !_isLocalRank;
+        LoadData();
     }
 
     private void LoadData()
@@ -99,11 +113,11 @@ public class RankUI : UIBase
         if (_isLocalRank)
         {
             _localRank = random.Next(100, short.MaxValue - playerScore.GetByteCount() * 8);
-            _myRank.Init(flag ? "Unrank" : _localRank.ToString(), RuntimeDataManager.Instance.PlayerData.PlayerName, RuntimeDataManager.Instance.PlayerData.HighScore.String2Point(), "VN");
+            _myRank.Init(flag ? "Unrank" : _localRank.ToString(), "You", RuntimeDataManager.Instance.PlayerData.HighScore.String2Point(), "VN");
         }
         else
         {
-            _myRank.Init(flag ? "Unrank" : random.Next(Mathf.RoundToInt((float)(_localRank * random.NextDouble() - playerScore.GetByteCount() * 8)), 100000 - playerScore.GetByteCount() * 8).ToString(), RuntimeDataManager.Instance.PlayerData.PlayerName, RuntimeDataManager.Instance.PlayerData.HighScore.String2Point(), "#VN");
+            _myRank.Init(flag ? "Unrank" : random.Next(Mathf.RoundToInt((float)(_localRank * random.NextDouble() - playerScore.GetByteCount() * 8)), 100000 - playerScore.GetByteCount() * 8).ToString(), "You", RuntimeDataManager.Instance.PlayerData.HighScore.String2Point(), "VN");
         }
     }
 
@@ -122,22 +136,12 @@ public class RankUI : UIBase
         }
     }
 
-    private void Switch()
-    {
-        _switchBtn.interactable = false;
-        _rankScrollRect.DOVerticalNormalizedPos(1, _duration);
-        _toggleBtn.DOLocalMoveX(-_toggleBtn.localPosition.x, _duration)
-            .OnComplete(() =>
-            {
-                _isLocalRank = !_isLocalRank;
-                LoadData();
-                _switchBtn.interactable = true;
-            });
-    }
-
-    private void CloseRank()
+    public void CloseRank()
     {
         UIManager.Instance.ClosePopup(this);
+        Sequence sequence = DOTween.Sequence();
+        sequence.Append(_rankPanel.DOAnchorPosY(90, _duration).SetEase(Ease.OutCubic));
+        sequence.Append(_rankPanel.DOPivotY(0.5f, 0f).SetEase(Ease.OutCubic));
     }
 
     private IEnumerator GetDataFromApi()
@@ -167,7 +171,7 @@ public class RankUI : UIBase
                 {
                     string name = $"{result.name.first} {result.name.last}";
                     Debug.Log(name);
-                    globalRankData[i++] = new RankData(name, BigInteger.Parse(GenerateRandomScore(8, 15, random)), "#VN");
+                    globalRankData[i++] = new RankData(name, BigInteger.Parse(GenerateRandomScore(8, 15, random)), "VN");
                     yield return null;
                 }
             }
@@ -191,7 +195,7 @@ public class RankUI : UIBase
                 {
                     string name = $"{result.name.first} {result.name.last}";
                     Debug.Log(name);
-                    globalRankData[i++] = new RankData(name, BigInteger.Parse(GenerateRandomScore(10, 20, random)), "#" + result.nat);
+                    globalRankData[i++] = new RankData(name, BigInteger.Parse(GenerateRandomScore(10, 20, random)), result.nat);
                     yield return null;
                 }
             }
@@ -201,12 +205,12 @@ public class RankUI : UIBase
         _localRankDatas = new List<RankData>();
         foreach (RankData data in _globalRankDatas)
         {
-            if (data.country == "#VN")
+            if (data.country.Equals("VN"))
             {
                 _localRankDatas.Add(data);
             }
-            yield return null;
         }
+
 
         _globalRankDatas.RemoveRange(10, 10);
 

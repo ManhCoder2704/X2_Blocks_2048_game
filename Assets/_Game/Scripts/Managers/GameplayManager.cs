@@ -58,6 +58,8 @@ public class GameplayManager : Singleton<GameplayManager>
         if (_isBlockMoving || CurrentState != GameStateEnum.Playing) return;
         if (_currentSkillState != null)
         {
+            _isBlockMoving = true;
+
             UnityEngine.Vector3 vector3 = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
             int x = Mathf.RoundToInt(vector3.x);
@@ -65,7 +67,6 @@ public class GameplayManager : Singleton<GameplayManager>
 
             _currentSkillState.Execute(new Vector2Int(x, y));
 
-            _isBlockMoving = true;
             return;
         }
         _currentPendingBlock = _board.GetNextBlock();
@@ -323,7 +324,7 @@ public class GameplayManager : Singleton<GameplayManager>
                     {
                         ResetBoard();
                         UIManager.Instance.OpenUI(UIType.PlayUI);
-                        UIManager.Instance.OpenNoticUI("You Don't Have Enough Money To Revive");
+                        UIManager.Instance.OpenNoticUI("You Don't Have Enough Money To Revive", "Notification");
                         return;
                     }
                     ChangeGameState(GameStateEnum.Loose);

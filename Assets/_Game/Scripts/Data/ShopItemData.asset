@@ -13,27 +13,33 @@ MonoBehaviour:
   m_Name: ShopItemData
   m_EditorClassIdentifier: 
   _listShopItems:
-  - Image: {fileID: 21300000, guid: b599c0666ea1d4c47be7403a518f6a96, type: 3}
+  - Image: {fileID: 21300000, guid: e0940f4e599044730b69eb2f0af6617d, type: 3}
     Price: 23000
     Bonus: 0
     GemsCount: 1000
+    PackageName: Tiny of Gem
   - Image: {fileID: 21300000, guid: b599c0666ea1d4c47be7403a518f6a96, type: 3}
     Price: 70000
     Bonus: 0
     GemsCount: 3000
+    PackageName: Fisful of Gem
   - Image: {fileID: 21300000, guid: 133f26c4ee46c45b3a7bc502d721f50d, type: 3}
     Price: 117000
     Bonus: 5
     GemsCount: 5000
+    PackageName: Pouch of Gem
   - Image: {fileID: 21300000, guid: 33f163c49b488460ea0182825ae1600e, type: 3}
     Price: 234000
     Bonus: 10
     GemsCount: 10000
+    PackageName: Basket of Gem
   - Image: {fileID: 21300000, guid: 46b2a60f8906849ae8010bc08932eb93, type: 3}
     Price: 585000
     Bonus: 15
     GemsCount: 25000
+    PackageName: Chess of Gem
   - Image: {fileID: 21300000, guid: 5919e24b20ad44fac9fc74d8db73eb99, type: 3}
     Price: 1150000
     Bonus: 20
     GemsCount: 50000
+    PackageName: Vault of Gem

@@ -24,17 +24,18 @@ public class HomeUI : UIBase
     }
     private void OnEnable()
     {
+        UIManager.Instance.OnOffBG(false);
         _highScoreText.String2Point(RuntimeDataManager.Instance.PlayerData.HighScore);
         int highestBlock = RuntimeDataManager.Instance.PlayerData.HighestBlockIndex;
         if (highestBlock > 0)
         {
-            _highestBlockImage.gameObject.SetActive(true);
+            _highestBlockImage.transform.parent.gameObject.SetActive(true);
             _highBlockText.FormatLargeNumberPowerOfTwo(highestBlock);
             _highestBlockImage.color = CacheColor.GetColor(highestBlock);
         }
         else
         {
-            _highestBlockImage.gameObject.SetActive(false);
+            _highestBlockImage.transform.parent.gameObject.SetActive(false);
         }
 
     }
@@ -48,14 +49,12 @@ public class HomeUI : UIBase
     }
     private void OnRank()
     {
-        SoundManager.Instance.PlaySFX(SFXType.Click);
-        UIManager.Instance.rankBtn.onClick.Invoke();
+        UIManager.Instance.MenuNavigatorBar.OpenRank();
     }
 
     private void OnShop()
     {
-        SoundManager.Instance.PlaySFX(SFXType.Click);
-        UIManager.Instance.shopBtn.onClick.Invoke();
+        UIManager.Instance.MenuNavigatorBar.OpenShop();
     }
 
     private void StartGame()

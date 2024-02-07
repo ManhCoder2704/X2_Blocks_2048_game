@@ -17,6 +17,13 @@ public class RemoveOneBlock : ISkillState
 
     public void Execute(Vector2Int? inputCoor)
     {
+        if (!_board.Block_Coor_Dic.ContainsKey(inputCoor.Value))
+        {
+            Debug.Log("$$$$$$$$not contain");
+            GameplayManager.Instance.IsBlockMoving = false;
+            GameplayManager.Instance.ChangeSkillState(null);
+            return;
+        }
         RuntimeDataManager.Instance.PlayerData.Gems -= _price;
         SoundManager.Instance.PlaySFX(SFXType.Skill);
         _board.RemoveOneBlock(inputCoor, _actionBlocks, _callback);

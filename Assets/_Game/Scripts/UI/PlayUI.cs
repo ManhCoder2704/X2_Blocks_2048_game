@@ -15,16 +15,13 @@ public class PlayUI : UIBase
     [SerializeField] private Button _spellSwapBtn;
     [SerializeField] private Image _spellRemoveImg;
     [SerializeField] private Image _spellClearImg;
-    [SerializeField] private CanvasGroup[] _spellCanvas;
-    [SerializeField] private Color _spellNormalColor;
-    [SerializeField] private Color _spellActiveColor;
+    [SerializeField] private GameObject[] _spellMask;
     [SerializeField] private TMP_Text _scoreTxt;
-    [SerializeField] private TMP_Text _diamondTxt;
-    [SerializeField] private TMP_Text _highScoreTxt;
     [SerializeField] private TMP_Text _comboText;
     [SerializeField] private Image _comboBG;
     [SerializeField] private TMP_Text _gemsCountText;
     [SerializeField] private TMP_Text _highScoreText;
+
     private SkillType _currentSkillType = SkillType.None;
     private Tween _spellBlinkTween;
     private Image _currentSpellActiveBG;
@@ -66,32 +63,27 @@ public class PlayUI : UIBase
         OnHighScoreChange(RuntimeDataManager.Instance.PlayerData.HighScore);
         RuntimeDataManager.Instance.PlayerData.OnHighScoreChange += OnHighScoreChange;
         CheckSpell(RuntimeDataManager.Instance.PlayerData.Gems);
+        this.gameObject.SetActive(false);
     }
     private void CheckSpell(int gems)
     {
         if (gems < 100)
         {
-            _spellCanvas[0].alpha = 0.75f;
-            _spellCanvas[0].interactable = false;
-            _spellCanvas[1].alpha = 0.75f;
-            _spellCanvas[1].interactable = false;
+            _spellMask[0].SetActive(true);
+            _spellMask[2].SetActive(true);
         }
         else
         {
-            _spellCanvas[0].alpha = 1f;
-            _spellCanvas[0].interactable = true;
-            _spellCanvas[1].alpha = 1f;
-            _spellCanvas[1].interactable = true;
+            _spellMask[0].SetActive(false);
+            _spellMask[2].SetActive(false);
         }
         if (gems < 400)
         {
-            _spellCanvas[2].alpha = 0.75f;
-            _spellCanvas[2].interactable = false;
+            _spellMask[1].SetActive(true);
         }
         else
         {
-            _spellCanvas[2].alpha = 1f;
-            _spellCanvas[2].interactable = true;
+            _spellMask[1].SetActive(false);
         }
     }
 
@@ -105,6 +97,7 @@ public class PlayUI : UIBase
     }
     private void OnEnable()
     {
+        UIManager.Instance.OnOffBG(true);
         _highScoreText.String2Point(RuntimeDataManager.Instance.PlayerData.HighScore);
         if (!PlayerPrefs.HasKey("Tutorial"))
         {
@@ -118,7 +111,7 @@ public class PlayUI : UIBase
     {
         _comboText.text = $"Combo +{comboCount}";
         SoundManager.Instance.PlaySFX(SFXType.Combo);
-        _comboBG.DOFade(1, 0.25f)
+        _comboBG.DOFade(0.6f, 0.25f)
             .OnComplete(() =>
             {
                 _comboBG.DOFade(0, 0.75f)
@@ -152,7 +145,6 @@ public class PlayUI : UIBase
     {
         if (GameplayManager.Instance.QuantityBlock == 0 || GameplayManager.Instance.IsBlockMoving) return;
         if (RuntimeDataManager.Instance.PlayerData.Gems < 100) return;
-        //TODO: Check user currency first
         _currentSkillType = SkillType.SwapNextBlock;
         GameplayManager.Instance.ChangeSkillState(new SwapNextBlock());
     }
@@ -169,10 +161,7 @@ public class PlayUI : UIBase
         }
         KillBlickTween();
         if (RuntimeDataManager.Instance.PlayerData.Gems < 400) return;
-        _currentSkillType = SkillType.ClearOneRow;
-        _currentSpellActiveBG = _spellClearBtn.image;
-        _currentSpellActiveBG.color = _spellActiveColor;
-        _spellBlinkTween = _spellClearImg.DOFade(0.25f, 0.3f).SetLoops(-1, LoopType.Yoyo);
+        BlinkSkillBG(SkillType.ClearOneRow, _spellClearBtn.image);
         //TODO: Check user currency first
         GameplayManager.Instance.ChangeSkillState(new ClearOneRow());
     }
@@ -189,10 +178,7 @@ public class PlayUI : UIBase
         }
         KillBlickTween();
         if (RuntimeDataManager.Instance.PlayerData.Gems < 100) return;
-        _currentSkillType = SkillType.RemoveOneBlock;
-        _currentSpellActiveBG = _spellRemoveBtn.image;
-        _currentSpellActiveBG.color = _spellActiveColor;
-        _spellBlinkTween = _spellRemoveImg.DOFade(0.25f, 0.3f).SetLoops(-1, LoopType.Yoyo);
+        BlinkSkillBG(SkillType.RemoveOneBlock, _spellRemoveBtn.image);
         //TODO: Check user currency first
         GameplayManager.Instance.ChangeSkillState(new RemoveOneBlock());
     }
@@ -204,8 +190,15 @@ public class PlayUI : UIBase
         _spellBlinkTween?.Kill();
         if (_currentSpellActiveBG != null)
         {
-            _currentSpellActiveBG.color = _spellNormalColor;
+            // _currentSpellActiveBG.color = _spellNormalColor;
         }
+    }
+
+    private void BlinkSkillBG(SkillType skill, Image imageBG)
+    {
+        _currentSkillType = skill;
+        _currentSpellActiveBG = imageBG;
+        _spellBlinkTween = _currentSpellActiveBG.DOFade(0.25f, 0.3f).SetLoops(-1, LoopType.Yoyo);
     }
 }
 
