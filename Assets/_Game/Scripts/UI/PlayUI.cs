@@ -15,9 +15,7 @@ public class PlayUI : UIBase
     [SerializeField] private Button _spellSwapBtn;
     [SerializeField] private Image _spellRemoveImg;
     [SerializeField] private Image _spellClearImg;
-    [SerializeField] private CanvasGroup[] _spellCanvas;
-    [SerializeField] private Color _spellNormalColor;
-    [SerializeField] private Color _spellActiveColor;
+    [SerializeField] private GameObject[] _spellMask;
     [SerializeField] private TMP_Text _scoreTxt;
     [SerializeField] private TMP_Text _comboText;
     [SerializeField] private Image _comboBG;
@@ -71,27 +69,21 @@ public class PlayUI : UIBase
     {
         if (gems < 100)
         {
-            _spellCanvas[0].alpha = 0.75f;
-            _spellCanvas[0].interactable = false;
-            _spellCanvas[2].alpha = 0.75f;
-            _spellCanvas[2].interactable = false;
+            _spellMask[0].SetActive(true);
+            _spellMask[2].SetActive(true);
         }
         else
         {
-            _spellCanvas[0].alpha = 1f;
-            _spellCanvas[0].interactable = true;
-            _spellCanvas[2].alpha = 1f;
-            _spellCanvas[2].interactable = true;
+            _spellMask[0].SetActive(false);
+            _spellMask[2].SetActive(false);
         }
         if (gems < 400)
         {
-            _spellCanvas[1].alpha = 0.75f;
-            _spellCanvas[1].interactable = false;
+            _spellMask[1].SetActive(true);
         }
         else
         {
-            _spellCanvas[1].alpha = 1f;
-            _spellCanvas[1].interactable = true;
+            _spellMask[1].SetActive(false);
         }
     }
 
@@ -198,7 +190,7 @@ public class PlayUI : UIBase
         _spellBlinkTween?.Kill();
         if (_currentSpellActiveBG != null)
         {
-            _currentSpellActiveBG.color = _spellNormalColor;
+            // _currentSpellActiveBG.color = _spellNormalColor;
         }
     }
 
@@ -206,7 +198,6 @@ public class PlayUI : UIBase
     {
         _currentSkillType = skill;
         _currentSpellActiveBG = imageBG;
-        _currentSpellActiveBG.color = _spellActiveColor;
         _spellBlinkTween = _currentSpellActiveBG.DOFade(0.25f, 0.3f).SetLoops(-1, LoopType.Yoyo);
     }
 }

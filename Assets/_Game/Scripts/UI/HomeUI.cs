@@ -29,14 +29,13 @@ public class HomeUI : UIBase
         int highestBlock = RuntimeDataManager.Instance.PlayerData.HighestBlockIndex;
         if (highestBlock > 0)
         {
-            _highestBlockImage.gameObject.SetActive(true);
+            _highestBlockImage.transform.parent.gameObject.SetActive(true);
             _highBlockText.FormatLargeNumberPowerOfTwo(highestBlock);
-            //_highBlockText.color = CacheColor.GetColor(highestBlock);
-            //_highestBlockImage.color = CacheColor.GetColor(highestBlock);
+            _highestBlockImage.color = CacheColor.GetColor(highestBlock);
         }
         else
         {
-            _highestBlockImage.gameObject.SetActive(false);
+            _highestBlockImage.transform.parent.gameObject.SetActive(false);
         }
 
     }
