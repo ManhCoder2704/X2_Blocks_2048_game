@@ -1892,7 +1892,6 @@ GameObject:
   - component: {fileID: 6851843249604357751}
   - component: {fileID: 6719273677554841239}
   - component: {fileID: 4228770499956422814}
-  - component: {fileID: 1854276234187141226}
   m_Layer: 0
   m_Name: Spell 1
   m_TagString: Untagged
@@ -2004,18 +2003,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!225 &1854276234187141226
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5426764755569518958}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
 --- !u!1 &5897855976349935792
 GameObject:
   m_ObjectHideFlags: 0
@@ -2258,7 +2245,6 @@ GameObject:
   - component: {fileID: 5931491781900970382}
   - component: {fileID: 5931491781900970383}
   - component: {fileID: 4779679837108710922}
-  - component: {fileID: 3582974963504166987}
   m_Layer: 0
   m_Name: Spell 2
   m_TagString: Untagged
@@ -2370,18 +2356,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!225 &3582974963504166987
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5931491781900970381}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
 --- !u!1 &6571436439009078878
 GameObject:
   m_ObjectHideFlags: 0
@@ -2469,7 +2443,6 @@ GameObject:
   - component: {fileID: 4423627584967654892}
   - component: {fileID: 3536349083025848012}
   - component: {fileID: 2917500215802400292}
-  - component: {fileID: 839472300100472231}
   m_Layer: 0
   m_Name: Spell 3
   m_TagString: Untagged
@@ -2581,18 +2554,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!225 &839472300100472231
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6945746075789837429}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
 --- !u!1 &7321688573100946436
 GameObject:
   m_ObjectHideFlags: 0
@@ -3019,12 +2980,10 @@ MonoBehaviour:
   _spellSwapBtn: {fileID: 2917500215802400292}
   _spellRemoveImg: {fileID: 6719273677554841239}
   _spellClearImg: {fileID: 5931491781900970383}
-  _spellCanvas:
-  - {fileID: 1854276234187141226}
-  - {fileID: 3582974963504166987}
-  - {fileID: 839472300100472231}
-  _spellNormalColor: {r: 0.078431375, g: 0.078431375, b: 0.078431375, a: 0.78431374}
-  _spellActiveColor: {r: 0, g: 0.61128855, b: 1, a: 0.78431374}
+  _spellMask:
+  - {fileID: 6571436439009078878}
+  - {fileID: 5931491781459005773}
+  - {fileID: 4886859879808245083}
   _scoreTxt: {fileID: 5786357338612621458}
   _comboText: {fileID: 289859813596329356}
   _comboBG: {fileID: 5353953425970583366}
