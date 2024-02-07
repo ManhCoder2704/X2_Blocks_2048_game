@@ -788,15 +788,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: Highest Block
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 125cb55b44b24c4393181402bc6200e6, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 125cb55b44b24c4393181402bc6200e6, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1b5c9a7370e424d53a1b8a999cf54a02, type: 2}
+  m_sharedMaterial: {fileID: 7512481295523713106, guid: 1b5c9a7370e424d53a1b8a999cf54a02, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -813,7 +813,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 41
+  m_fontSize: 31.25
   m_fontSizeBase: 40.6
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1139,6 +1139,34 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8709983965552854460}
     m_Modifications:
+    - target: {fileID: 167981725929925724, guid: 92cfe433d93abde42b4f893a8d77db2e, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 1b5c9a7370e424d53a1b8a999cf54a02, type: 2}
+    - target: {fileID: 167981725929925724, guid: 92cfe433d93abde42b4f893a8d77db2e, type: 3}
+      propertyPath: m_fontColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 167981725929925724, guid: 92cfe433d93abde42b4f893a8d77db2e, type: 3}
+      propertyPath: m_fontColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 167981725929925724, guid: 92cfe433d93abde42b4f893a8d77db2e, type: 3}
+      propertyPath: m_fontColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 167981725929925724, guid: 92cfe433d93abde42b4f893a8d77db2e, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 7512481295523713106, guid: 1b5c9a7370e424d53a1b8a999cf54a02, type: 2}
+    - target: {fileID: 167981725929925724, guid: 92cfe433d93abde42b4f893a8d77db2e, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 167981725929925724, guid: 92cfe433d93abde42b4f893a8d77db2e, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 167981726334240189, guid: 92cfe433d93abde42b4f893a8d77db2e, type: 3}
       propertyPath: m_Name
       value: Button_Play

@@ -111,7 +111,7 @@ public class PlayUI : UIBase
     {
         _comboText.text = $"Combo +{comboCount}";
         SoundManager.Instance.PlaySFX(SFXType.Combo);
-        _comboBG.DOFade(1, 0.25f)
+        _comboBG.DOFade(0.6f, 0.25f)
             .OnComplete(() =>
             {
                 _comboBG.DOFade(0, 0.75f)
