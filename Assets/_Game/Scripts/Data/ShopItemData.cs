@@ -7,4 +7,5 @@ public class ShopItemData
     public int Price;
     public float Bonus;
     public int GemsCount;
+    public string PackageName;
 }

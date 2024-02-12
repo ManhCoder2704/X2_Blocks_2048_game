@@ -27,11 +27,11 @@ public static class BigNumber
         }
         else if (BigInteger.Compare(number, milion) < 0)
         {
-            return (number / thousand).ToString() + "K";
+            return (number / thousand).ToString() + " K";
         }
         else if (BigInteger.Compare(number, billion) < 0)
         {
-            return (number / milion).ToString() + "M";
+            return (number / milion).ToString() + " M";
         }
         else
         {

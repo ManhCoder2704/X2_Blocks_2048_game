@@ -31,21 +31,23 @@ public class ThemeUI : UIBase
     private void Start()
     {
         _escapeButton.onClick.AddListener(CloseTheme);
-        _gemsBtn.onClick.AddListener(OpenShop);
-        OnGemChange(RuntimeDataManager.Instance.PlayerData.Gems);
-        RuntimeDataManager.Instance.PlayerData.OnGemsChange += OnGemChange;
+        if (!IsPopup)
+        {
+            _gemsBtn.onClick.AddListener(OpenShop);
+            OnGemChange(RuntimeDataManager.Instance.PlayerData.Gems);
+            RuntimeDataManager.Instance.PlayerData.OnGemsChange += OnGemChange;
+        }
     }
 
     private void OpenShop()
     {
-        SoundManager.Instance.PlaySFX(SFXType.Click);
         if (_isPopup)
         {
             UIManager.Instance.OpenUI(UIType.ShopPopupUI);
         }
         else
         {
-            UIManager.Instance.shopBtn.onClick.Invoke();
+            UIManager.Instance.MenuNavigatorBar.OpenShop();
         }
     }
 
