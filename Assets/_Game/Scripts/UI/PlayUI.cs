@@ -93,7 +93,7 @@ public class PlayUI : UIBase
     }
     private void OnHighScoreChange(string highScore)
     {
-        _highScoreText.text = highScore;
+        _highScoreText.String2Point(highScore);
     }
     private void OnEnable()
     {
